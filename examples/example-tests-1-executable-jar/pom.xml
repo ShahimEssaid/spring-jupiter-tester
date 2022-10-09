@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+  <parent>
+    <artifactId>com.essaid.spring.jupiter.tester.examples</artifactId>
+    <groupId>com.essaid.spring.jupiter.tester</groupId>
+    <version>1.0-SNAPSHOT</version>
+  </parent>
+  <modelVersion>4.0.0</modelVersion>
+
+  <artifactId>com.essaid.spring.jupiter.tester.example-tests-1-executable-jar</artifactId>
+
+  <properties>
+    <maven.compiler.source>17</maven.compiler.source>
+    <maven.compiler.target>17</maven.compiler.target>
+    <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+  </properties>
+
+  <build>
+    <plugins>
+      <plugin>
+        <groupId>org.springframework.boot</groupId>
+        <artifactId>spring-boot-maven-plugin</artifactId>
+        <version>2.7.1</version>
+        <configuration>
+          <mainClass>com.essaid.spring.jupiter.tester.TesterMain</mainClass>
+        </configuration>
+        <executions>
+          <execution>
+            <goals>
+              <goal>repackage</goal>
+            </goals>
+          </execution>
+        </executions>
+      </plugin>
+    </plugins>
+  </build>
+
+  <dependencies>
+    <dependency>
+      <groupId>com.essaid.spring.jupiter.tester</groupId>
+      <artifactId>com.essaid.spring.jupiter.tester.cli</artifactId>
+      <version>${project.version}</version>
+    </dependency>
+
+    <dependency>
+      <groupId>com.essaid.spring.jupiter.tester</groupId>
+      <artifactId>com.essaid.spring.jupiter.tester.example-tests-1</artifactId>
+      <version>1.0-SNAPSHOT</version>
+    </dependency>
+
+  </dependencies>
+
+</project>
