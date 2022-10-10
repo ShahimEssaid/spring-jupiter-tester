@@ -1,18 +1,24 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="Encoding">
-    <file url="file://$PROJECT_DIR$/api/src/main/java" charset="UTF-8" />
-    <file url="file://$PROJECT_DIR$/api/src/main/resources" charset="UTF-8" />
-    <file url="file://$PROJECT_DIR$/cli/src/main/java" charset="UTF-8" />
-    <file url="file://$PROJECT_DIR$/cli/src/main/resources" charset="UTF-8" />
-    <file url="file://$PROJECT_DIR$/com.essaid.spring.jupiter.tester.examples/src/main/java" charset="UTF-8" />
-    <file url="file://$PROJECT_DIR$/com.essaid.spring.jupiter.tester.examples/src/main/resources" charset="UTF-8" />
-    <file url="file://$PROJECT_DIR$/examples/example-tests-1-executable-jar/src/main/java" charset="UTF-8" />
-    <file url="file://$PROJECT_DIR$/examples/example-tests-1-executable-jar/src/main/resources" charset="UTF-8" />
-    <file url="file://$PROJECT_DIR$/examples/example-tests-1/src/main/java" charset="UTF-8" />
-    <file url="file://$PROJECT_DIR$/examples/example-tests-1/src/main/resources" charset="UTF-8" />
-    <file url="file://$PROJECT_DIR$/examples/src/main/java" charset="UTF-8" />
-    <file url="file://$PROJECT_DIR$/examples/src/main/resources" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/junit-tester/api/src/main/java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/junit-tester/api/src/main/resources" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/junit-tester/cli/src/main/java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/junit-tester/cli/src/main/resources" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/junit-tester/examples/example-tests-1-executable-jar/src/main/java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/junit-tester/examples/example-tests-1-executable-jar/src/main/resources" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/junit-tester/examples/example-tests-1/src/main/java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/junit-tester/examples/example-tests-1/src/main/resources" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/junit-tester/examples/src/main/java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/junit-tester/examples/src/main/resources" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/junit-tester/src/main/java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/junit-tester/src/main/resources" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/pico-commands/api/src/main/java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/pico-commands/api/src/main/resources" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/pico-commands/cli/src/main/java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/pico-commands/cli/src/main/resources" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/pico-commands/src/main/java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/pico-commands/src/main/resources" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/src/main/java" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/src/main/resources" charset="UTF-8" />
   </component>

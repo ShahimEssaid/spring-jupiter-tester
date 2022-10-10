@@ -2,22 +2,26 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0"
          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+  <parent>
+    <artifactId>com.essaid.pico.commands.parent</artifactId>
+    <groupId>com.essaid.pico.commands</groupId>
+    <version>0.1-SNAPSHOT</version>
+  </parent>
   <modelVersion>4.0.0</modelVersion>
 
-  <groupId>com.essaid</groupId>
-  <artifactId>com.essaid.pom</artifactId>
-  <version>1.0-SNAPSHOT</version>
-  <packaging>pom</packaging>
+  <artifactId>com.essaid.pico.commands</artifactId>
 
   <properties>
-    <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     <maven.compiler.source>17</maven.compiler.source>
     <maven.compiler.target>17</maven.compiler.target>
+    <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
   </properties>
 
-  <modules>
-  <module>pico-commands</module>
-    <module>junit-tester</module>
-  </modules>
+  <dependencies>
+    <dependency>
+      <groupId>info.picocli</groupId>
+      <artifactId>picocli</artifactId>
+    </dependency>
+  </dependencies>
 
 </project>

@@ -6,14 +6,14 @@
         <sourceOutputDir name="target/generated-sources/annotations" />
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
-        <module name="example-tests-1-executable-jar" />
+        <module name="com.essaid.spring.jupiter.tester.example-tests-1-executable-jar" />
         <module name="com.essaid.spring.jupiter.tester.cli" />
         <module name="com.essaid.spring.jupiter.tester.example-tests-1" />
         <module name="com.essaid.spring.jupiter.tester.api" />
+        <module name="com.essaid.pico.commands.cli" />
+        <module name="com.essaid.pico.commands" />
       </profile>
     </annotationProcessing>
-    <bytecodeTargetLevel>
-      <module name="example-tests-1" target="17" />
-    </bytecodeTargetLevel>
+    <bytecodeTargetLevel target="17" />
   </component>
 </project>
