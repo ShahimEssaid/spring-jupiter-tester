@@ -1,14 +1,14 @@
 package com.essaid.pico.commands;
 
-public abstract class PicoAbstractCommandType<T extends PicoAbstractCommandInstance> implements PicoCommandType<T> {
+public abstract class AbstractPCommandType implements PCommandType {
   
   private final String name;
   private final String description;
   private final String[] paths;
-  private final Class<T> type;
-  private PicoCommands commands;
+  private final Class<? extends  PCommand> type;
+  private PCommands commands;
   
-  protected  PicoAbstractCommandType(String name, String description, String[] paths, Class<T> type){
+  protected AbstractPCommandType(String name, String description, String[] paths, Class<? extends  PCommand> type){
     this.name = name;
     this.description = description;
     this.paths = paths;
@@ -31,22 +31,24 @@ public abstract class PicoAbstractCommandType<T extends PicoAbstractCommandInsta
   }
   
   @Override
-  public Class<T> getType() {
+  public Class<? extends  PCommand> getType() {
     return type;
   }
   
-  @Override
-  public PicoCommands getPicoCommands() {
+  public PCommands getPicoCommands() {
     return commands;
   }
   
-  @Override
-  public void setPicoCommands(PicoCommands commands) {
+  public void setPicoCommands(PCommands commands) {
     if (this.commands != null) {
       throw new IllegalStateException("Commands object already set on: " + this);
     }
     this.commands = commands;
   }
   
-
+  @Override
+  public PCommand createCommand() {
+    PCommand command = null;
+    return command;
+  }
 }
