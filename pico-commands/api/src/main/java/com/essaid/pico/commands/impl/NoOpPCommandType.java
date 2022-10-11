@@ -24,10 +24,6 @@ public class NoOpPCommandType extends AbstractPCommandType {
     @CommandLine.Unmatched
     private List<String> arguments = new ArrayList<>();
     
-    public NoOpPCommand(PCommandType commandFactory) {
-      super(commandFactory);
-    }
-  
     @Override
     public CommandLine getCommandLine() {
       return new CommandLine(this);

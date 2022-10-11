@@ -2,9 +2,11 @@ package com.essaid.pico.commands.cli;
 
 import com.essaid.pico.commands.AbstractPCommand;
 import com.essaid.pico.commands.AbstractPCommandType;
-import com.essaid.pico.commands.PCommandType;
+import com.essaid.pico.commands.PCommand;
 import com.essaid.pico.commands.PCommands;
 import picocli.CommandLine;
+
+import java.util.concurrent.Callable;
 
 public class DemoCommandType extends AbstractPCommandType {
   
@@ -17,13 +19,27 @@ public class DemoCommandType extends AbstractPCommandType {
   
   public static class DemoPCommand extends AbstractPCommand {
     
-    DemoPCommand(PCommandType type) {
-      super(type);
-    }
-    
     @Override
     public CommandLine getCommandLine() {
-      return null;
+      DemoPCommandLine demoPCommandLine = new DemoPCommandLine();
+      demoPCommandLine.setCommand(this);
+      return new CommandLine(demoPCommandLine);
+    }
+  }
+  
+  @CommandLine.Command(name = "demo-command")
+  public static class DemoPCommandLine implements Callable<Integer> {
+    
+    private DemoPCommand command;
+    
+    @Override
+    public Integer call() throws Exception {
+      command.getContext().put(PCommands.PICO_COMMAND_OUTPUT, DEMO_COMMAND_NAME);
+      return 0;
+    }
+    
+    public void setCommand(DemoPCommand demoPCommand) {
+      this.command = demoPCommand;
     }
   }
 }

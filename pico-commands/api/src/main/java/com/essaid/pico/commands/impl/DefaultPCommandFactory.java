@@ -11,7 +11,9 @@ public class DefaultPCommandFactory implements PCommandFactory {
   @Override
   public PCommand createCommand(PCommandType commandType) {
     try {
-      return commandType.getType().getDeclaredConstructor().newInstance();
+      PCommand command = commandType.getType().getConstructor().newInstance();
+      command.internal().setPCommandType(commandType);
+      return command;
     } catch (InstantiationException e) {
       throw new RuntimeException(e);
     } catch (IllegalAccessException e) {

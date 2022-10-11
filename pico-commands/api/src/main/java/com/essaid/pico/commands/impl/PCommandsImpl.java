@@ -59,6 +59,7 @@ public class PCommandsImpl implements PCommands {
     loader.stream().forEach(commandProvider -> {
       
       PCommandType commandType = commandProvider.get();
+      commandType.internal().setPCommands(this);
       
       String name = commandType.getName();
       PCommandType existingName = commandsByName.put(name, commandType);

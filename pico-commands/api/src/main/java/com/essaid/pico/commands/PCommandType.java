@@ -1,5 +1,7 @@
 package com.essaid.pico.commands;
 
+import com.essaid.pico.commands.internal.PCommandTypeInternal;
+
 public interface PCommandType {
   String getName();
   
@@ -10,5 +12,8 @@ public interface PCommandType {
   Class<? extends PCommand> getType();
   
   PCommand createCommand();
+  
+  PCommandTypeInternal internal();
+
 
 }

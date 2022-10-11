@@ -1,19 +1,16 @@
 package com.essaid.pico.commands;
 
+import com.essaid.pico.commands.internal.PCommandInternal;
 import picocli.CommandLine;
 
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
-public abstract class AbstractPCommand implements PCommand {
+public abstract class AbstractPCommand implements PCommandInternal {
   
   
-  private final PCommandType commandType;
+  private PCommandType commandType;
   private Map<Object, Object> context = new ConcurrentHashMap<>();
-  
-  public AbstractPCommand(PCommandType commandType){
-    this.commandType = commandType;
-  }
   
   @Override
   public Map<Object, Object> getContext() {
@@ -21,8 +18,17 @@ public abstract class AbstractPCommand implements PCommand {
   }
   
   @Override
-  public PCommandType getType() {
+  public PCommandType getPCommandType() {
     return commandType;
   }
-
+  
+  @Override
+  public void setPCommandType(PCommandType type) {
+    this.commandType = type;
+  }
+  
+  @Override
+  public PCommandInternal internal() {
+    return this;
+  }
 }

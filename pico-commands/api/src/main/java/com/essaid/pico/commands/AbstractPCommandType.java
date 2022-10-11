@@ -1,6 +1,8 @@
 package com.essaid.pico.commands;
 
-public abstract class AbstractPCommandType implements PCommandType {
+import com.essaid.pico.commands.internal.PCommandTypeInternal;
+
+public abstract class AbstractPCommandType implements PCommandTypeInternal {
   
   private final String name;
   private final String description;
@@ -35,11 +37,13 @@ public abstract class AbstractPCommandType implements PCommandType {
     return type;
   }
   
-  public PCommands getPicoCommands() {
+  @Override
+  public PCommands getPCommands() {
     return commands;
   }
   
-  public void setPicoCommands(PCommands commands) {
+  @Override
+  public void setPCommands(PCommands commands) {
     if (this.commands != null) {
       throw new IllegalStateException("Commands object already set on: " + this);
     }
@@ -48,7 +52,12 @@ public abstract class AbstractPCommandType implements PCommandType {
   
   @Override
   public PCommand createCommand() {
-    PCommand command = null;
+    PCommand command = getPCommands().getCommandFactory().createCommand(this);
     return command;
+  }
+  
+  @Override
+  public PCommandTypeInternal internal() {
+    return this;
   }
 }

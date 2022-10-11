@@ -14,10 +14,6 @@ public class RootPCommandType extends AbstractPCommandType {
   
   static class RootPCommand extends AbstractPCommand {
   
-    public RootPCommand(PCommandType command) {
-      super(command);
-    }
-  
     @Override
     public CommandLine getCommandLine() {
       return null;
