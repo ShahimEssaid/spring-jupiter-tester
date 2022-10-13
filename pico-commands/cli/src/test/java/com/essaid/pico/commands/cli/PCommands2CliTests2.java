@@ -13,7 +13,7 @@ import org.junit.jupiter.api.TestMethodOrder;
 
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
-public class PCommandsCliTests {
+public class PCommands2CliTests2 {
   
   private PCommands pCommands;
   private PCommandType noOpCommandFactory;
