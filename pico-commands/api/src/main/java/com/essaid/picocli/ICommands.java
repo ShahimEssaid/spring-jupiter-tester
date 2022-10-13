@@ -2,6 +2,7 @@ package com.essaid.picocli;
 
 import picocli.CommandLine;
 
+import java.lang.annotation.Annotation;
 import java.util.List;
 import java.util.Map;
 
@@ -21,15 +22,17 @@ public interface ICommands {
   
   interface IEnvironment {
     /**
-     * Check if the {@link IEnvironment} already has a {@link ICommandType} with the same name.
+     * Check if the {@link IEnvironment} already has a {@link ICommandType} with the same name. If you need to add
+     * this command type, you can manually add it with a new name through
+     * {@link IIEnvironment#addCommandType(String, String, String[], Class)}.
      *
-     * @param commandType
-     * @return
+     * @param commandType The command name to check for.
+     * @return if command with same name already exists.
      */
     boolean containsCommandType(ICommandType commandType);
     
     /**
-     * @param commandName
+     * @param commandName The command name to check for.
      * @return true if there is already a command with that name.
      */
     boolean containsCommandName(String commandName);
@@ -37,10 +40,10 @@ public interface ICommands {
     /**
      * Creates and adds a new {@link ICommandType} if there isn't one with that name already.
      *
-     * @param name
-     * @param description
-     * @param paths
-     * @param commandClass
+     * @param name The command name. Is final and must be unique in the {@link IEnvironment}
+     * @param description A mutable description until {@link ICommands} instantiated from this environment.
+     * @param paths A mutable list of paths to form the "tree" of commands in the {@link ICommands} instance.
+     * @param commandClass The class that has a @{@link picocli.CommandLine.Command} annotation. This is final.
      * @return true if it was successfully added. false should mean there is already a command with that name in the
      * environment.
      */
@@ -48,7 +51,7 @@ public interface ICommands {
     
     List<ICommandType> findServiceLoaderCommandTypes();
     
-    List<ICommandType> findClasspathScannerCommandTypes();
+    List<ICommandType> findClasspathScannerCommandTypes(Class<? extends Annotation> annotationType);
     
     List<ICommandType> findSpringCommandTypes();
     
@@ -111,7 +114,42 @@ class Environment implements IIEnvironment {
   }
   
   @Override
-  public ICommands.ICommandType addCommandType(String name, String description, String[] paths, Class<?> commandClass) {
+  public Map<String, Object> getProperties() {
+    return null;
+  }
+  
+  @Override
+  public ICommands getCommands() {
+    return null;
+  }
+  
+  @Override
+  public boolean containsCommandType(ICommands.ICommandType commandType) {
+    return false;
+  }
+  
+  @Override
+  public boolean containsCommandName(String commandName) {
+    return false;
+  }
+  
+  @Override
+  public boolean addCommandType(String name, String description, String[] paths, Class<?> commandClass) {
+    return false;
+  }
+  
+  @Override
+  public List<ICommands.ICommandType> findServiceLoaderCommandTypes() {
+    return null;
+  }
+  
+  @Override
+  public List<ICommands.ICommandType> findClasspathScannerCommandTypes() {
+    return null;
+  }
+  
+  @Override
+  public List<ICommands.ICommandType> findSpringCommandTypes() {
     return null;
   }
   
@@ -120,14 +158,37 @@ class Environment implements IIEnvironment {
     return this;
   }
   
+  @Override
+  public ICommands.IEnvironment copy() {
+    return null;
+  }
+  
+  @Override
+  public void lock() {
+  
+  }
+  
+  @Override
+  public boolean isLocked() {
+    return false;
+  }
 }
 
 class Commands implements ICommands {
-
+  
+  @Override
+  public IEnvironment getDefaultEnvironment() {
+    return null;
+  }
+  
+  @Override
+  public IEnvironment createNewEnvironment() {
+    return null;
+  }
 }
 
 class Util {
-  static boolean noSubCommands(Class<?> commandClass) {
+  static boolean isWithoutSubCommands(Class<?> commandClass) {
     return new CommandLine(commandClass).getSubcommands().isEmpty();
   }
 }

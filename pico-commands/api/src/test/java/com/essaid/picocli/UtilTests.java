@@ -9,7 +9,7 @@ public class UtilTests extends BaseTest {
   
   @Test
   void noSubCommands(){
-    boolean noSubCommands = Util.noSubCommands(CommandWithSubcommand.class);
+    boolean noSubCommands = Util.isWithoutSubCommands(CommandWithSubcommand.class);
     Assertions.assertEquals(noSubCommands, false);
   }
 }

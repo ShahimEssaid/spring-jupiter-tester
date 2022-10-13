@@ -24,6 +24,7 @@
   <modules>
     <module>cli</module>
     <module>api</module>
+    <module>api-test</module>
   </modules>
 
   <dependencies>
