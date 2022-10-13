@@ -1,4 +1,4 @@
-package com.essaid.picocli.test;
+package com.essaid.picocli;
 
 import picocli.CommandLine;
 

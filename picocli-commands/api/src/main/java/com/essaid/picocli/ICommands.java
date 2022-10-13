@@ -5,6 +5,8 @@ import picocli.CommandLine;
 import java.lang.annotation.Annotation;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
+import java.util.Properties;
 
 public interface ICommands {
   interface Constants {
@@ -12,9 +14,11 @@ public interface ICommands {
     String COMMANDS_CLASSLOADER = COMMANDS_NAMESPACE + ".classloader";
   }
   
-  IEnvironment getDefaultEnvironment();
+  static IEnvironment getDefaultEnvironment(Map<Object, Object> properties){
+    return Environment.getDefaultEnvironment(properties);
+  }
   
-  IEnvironment createNewEnvironment();
+  IEnvironment createNewEnvironment(Properties properties);
   
   @interface Command {
   
@@ -40,9 +44,9 @@ public interface ICommands {
     /**
      * Creates and adds a new {@link ICommandType} if there isn't one with that name already.
      *
-     * @param name The command name. Is final and must be unique in the {@link IEnvironment}
-     * @param description A mutable description until {@link ICommands} instantiated from this environment.
-     * @param paths A mutable list of paths to form the "tree" of commands in the {@link ICommands} instance.
+     * @param name         The command name. Is final and must be unique in the {@link IEnvironment}
+     * @param description  A mutable description until {@link ICommands} instantiated from this environment.
+     * @param paths        A mutable list of paths to form the "tree" of commands in the {@link ICommands} instance.
      * @param commandClass The class that has a @{@link picocli.CommandLine.Command} annotation. This is final.
      * @return true if it was successfully added. false should mean there is already a command with that name in the
      * environment.
@@ -57,7 +61,9 @@ public interface ICommands {
     
     List<ICommandType> getCommandTypes();
     
-    Map<String, Object> getProperties();
+    Map<Object, Object> getProperties();
+    
+    Map<Object, Object> getData();
     
     ICommands getCommands();
     
@@ -108,13 +114,34 @@ interface IIEnvironment extends ICommands.IEnvironment {
 
 class Environment implements IIEnvironment {
   
+  private static Environment defaultEnvironment;
+  
+  private final Map<Object, Object> properties;
+  
+  Environment(Map<Object, Object> properties) {
+    this.properties = properties;
+  }
+  
+  public static ICommands.IEnvironment getDefaultEnvironment(Map<Object, Object> properties) {
+    if(Objects.isNull(defaultEnvironment)){
+      defaultEnvironment = new Environment(properties);
+    }
+    
+    return defaultEnvironment;
+  }
+  
   @Override
   public List<ICommands.ICommandType> getCommandTypes() {
     return null;
   }
   
   @Override
-  public Map<String, Object> getProperties() {
+  public Map<Object, Object> getProperties() {
+    return null;
+  }
+  
+  @Override
+  public Map<Object, Object> getData() {
     return null;
   }
   
@@ -178,12 +205,7 @@ class Environment implements IIEnvironment {
 class Commands implements ICommands {
   
   @Override
-  public IEnvironment getDefaultEnvironment() {
-    return null;
-  }
-  
-  @Override
-  public IEnvironment createNewEnvironment() {
+  public IEnvironment createNewEnvironment(Properties properties) {
     return null;
   }
 }
