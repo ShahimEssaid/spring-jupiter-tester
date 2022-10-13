@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+  <parent>
+    <groupId>com.essaid.picocli</groupId>
+    <artifactId>com.essaid.picocli.commands</artifactId>
+    <version>0.0.1-SNAPSHOT</version>
+  </parent>
+  <modelVersion>4.0.0</modelVersion>
+
+  <artifactId>com.essaid.picocli.commands.api</artifactId>
+
+  <properties>
+    <maven.compiler.source>17</maven.compiler.source>
+    <maven.compiler.target>17</maven.compiler.target>
+    <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+  </properties>
+
+  <build>
+    <plugins>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-shade-plugin</artifactId>
+        <executions>
+          <execution>
+            <!-- https://github.com/classgraph/classgraph/wiki/Shading-ClassGraph -->
+            <phase>package</phase>
+            <goals>
+              <goal>shade</goal>
+            </goals>
+            <configuration>
+              <artifactSet>
+                <includes>
+                  <include>io.github.classgraph:classgraph</include>
+                  <include>org.springframework:spring-core</include>
+                  <include>org.springframework:spring-jcl</include>
+                </includes>
+              </artifactSet>
+              <relocations>
+                <relocation>
+                  <pattern>io.github.classgraph</pattern>
+                  <shadedPattern>com.essaid.picocli.commands.shaded.io.github.classgraph</shadedPattern>
+                </relocation>
+                <relocation>
+                  <pattern>nonapi.io.github.classgraph</pattern>
+                  <shadedPattern>com.essaid.picocli.commands.shaded.nonapi.io.github.classgraph</shadedPattern>
+                </relocation>
+                <relocation>
+                  <pattern>org.springframework</pattern>
+                  <shadedPattern>com.essaid.picocli.commands.shaded.org.springframework</shadedPattern>
+                </relocation>
+                <relocation>
+                  <pattern>org.apache.commons.logging</pattern>
+                  <shadedPattern>com.essaid.picocli.commands.shaded.org.apache.commons.logging</shadedPattern>
+                </relocation>
+              </relocations>
+            </configuration>
+          </execution>
+        </executions>
+      </plugin>
+    </plugins>
+  </build>
+
+  <dependencies>
+    <dependency>
+      <groupId>org.slf4j</groupId>
+      <artifactId>slf4j-simple</artifactId>
+    </dependency>
+
+    <dependency>
+      <groupId>io.github.classgraph</groupId>
+      <artifactId>classgraph</artifactId>
+    </dependency>
+
+    <dependency>
+      <groupId>info.picocli</groupId>
+      <artifactId>picocli</artifactId>
+    </dependency>
+
+    <dependency>
+      <groupId>org.springframework</groupId>
+      <artifactId>spring-core</artifactId>
+    </dependency>
+
+    <dependency>
+      <groupId>org.springframework</groupId>
+      <artifactId>spring-context</artifactId>
+      <scope>provided</scope>
+    </dependency>
+
+  </dependencies>
+
+</project>

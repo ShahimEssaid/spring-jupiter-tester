@@ -144,9 +144,10 @@ class Environment implements IIEnvironment {
   }
   
   @Override
-  public List<ICommands.ICommandType> findClasspathScannerCommandTypes() {
+  public List<ICommands.ICommandType> findClasspathScannerCommandTypes(Class<? extends Annotation> annotationType) {
     return null;
   }
+  
   
   @Override
   public List<ICommands.ICommandType> findSpringCommandTypes() {

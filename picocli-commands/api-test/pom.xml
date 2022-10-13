@@ -3,18 +3,26 @@
          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
   <parent>
-    <artifactId>com.essaid.pico.commands.parent</artifactId>
-    <groupId>com.essaid.pico.commands</groupId>
-    <version>0.1-SNAPSHOT</version>
+    <groupId>com.essaid.picocli</groupId>
+    <artifactId>com.essaid.picocli.commands</artifactId>
+    <version>0.0.1-SNAPSHOT</version>
   </parent>
   <modelVersion>4.0.0</modelVersion>
 
-  <artifactId>api-test</artifactId>
+  <artifactId>com.essaid.pico.commands.api-test</artifactId>
 
   <properties>
     <maven.compiler.source>17</maven.compiler.source>
     <maven.compiler.target>17</maven.compiler.target>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
   </properties>
+
+  <dependencies>
+    <dependency>
+      <groupId>com.essaid.picocli</groupId>
+      <artifactId>com.essaid.picocli.commands.api</artifactId>
+      <version>${project.version}</version>
+    </dependency>
+  </dependencies>
 
 </project>

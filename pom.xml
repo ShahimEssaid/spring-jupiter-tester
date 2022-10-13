@@ -4,19 +4,17 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
   <modelVersion>4.0.0</modelVersion>
 
-  <groupId>com.essaid</groupId>
-  <artifactId>com.essaid.pom</artifactId>
+  <groupId>com.essaid.tmp.grouper.hFBf5FH9rD7qBG</groupId>
+  <artifactId>com.essaid.tmp.grouper.hFBf5FH9rD7qBG</artifactId>
   <version>1.0-SNAPSHOT</version>
   <packaging>pom</packaging>
 
   <properties>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-    <maven.compiler.source>17</maven.compiler.source>
-    <maven.compiler.target>17</maven.compiler.target>
   </properties>
 
   <modules>
-  <module>pico-commands</module>
+    <module>picocli-commands</module>
     <module>junit-tester</module>
   </modules>
 
