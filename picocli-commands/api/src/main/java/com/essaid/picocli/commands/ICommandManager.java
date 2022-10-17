@@ -58,6 +58,7 @@ public interface ICommandManager {
   
   ICommands getCommands();
   
+  
   ClassLoader getClassLoader();
   
   IICommandManager internal();

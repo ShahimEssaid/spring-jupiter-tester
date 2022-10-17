@@ -6,13 +6,15 @@ import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationContextAware;
 import org.springframework.stereotype.Component;
 
+import java.util.Arrays;
+
 public class PicocliCommandsRunner implements CommandLineRunner, ApplicationContextAware {
   private ApplicationContext context;
   
   @Override
   public void run(String... args) throws Exception {
     
-    System.out.println("=============== PicocliCommandsRunner args: " + args + " and context: " + context);
+    System.out.println("=============== PicocliCommandsRunner args: " + Arrays.stream(args).toList() + " and context: " + context);
     
   }
   
