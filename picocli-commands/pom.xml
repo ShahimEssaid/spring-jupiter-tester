@@ -4,14 +4,8 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
   <modelVersion>4.0.0</modelVersion>
 
-<!--  <parent>-->
-<!--    <groupId>com.essaid</groupId>-->
-<!--    <artifactId>com.essaid.pom</artifactId>-->
-<!--    <version>1.0-SNAPSHOT</version>-->
-<!--  </parent>-->
-
-  <groupId>com.essaid.picocli</groupId>
-  <artifactId>com.essaid.picocli.commands</artifactId>
+  <groupId>com.essaid.picocli.commands</groupId>
+  <artifactId>com.essaid.picocli.commands.parent</artifactId>
   <version>0.0.1-SNAPSHOT</version>
   <packaging>pom</packaging>
 
@@ -25,28 +19,18 @@
     <spring-boot-dependencies.version>2.7.4</spring-boot-dependencies.version>
     <classgraph.version>4.8.116</classgraph.version>
     <maven-shade-plugin.version>3.4.0</maven-shade-plugin.version>
+    <semver4j.version>2.1.1</semver4j.version>
   </properties>
-
 
 
   <modules>
     <module>api</module>
     <module>api-test</module>
+    <module>example</module>
   </modules>
 
   <dependencies>
 
-    <dependency>
-      <groupId>org.junit.jupiter</groupId>
-      <artifactId>junit-jupiter-api</artifactId>
-      <scope>test</scope>
-    </dependency>
-
-    <dependency>
-      <groupId>org.junit.jupiter</groupId>
-      <artifactId>junit-jupiter-engine</artifactId>
-      <scope>test</scope>
-    </dependency>
 
   </dependencies>
 
@@ -110,10 +94,15 @@
         <version>${classgraph.version}</version>
       </dependency>
 
+      <dependency>
+        <groupId>org.semver4j</groupId>
+        <artifactId>semver4j</artifactId>
+        <version>${semver4j.version}</version>
+      </dependency>
+
     </dependencies>
 
   </dependencyManagement>
-
 
 
 </project>

@@ -15,7 +15,7 @@
 
   <modules>
     <module>picocli-commands</module>
-    <module>junit-tester</module>
+<!--    <module>junit-tester</module>-->
   </modules>
 
 </project>

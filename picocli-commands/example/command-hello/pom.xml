@@ -3,13 +3,13 @@
          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
   <parent>
+    <artifactId>com.essaid.picocli.commands.example</artifactId>
     <groupId>com.essaid.picocli.commands</groupId>
-    <artifactId>com.essaid.picocli.commands.parent</artifactId>
     <version>0.0.1-SNAPSHOT</version>
   </parent>
   <modelVersion>4.0.0</modelVersion>
 
-  <artifactId>com.essaid.pico.commands.api-test</artifactId>
+  <artifactId>com.essaid.picocli.commands.example.command-hello</artifactId>
 
   <properties>
     <maven.compiler.source>17</maven.compiler.source>
@@ -17,37 +17,21 @@
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
   </properties>
 
-  <build>
-    <plugins>
-      <plugin>
-        <groupId>org.apache.maven.plugins</groupId>
-        <artifactId>maven-surefire-plugin</artifactId>
-        <configuration>
-          <testClassesDirectory>${project.build.outputDirectory}</testClassesDirectory>
-        </configuration>
-      </plugin>
-    </plugins>
-  </build>
-
   <dependencies>
-
-    <dependency>
-      <groupId>org.junit.jupiter</groupId>
-      <artifactId>junit-jupiter-engine</artifactId>
-      <scope>test</scope>
-    </dependency>
 
     <dependency>
       <groupId>com.essaid.picocli.commands</groupId>
       <artifactId>com.essaid.picocli.commands.api</artifactId>
       <version>${project.version}</version>
+      <scope>provided</scope>
     </dependency>
 
     <dependency>
       <groupId>org.springframework.boot</groupId>
-      <artifactId>spring-boot-starter-test</artifactId>
-      <scope>provided</scope>
+      <artifactId>spring-boot-autoconfigure-processor</artifactId>
+      <optional>true</optional>
     </dependency>
+
 
     <dependency>
       <groupId>org.springframework.boot</groupId>
@@ -55,21 +39,7 @@
       <scope>provided</scope>
     </dependency>
 
-    <dependency>
-      <groupId>org.yaml</groupId>
-      <artifactId>snakeyaml</artifactId>
-    </dependency>
 
-    <dependency>
-      <groupId>org.junit.jupiter</groupId>
-      <artifactId>junit-jupiter-api</artifactId>
-    </dependency>
-
-    <dependency>
-      <groupId>org.springframework</groupId>
-      <artifactId>spring-test</artifactId>
-      <scope>provided</scope>
-    </dependency>
   </dependencies>
 
 </project>
