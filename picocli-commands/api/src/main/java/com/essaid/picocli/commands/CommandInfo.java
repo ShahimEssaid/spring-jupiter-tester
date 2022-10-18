@@ -14,8 +14,9 @@ import java.lang.annotation.Target;
 public @interface CommandInfo {
   String groupId();
   String artifactId();
-  String version();
+  String artifactVersion();
   String commandId();
+  String commandVersion();
   String description() default  "";
   String comments() default  "";
 }

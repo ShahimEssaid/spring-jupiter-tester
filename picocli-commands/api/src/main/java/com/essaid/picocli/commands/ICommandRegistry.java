@@ -3,6 +3,8 @@ package com.essaid.picocli.commands;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.Callable;
+import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.ConcurrentMap;
 
 public interface ICommandRegistry {
   
@@ -13,9 +15,18 @@ public interface ICommandRegistry {
   
   ICommands getCommands();
   
+  boolean validate(boolean strict);
+  
   IICommandRegistry internal();
   
   interface IICommandRegistry extends ICommandRegistry {
+    
+    static String DEFAULT_REGISTRY_NAME = "_default";
+    
+    static Map<String, ICommandRegistry> registries = new ConcurrentHashMap<>();
+    
+    Map<Object, Object> getRegistryCache();
+    
     Map<String, List<ICommandType>> getPathCommandTypes();
   }
   

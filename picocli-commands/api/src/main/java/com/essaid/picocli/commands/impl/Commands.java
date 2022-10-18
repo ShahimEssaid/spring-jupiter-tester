@@ -27,26 +27,23 @@ public class Commands implements ICommands.IICommands {
         .stream()
         .map(stringListEntry -> new CommandType(null, stringListEntry.getValue().get(0), this))
         .collect(Collectors.toMap(ICommandType::getPath, Function.identity()));
-
-//    Set<String> paths = types.keySet();
-//    for (String path : paths) {
-//      if(path.startsWith(Constants.RESERVED_PATH_PREFIX)) continue;
-//
-//      int i = path.indexOf(".");
-//      while (i < -1) {
-//        String subpath = path.substring(0, i);
-//        if (!types.containsKey(subpath)) {
-//          ICommandType noOpTemplate = types.get(Constants.NO_OP_COMMAND_PATH_PREFIX);
-//          ICommandType noOp = new CommandType(manager, subpath, noOpTemplate.getCommandClass(), noOpTemplate
-//          .getQualifier(),
-//              noOpTemplate.getFactory());
-//          noOp = new CommandType(noOp, this);
-//          types.put(subpath, noOp);
-//        }
-//        i = subpath.indexOf(".");
-//      }
-//
-//    }
+  
+    List<String> pathsWithNoParent = this.types.keySet()
+        .stream()
+        .filter(path -> !path.startsWith(Constants.NOT_COMMAND_PREFIX))
+        .filter(path -> {
+          int i = path.indexOf(".");
+          if (i < 0) {
+            return false;
+          }
+          String parentPath = path.substring(0, i);
+          return !types.containsKey(parentPath);
+        })
+        .collect(Collectors.toList());
+    
+    if(!pathsWithNoParent.isEmpty()){
+      throw new IllegalStateException("The following paths do not have the parent command: "+ pathsWithNoParent);
+    }
   }
   
   @Override
@@ -55,7 +52,7 @@ public class Commands implements ICommands.IICommands {
   }
   
   @Override
-  public CommandLine getCommandLine(String rootCommandTemplatePath, String noOpCommandTemplatePath,
+  public CommandLine getCommandLine(
                                     String... subCommandPaths) {
     CommandLine rootCommandLine = rootCommandTemplatePath != null ?
         new CommandLine(types.get(rootCommandTemplatePath)) :

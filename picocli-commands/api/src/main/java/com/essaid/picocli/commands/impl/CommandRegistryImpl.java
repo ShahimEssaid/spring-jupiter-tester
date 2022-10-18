@@ -25,10 +25,9 @@ public class CommandRegistryImpl implements ICommandRegistry.IICommandRegistry {
   }
   
   @Override
-  public void addCommandType(ICommandType commandType) {
-    List<ICommandType> commandTypesForPath = commandsByPath.computeIfAbsent(commandType.getPath(),
-        s -> new ArrayList<>());
-    commandTypesForPath.add(commandType);
+  public void addCommandType(ICommandType commandTypeTemplate) {
+    addCommand(commandTypeTemplate.getPath(), commandTypeTemplate.getCommandClass(),
+        commandTypeTemplate.getQualifier(), commandTypeTemplate.getFactory());
   }
   
   @Override
@@ -40,14 +39,20 @@ public class CommandRegistryImpl implements ICommandRegistry.IICommandRegistry {
   public ICommandType addCommand(String path, Class<? extends Callable<Integer>> commandClass, String qualifier,
                                  ICommandFactory factory) {
     ICommandType commandType = new CommandType(this, path, commandClass, qualifier, factory);
-    addCommandType(commandType);
-    
+    List<ICommandType> commandTypesForPath = commandsByPath.computeIfAbsent(path,
+        s -> new ArrayList<>());
+    commandTypesForPath.add(commandType);
     return commandType;
   }
   
   @Override
   public ICommands getCommands() {
     return new Commands(this);
+  }
+  
+  @Override
+  public boolean validate(boolean strict) {
+    return false;
   }
   
   @Override

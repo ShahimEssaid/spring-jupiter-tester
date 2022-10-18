@@ -3,7 +3,7 @@ package com.essaid.commands.example.command.hello;
 import com.essaid.picocli.commands.ICommandFactory;
 import com.essaid.picocli.commands.ICommandRegistry;
 import com.essaid.picocli.commands.ICommandType;
-import com.essaid.picocli.commands.impl.CommandManagerConfigurer;
+import com.essaid.picocli.commands.impl.CommandManagePostProcessor;
 import com.essaid.picocli.commands.impl.CommandType;
 import com.essaid.picocli.commands.impl.SpringCommandFactory;
 import org.springframework.beans.factory.config.BeanPostProcessor;
@@ -30,9 +30,9 @@ public class HelloConfiguration {
   BeanPostProcessor helloCommandConfigurer(ConfigurableApplicationContext context, ICommandRegistry commandManager) {
     ICommandType helloCommandType = new CommandType(commandManager, "hello", HelloCommand.class, null, null);
     ICommandFactory factory = new SpringCommandFactory(helloCommandType.getCommandClass(), null, true, context);
-    CommandManagerConfigurer commandManagerConfigurer =
-        new CommandManagerConfigurer(Collections.singletonList(helloCommandType));
-    return commandManagerConfigurer;
+    CommandManagePostProcessor commandManagePostProcessor =
+        new CommandManagePostProcessor(Collections.singletonList(helloCommandType));
+    return commandManagePostProcessor;
   
   }
   

@@ -77,7 +77,7 @@ public class CommandType implements ICommandType.IICommandType {
   
   @Override
   public Semver getVersion() {
-    return commandInfo != null ? new Semver(commandInfo.version()) : new Semver("0.0.0");
+    return commandInfo != null ? new Semver(commandInfo.commandVersion()) : new Semver("0.0.0");
   }
   
   @Override
@@ -133,9 +133,5 @@ public class CommandType implements ICommandType.IICommandType {
   public CommandInfo getCommandInfoAnnotation() {
     return commandInfo;
   }
-  
-  @Override
-  public ICommands getCommands() {
-    return commands;
-  }
+
 }

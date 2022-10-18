@@ -3,6 +3,7 @@ package com.essaid.picocli.commands;
 import org.semver4j.Semver;
 import picocli.CommandLine;
 
+import java.util.Map;
 import java.util.concurrent.Callable;
 
 public interface ICommandType extends Comparable<ICommandType> {
@@ -35,7 +36,8 @@ public interface ICommandType extends Comparable<ICommandType> {
     
     CommandInfo getCommandInfoAnnotation();
     
-    ICommands getCommands();
+    Map<Object, Object> getCache();
+
   }
   
 }

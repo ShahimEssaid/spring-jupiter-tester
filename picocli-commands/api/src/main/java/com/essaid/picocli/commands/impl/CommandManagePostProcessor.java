@@ -4,14 +4,16 @@ import com.essaid.picocli.commands.ICommandRegistry;
 import com.essaid.picocli.commands.ICommandType;
 import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.config.BeanPostProcessor;
+import org.springframework.stereotype.Component;
 
 import java.util.List;
 
-public class CommandManagerConfigurer implements BeanPostProcessor {
+@Component
+public class CommandManagePostProcessor implements BeanPostProcessor {
   
   private final List<ICommandType> commandTypes;
   
-  public CommandManagerConfigurer(List<ICommandType> commandTypes){
+  public CommandManagePostProcessor(List<ICommandType> commandTypes){
     this.commandTypes = commandTypes;
   }
   
