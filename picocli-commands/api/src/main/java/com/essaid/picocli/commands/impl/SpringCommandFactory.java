@@ -13,12 +13,11 @@ public class SpringCommandFactory extends CommandFactory {
   
   private final ConfigurableApplicationContext context;
   
-  public SpringCommandFactory(Class<? extends Callable<Integer>> commandClass,
-                              String nameNameOrQualifier, boolean createExternal, ConfigurableApplicationContext context) {
+  public SpringCommandFactory(Class<? extends Callable<Integer>> commandClass, String nameNameOrQualifier,
+                              boolean createExternal, ConfigurableApplicationContext context) {
     super(commandClass, nameNameOrQualifier, createExternal);
     this.context = context;
   }
-  
   
   
   @Override

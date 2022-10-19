@@ -2,8 +2,8 @@ package com.essaid.picocli.commands.tmp;
 
 import com.essaid.picocli.commands.CommandInfo;
 
-@CommandInfo(groupId = "group1", artifactId = "artifact1", commandId = "id", commandVersion = "1.0.0", comments = "Some " +
-    "comment")
+@CommandInfo(groupId = "group1", artifactId = "artifact1", artifactVersion = "", commandId = "id", commandVersion = 
+    "1.0.0", comments = "Some " + "comment")
 public class AnnotationOverrideExample {
   
   //@CommandInfo(groupId = "group1", artifactId = "artifact1", commandId = "id", version = "2.0.0")

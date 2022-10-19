@@ -9,6 +9,7 @@ import org.semver4j.Semver;
 import picocli.CommandLine;
 
 import java.util.Comparator;
+import java.util.Map;
 import java.util.Objects;
 import java.util.concurrent.Callable;
 
@@ -133,5 +134,10 @@ public class CommandType implements ICommandType.IICommandType {
   public CommandInfo getCommandInfoAnnotation() {
     return commandInfo;
   }
-
+  
+  @Override
+  public Map<Object, Object> getCache() {
+    return null;
+  }
+  
 }

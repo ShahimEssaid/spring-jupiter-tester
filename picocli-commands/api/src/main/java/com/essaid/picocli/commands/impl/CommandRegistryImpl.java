@@ -61,6 +61,11 @@ public class CommandRegistryImpl implements ICommandRegistry.IICommandRegistry {
   }
   
   @Override
+  public Map<Object, Object> getRegistryCache() {
+    return null;
+  }
+  
+  @Override
   public Map<String, List<ICommandType>> getPathCommandTypes() {
     return Collections.unmodifiableMap(commandsByPath);
   }

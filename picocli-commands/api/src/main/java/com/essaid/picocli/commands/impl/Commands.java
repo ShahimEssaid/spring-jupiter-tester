@@ -54,8 +54,7 @@ public class Commands implements ICommands.IICommands {
   @Override
   public CommandLine getCommandLine(
                                     String... subCommandPaths) {
-    CommandLine rootCommandLine = rootCommandTemplatePath != null ?
-        new CommandLine(types.get(rootCommandTemplatePath)) :
+    CommandLine rootCommandLine =
         new CommandLine(types.get(Constants.RESERVED_ROOT_COMMAND_PATH));
     
     List<String> pathPrefixes = Arrays.asList(subCommandPaths);
@@ -65,11 +64,11 @@ public class Commands implements ICommands.IICommands {
     
     Map<String, CommandLine> builtCommandLines = new TreeMap<>();
     
-    types.values()
-        .stream()
-        .filter(commandType -> !commandType.getPath().startsWith(Constants.RESERVED_TEMPLATE_COMMAND_PREFIX))
-        .forEach(commandType -> buildCommandLine(commandType.getPath(), commandType, pathPrefixes, builtCommandLines,
-            noOpCommandTemplatePath != null ? noOpCommandTemplatePath : Constants.RESERVED_NO_OP_COMMAND_PATH));
+//    types.values()
+//        .stream()
+//        .filter(commandType -> !commandType.getPath().startsWith(Constants.RESERVED_TEMPLATE_COMMAND_PREFIX))
+//        .forEach(commandType -> buildCommandLine(commandType.getPath(), commandType, pathPrefixes, builtCommandLines,
+//            noOpCommandTemplatePath != null ? noOpCommandTemplatePath : Constants.RESERVED_NO_OP_COMMAND_PATH));
     
     return rootCommandLine;
   }

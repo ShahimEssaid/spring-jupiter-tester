@@ -80,7 +80,8 @@
 
     <dependency>
       <groupId>org.springframework</groupId>
-      <artifactId>spring-core</artifactId>
+      <artifactId>spring-context</artifactId>
+      <scope>provided</scope>
     </dependency>
 
     <dependency>

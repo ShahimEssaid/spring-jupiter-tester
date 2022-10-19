@@ -9,8 +9,8 @@ import picocli.CommandLine;
 import java.util.List;
 import java.util.concurrent.Callable;
 
-@CommandInfo(groupId = "com.essaid.commands.example.command", artifactId = "hello", commandId = "hello", commandVersion = "0" +
-    ".0.1", description = "A demo hello and " + "echo subcommand", comments = "Some comment")
+@CommandInfo(groupId = "com.essaid.commands.example.command", artifactId = "hello", artifactVersion = "", commandId =
+    "hello", commandVersion = "0" + ".0.1", description = "A demo hello and " + "echo subcommand", comments = "Some comment")
 @CommandLine.Command(name = "hello", description =
     "An example hello command with an echo subcommand that echos the " + "input argument list.",
     subcommandsRepeatable = true, subcommands = HelloCommand.Echo.class)
