@@ -19,10 +19,13 @@ import java.util.concurrent.Callable;
 
 public interface ICommandFactory2 extends CommandLine.IFactory {
   
+  Class<? extends Callable<Integer>> getCommandClass();
   
   IICommandFactory2 internal();
   
   interface IICommandFactory2 extends ICommandFactory2 {
+    
+
     
     void setCommandType(ICommandType2 commandType);
     
@@ -32,16 +35,16 @@ public interface ICommandFactory2 extends CommandLine.IFactory {
 }
 
 abstract class CommandFactory implements ICommandFactory2.IICommandFactory2 {
-  private ICommandType2 commandType;
-  
-  public Class<? extends Callable<Integer>> getCommandClass() {
-    return commandClass;
-  }
-  
   private final Class<? extends Callable<Integer>> commandClass;
+  private ICommandType2 commandType;
   
   CommandFactory(Class<? extends Callable<Integer>> commandClass) {
     this.commandClass = commandClass;
+  }
+  
+  @Override
+  public Class<? extends Callable<Integer>> getCommandClass() {
+    return commandClass;
   }
   
   @Override

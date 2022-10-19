@@ -5,7 +5,7 @@ import com.essaid.picocli.commandsold.ICommandFactory;
 import com.essaid.picocli.commandsold.ICommandRegistry;
 import com.essaid.picocli.commandsold.ICommandType;
 import com.essaid.picocli.commandsold.ICommands;
-import org.semver4j.Semver;
+//import org.semver4j.Semver;
 import picocli.CommandLine;
 
 import java.util.Comparator;
@@ -75,11 +75,11 @@ public class CommandType implements ICommandType.IICommandType {
   public String getArtifactId() {
     return commandInfo != null ? commandInfo.artifactId() : commandClass.getSimpleName();
   }
-  
-  @Override
-  public Semver getVersion() {
-    return commandInfo != null ? new Semver(commandInfo.commandVersion()) : new Semver("0.0.0");
-  }
+//
+//  @Override
+//  public Semver getVersion() {
+//    return commandInfo != null ? new Semver(commandInfo.commandVersion()) : new Semver("0.0.0");
+//  }
   
   @Override
   public String getCommandId() {
@@ -107,7 +107,7 @@ public class CommandType implements ICommandType.IICommandType {
         .thenComparing(ICommandType::getGroupId)
         .thenComparing(ICommandType::getArtifactId)
         .thenComparing(ICommandType::getCommandId)
-        .thenComparing(ICommandType::getVersion)
+        //.thenComparing(ICommandType::getVersion)
         .compare(this, o);
     return order;
   }

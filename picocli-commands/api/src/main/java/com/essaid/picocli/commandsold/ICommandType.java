@@ -1,6 +1,6 @@
 package com.essaid.picocli.commandsold;
 
-import org.semver4j.Semver;
+//import org.semver4j.Semver;
 import picocli.CommandLine;
 
 import java.util.Map;
@@ -18,7 +18,7 @@ public interface ICommandType extends Comparable<ICommandType> {
   
   String getArtifactId();
   
-  Semver getVersion();
+//  Semver getVersion();
   
   String getCommandId();
   

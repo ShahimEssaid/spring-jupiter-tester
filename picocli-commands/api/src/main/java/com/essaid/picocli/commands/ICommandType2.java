@@ -19,7 +19,9 @@ public interface ICommandType2 {
   
   interface IICommandType2 extends ICommandType2 {
     
-    boolean isDirectParentPathCommandType();
+    ICommands2 getCommands();
+    
+    boolean isTopCommand();
     
     String getDirectParentPath();
     
@@ -74,8 +76,14 @@ class CommandType implements ICommandType2.IICommandType2 {
   }
   
   @Override
-  public boolean isDirectParentPathCommandType() {
-    return commands.internal().getCommandTypesByPath().containsKey(getDirectParentPath());
+  public ICommands2 getCommands() {
+    return commands;
+  }
+  
+  @Override
+  public boolean isTopCommand() {
+    String directParentPath = getDirectParentPath();
+    return !internal().getCommands().internal().getCommandTypesByPath().containsKey(directParentPath);
   }
   
   @Override
@@ -90,16 +98,25 @@ class CommandType implements ICommandType2.IICommandType2 {
   
   @Override
   public List<String> getDirectChildPaths() {
-    return commands.internal()
+    List<String> childPaths = commands.internal()
         .getCommandTypesByPath()
         .keySet()
         .stream()
-        .filter(s -> s.startsWith(getPath()) && !s.substring(getPath().length()).contains("."))
+        .filter(s -> s.startsWith(getPath()) && !s.equals(getPath()))
+        .map(path -> path.substring(getPath().length()))
         .collect(Collectors.toList());
+    
+    return childPaths;
   }
   
   @Override
   public Map<Object, Object> getContext() {
     return context;
+  }
+  
+  @Override
+  public String toString() {
+    return "ICommandType[name: " + getName() + ", path: " + getPath() + ", commandClass: " + getFactory().getCommandClass() + "]";
+    
   }
 }

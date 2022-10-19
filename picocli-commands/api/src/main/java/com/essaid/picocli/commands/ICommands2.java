@@ -11,10 +11,10 @@ import java.util.stream.Collectors;
 
 public interface ICommands2 {
   
-  String DEFAULT_ICOMMANDS_INSTANCE_NAME = "_";
+  String DEFAULT_ICOMMANDS_INSTANCE_NAME = "_default";
   String DEFAULT_ROOT_COMMAND_PATH = "_default-root-command";
   
-  static ICommands2 getDefaultInstance(){
+  static ICommands2 getDefaultInstance() {
     return getOrCreateInstance(DEFAULT_ICOMMANDS_INSTANCE_NAME);
   }
   
@@ -53,11 +53,9 @@ public interface ICommands2 {
     static String DEFAULT_INSTANCE_NAME = "_default";
     
     static Map<String, IICommands2> INSTANCES = new ConcurrentHashMap<>();
-    
+    List<ICommandType2> typesList = new ArrayList<>();
     
     Map<String, List<ICommandType2>> getCommandTypesByPath();
-    
-    List<ICommandType2> typesList = new ArrayList<>();
     
     Map<Object, Object> getContext();
   }
@@ -67,6 +65,7 @@ class Commands implements ICommands2.IICommands2 {
   
   private final String name;
   private final Map<String, List<ICommandType2>> typesByPath = new ConcurrentHashMap<>();
+  private final Map<Object, Object> context = new ConcurrentHashMap<>();
   
   Commands(String instanceName) {
     this.name = instanceName;
@@ -74,8 +73,6 @@ class Commands implements ICommands2.IICommands2 {
 //    typesByPath.computeIfAbsent(DEFAULT_ROOT_COMMAND_PATH, s -> new ArrayList<>()).add(null);
 //    typesByPath.put(DEFAULT_ROOT_COMMAND_PATH, null);
   }
-  
-  private final Map<Object, Object> context = new ConcurrentHashMap<>();
   
   @Override
   public String getName() {
@@ -106,7 +103,7 @@ class Commands implements ICommands2.IICommands2 {
   
   @Override
   public CommandLineConfig getDefaultCommandLineConfig() {
-    List<CommandLineConfig> allRootCommandLineConfigs = getAllRootCommandLineConfigs(true);
+    List<CommandLineConfig> allRootCommandLineConfigs = getAllTopCommandLineConfigs(true);
     CommandLineConfig rootCommandConfig = new CommandLineConfig(null, DEFAULT_ROOT_COMMAND_PATH, false, false);
     rootCommandConfig.getSubCommands().addAll(allRootCommandLineConfigs);
     return resolveCommandLineConfig(rootCommandConfig);
@@ -117,34 +114,40 @@ class Commands implements ICommands2.IICommands2 {
     
     String path = commandLineConfig.getPath();
     List<ICommandType2> commandTypes = getCommandTypesByPath().get(path);
-    CommandLine rootCommandLine = null;
+    CommandLine commandLine = null;
     
     if (commandTypes != null) {
       ICommandType2 commandType = commandTypes.get(0);
+      commandLine = new CommandLine(commandType.getFactory().getCommandClass(), commandType.getFactory());
       commandLineConfig.setCommandType(commandType);
-      rootCommandLine = new CommandLine(commandType.getClass(), commandType.getFactory());
+      commandLineConfig.setCommandLine(commandLine);
       if (commandLineConfig.isAddRecursive()) {
-        addCommandLineRecursive(commandType, rootCommandLine);
+        addCommandLineRecursive(commandType, commandLine);
       }
     } else {
       //TODO
     }
     
-    for(CommandLineConfig childConfig: commandLineConfig.getSubCommands()){
+    for (CommandLineConfig childConfig : commandLineConfig.getSubCommands()) {
       resolveCommandLineConfig(childConfig);
       String newName = childConfig.getName();
-      newName = newName != null? newName : childConfig.getCommandType().getName();
-      rootCommandLine.addSubcommand( newName , childConfig.getCommandLine());
+      newName = newName != null ? newName : childConfig.getCommandType().getName();
+      commandLine.addSubcommand(newName, childConfig.getCommandLine());
     }
     return commandLineConfig;
   }
   
   private void addCommandLineRecursive(ICommandType2 commandType, CommandLine commandLine) {
-    commandType.internal().getDirectChildPaths().stream().map(path -> typesByPath.get(path).get(0)).forEach(ct -> {
-      CommandLine childCommandLine = new CommandLine(ct.getClass(), ct.getFactory());
-      commandLine.addSubcommand(ct.getName(), childCommandLine);
-      addCommandLineRecursive(ct, childCommandLine);
-    });
+    commandType.internal()
+        .getDirectChildPaths()
+        .stream()
+        .filter(path -> path.contains(path))
+        .map(path -> typesByPath.get(path).get(0))
+        .forEach(ct -> {
+          CommandLine childCommandLine = new CommandLine(ct.getFactory().getCommandClass(), ct.getFactory());
+          commandLine.addSubcommand(ct.getName(), childCommandLine);
+          addCommandLineRecursive(ct, childCommandLine);
+        });
   }
   
   
@@ -163,11 +166,13 @@ class Commands implements ICommands2.IICommands2 {
     return context;
   }
   
-  private List<CommandLineConfig> getAllRootCommandLineConfigs(boolean recursive) {
-    List<CommandLineConfig> rootConfigs = typesList.stream()
-        .filter(ct -> !ct.internal().isDirectParentPathCommandType())
-        .map(commandType2 -> new CommandLineConfig(null, commandType2.getPath(), recursive, false))
+  private List<CommandLineConfig> getAllTopCommandLineConfigs(boolean setConfigRecursive) {
+    List<CommandLineConfig> topCommands = typesByPath.entrySet()
+        .stream()
+        .filter(entry -> !entry.getKey().startsWith("_") && entry.getValue().get(0).internal().isTopCommand())
+        .map(entry -> new CommandLineConfig(null, entry.getValue().get(0).getPath(), setConfigRecursive, false))
         .collect(Collectors.toList());
-    return rootConfigs;
+
+    return topCommands;
   }
 }
