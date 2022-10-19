@@ -11,7 +11,12 @@ import java.util.stream.Collectors;
 
 public interface ICommands2 {
   
+  String DEFAULT_ICOMMANDS_INSTANCE_NAME = "_";
   String DEFAULT_ROOT_COMMAND_PATH = "_default-root-command";
+  
+  static ICommands2 getDefaultInstance(){
+    return getOrCreateInstance(DEFAULT_ICOMMANDS_INSTANCE_NAME);
+  }
   
   static ICommands2 getInstance(String instanceName) {
     return IICommands2.INSTANCES.get(instanceName);
@@ -66,8 +71,8 @@ class Commands implements ICommands2.IICommands2 {
   Commands(String instanceName) {
     this.name = instanceName;
     addCommandType(null, DEFAULT_ROOT_COMMAND_PATH, new ClasspathCommandFactory(DefaultRootCommand.class), null);
-    typesByPath.computeIfAbsent(DEFAULT_ROOT_COMMAND_PATH, s -> new ArrayList<>()).add(null);
-    typesByPath.put(DEFAULT_ROOT_COMMAND_PATH, null);
+//    typesByPath.computeIfAbsent(DEFAULT_ROOT_COMMAND_PATH, s -> new ArrayList<>()).add(null);
+//    typesByPath.put(DEFAULT_ROOT_COMMAND_PATH, null);
   }
   
   private final Map<Object, Object> context = new ConcurrentHashMap<>();

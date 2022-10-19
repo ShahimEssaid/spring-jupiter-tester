@@ -19,46 +19,46 @@
 
   <build>
     <plugins>
-      <plugin>
-        <groupId>org.apache.maven.plugins</groupId>
-        <artifactId>maven-shade-plugin</artifactId>
-        <executions>
-          <execution>
-            <!-- https://github.com/classgraph/classgraph/wiki/Shading-ClassGraph -->
-            <phase>package</phase>
-            <goals>
-              <goal>shade</goal>
-            </goals>
-            <configuration>
-              <artifactSet>
-                <includes>
-                  <include>io.github.classgraph:classgraph</include>
-                  <include>org.springframework:spring-core</include>
-                  <include>org.springframework:spring-jcl</include>
-                </includes>
-              </artifactSet>
-              <relocations>
-                <relocation>
-                  <pattern>io.github.classgraph</pattern>
-                  <shadedPattern>com.essaid.picocli.commands.shaded.io.github.classgraph</shadedPattern>
-                </relocation>
-                <relocation>
-                  <pattern>nonapi.io.github.classgraph</pattern>
-                  <shadedPattern>com.essaid.picocli.commands.shaded.nonapi.io.github.classgraph</shadedPattern>
-                </relocation>
-                <relocation>
-                  <pattern>org.springframework</pattern>
-                  <shadedPattern>com.essaid.picocli.commands.shaded.org.springframework</shadedPattern>
-                </relocation>
-                <relocation>
-                  <pattern>org.apache.commons.logging</pattern>
-                  <shadedPattern>com.essaid.picocli.commands.shaded.org.apache.commons.logging</shadedPattern>
-                </relocation>
-              </relocations>
-            </configuration>
-          </execution>
-        </executions>
-      </plugin>
+<!--      <plugin>-->
+<!--        <groupId>org.apache.maven.plugins</groupId>-->
+<!--        <artifactId>maven-shade-plugin</artifactId>-->
+<!--        <executions>-->
+<!--          <execution>-->
+<!--            &lt;!&ndash; https://github.com/classgraph/classgraph/wiki/Shading-ClassGraph &ndash;&gt;-->
+<!--            <phase>package</phase>-->
+<!--            <goals>-->
+<!--              <goal>shade</goal>-->
+<!--            </goals>-->
+<!--            <configuration>-->
+<!--              <artifactSet>-->
+<!--                <includes>-->
+<!--                  <include>io.github.classgraph:classgraph</include>-->
+<!--                  <include>org.springframework:spring-core</include>-->
+<!--                  <include>org.springframework:spring-jcl</include>-->
+<!--                </includes>-->
+<!--              </artifactSet>-->
+<!--              <relocations>-->
+<!--                <relocation>-->
+<!--                  <pattern>io.github.classgraph</pattern>-->
+<!--                  <shadedPattern>com.essaid.picocli.commands.shaded.io.github.classgraph</shadedPattern>-->
+<!--                </relocation>-->
+<!--                <relocation>-->
+<!--                  <pattern>nonapi.io.github.classgraph</pattern>-->
+<!--                  <shadedPattern>com.essaid.picocli.commands.shaded.nonapi.io.github.classgraph</shadedPattern>-->
+<!--                </relocation>-->
+<!--                <relocation>-->
+<!--                  <pattern>org.springframework</pattern>-->
+<!--                  <shadedPattern>com.essaid.picocli.commands.shaded.org.springframework</shadedPattern>-->
+<!--                </relocation>-->
+<!--                <relocation>-->
+<!--                  <pattern>org.apache.commons.logging</pattern>-->
+<!--                  <shadedPattern>com.essaid.picocli.commands.shaded.org.apache.commons.logging</shadedPattern>-->
+<!--                </relocation>-->
+<!--              </relocations>-->
+<!--            </configuration>-->
+<!--          </execution>-->
+<!--        </executions>-->
+<!--      </plugin>-->
     </plugins>
   </build>
 
@@ -78,11 +78,11 @@
       <artifactId>picocli</artifactId>
     </dependency>
 
-    <dependency>
-      <groupId>org.springframework</groupId>
-      <artifactId>spring-context</artifactId>
-      <scope>provided</scope>
-    </dependency>
+<!--    <dependency>-->
+<!--      <groupId>org.springframework</groupId>-->
+<!--      <artifactId>spring-context</artifactId>-->
+<!--      <scope>provided</scope>-->
+<!--    </dependency>-->
 
     <dependency>
       <groupId>org.springframework.boot</groupId>
@@ -90,10 +90,10 @@
       <scope>provided</scope>
     </dependency>
 
-    <dependency>
-      <groupId>org.semver4j</groupId>
-      <artifactId>semver4j</artifactId>
-    </dependency>
+<!--    <dependency>-->
+<!--      <groupId>org.semver4j</groupId>-->
+<!--      <artifactId>semver4j</artifactId>-->
+<!--    </dependency>-->
   </dependencies>
 
 </project>
