@@ -11,6 +11,10 @@ public abstract class AbstractFactory implements IFactoryExtended {
   private final CommandLine.IFactory delegate;
   private List<Exception> exceptions;
   
+  public AbstractFactory() {
+    this.delegate = null;
+  }
+  
   public AbstractFactory(CommandLine.IFactory delegateFactory) {
     this.delegate = delegateFactory;
   }
@@ -58,7 +62,7 @@ public abstract class AbstractFactory implements IFactoryExtended {
   }
   
   @Override
-  public CommandLine.IFactory getDelegateFactory() {
+  public CommandLine.IFactory getDelegate() {
     return delegate;
   }
   
@@ -70,5 +74,10 @@ public abstract class AbstractFactory implements IFactoryExtended {
   @Override
   public void reset() {
     this.exceptions = null;
+  }
+  
+  @Override
+  public <K> K postProcess(K k) {
+    return k;
   }
 }

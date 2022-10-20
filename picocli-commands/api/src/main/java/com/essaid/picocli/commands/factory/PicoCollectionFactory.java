@@ -14,6 +14,10 @@ import java.util.TreeSet;
 
 public class PicoCollectionFactory extends  AbstractFactory {
   
+  
+  public PicoCollectionFactory() {
+  }
+  
   public PicoCollectionFactory(CommandLine.IFactory delegateFactory) {
     super(delegateFactory);
   }

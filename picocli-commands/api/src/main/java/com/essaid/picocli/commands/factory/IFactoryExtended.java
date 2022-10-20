@@ -6,7 +6,7 @@ import java.util.List;
 
 public interface IFactoryExtended extends CommandLine.IFactory {
   
-  CommandLine.IFactory getDelegateFactory();
+  CommandLine.IFactory getDelegate();
   
   void reset();
   
@@ -16,6 +16,6 @@ public interface IFactoryExtended extends CommandLine.IFactory {
   
   <K> K delegateCreate(Class<K> cls, List<Exception> exceptions) throws Exception;
   
-  
+  <K> K postProcess(K k);
   
 }

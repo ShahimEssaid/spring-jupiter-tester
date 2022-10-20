@@ -11,6 +11,9 @@ public class PicoGroovyFactory extends AbstractFactory {
     super(delegateFactory);
   }
   
+  public PicoGroovyFactory() {
+  }
+  
   private static Class<?> loadClosureClass() {
     try {
       return Class.forName("groovy.lang.Closure");

@@ -12,6 +12,9 @@ public class PicoMapFactory extends AbstractFactory {
     super(delegateFactory);
   }
   
+  public PicoMapFactory() {
+  }
+  
   @Override
   public <K> K doCreate(Class<K> cls) {
     if (cls.isInterface()) {

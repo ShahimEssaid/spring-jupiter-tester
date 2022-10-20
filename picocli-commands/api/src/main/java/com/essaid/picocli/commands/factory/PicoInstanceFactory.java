@@ -9,6 +9,9 @@ public class PicoInstanceFactory extends AbstractFactory {
     super(delegateFactory);
   }
   
+  public PicoInstanceFactory() {
+  }
+  
   @Override
   public <K> K doCreate(Class<K> cls) throws Exception {
     
