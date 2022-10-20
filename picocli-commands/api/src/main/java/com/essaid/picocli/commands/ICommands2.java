@@ -1,5 +1,9 @@
 package com.essaid.picocli.commands;
 
+import com.essaid.picocli.commands.factory.PicoCollectionFactory;
+import com.essaid.picocli.commands.factory.PicoGroovyFactory;
+import com.essaid.picocli.commands.factory.PicoInstanceFactory;
+import com.essaid.picocli.commands.factory.PicoMapFactory;
 import picocli.CommandLine;
 
 import java.util.ArrayList;
@@ -32,7 +36,8 @@ public interface ICommands2 {
   
   String getName();
   
-  ICommandType2 addCommandType(String name, String path, ICommandFactory2 factory, String info);
+  ICommandType2 addCommandType(String name, String path, Class<? > commandClass, CommandLine.IFactory factory,
+                               String info);
   
   void removeCommandType(ICommandType2 commandType);
   
@@ -67,11 +72,14 @@ class Commands implements ICommands2.IICommands2 {
   private final Map<String, List<ICommandType2>> typesByPath = new ConcurrentHashMap<>();
   private final Map<Object, Object> context = new ConcurrentHashMap<>();
   
+  static CommandLine.IFactory getDefaultFactory(){
+    return    new PicoGroovyFactory(new PicoCollectionFactory(new PicoMapFactory(new PicoInstanceFactory())));
+  }
+  
   Commands(String instanceName) {
     this.name = instanceName;
-    addCommandType(null, DEFAULT_ROOT_COMMAND_PATH, new ClasspathCommandFactory(DefaultRootCommand.class), null);
-//    typesByPath.computeIfAbsent(DEFAULT_ROOT_COMMAND_PATH, s -> new ArrayList<>()).add(null);
-//    typesByPath.put(DEFAULT_ROOT_COMMAND_PATH, null);
+    addCommandType(null, DEFAULT_ROOT_COMMAND_PATH,DefaultRootCommand.class,
+        getDefaultFactory(), null);
   }
   
   @Override
@@ -80,8 +88,12 @@ class Commands implements ICommands2.IICommands2 {
   }
   
   @Override
-  public ICommandType2 addCommandType(String name, String path, ICommandFactory2 factory, String info) {
-    ICommandType2 type = new CommandType(name, path, factory, this, info);
+  public ICommandType2 addCommandType(String name, String path,Class<?> commandClass,  CommandLine.IFactory factory,
+                                      String info) {
+    if(factory == null){
+      factory = getDefaultFactory();
+    }
+    ICommandType2 type = new CommandType(name, path,commandClass,  factory, this, info);
     typesByPath.computeIfAbsent(path, s -> new ArrayList<>()).add(type);
     typesList.add(type);
     return type;
@@ -118,7 +130,7 @@ class Commands implements ICommands2.IICommands2 {
     
     if (commandTypes != null) {
       ICommandType2 commandType = commandTypes.get(0);
-      commandLine = new CommandLine(commandType.getFactory().getCommandClass(), commandType.getFactory());
+      commandLine = new CommandLine(commandType.getCommandClass(), commandType.getFactory());
       commandLineConfig.setCommandType(commandType);
       commandLineConfig.setCommandLine(commandLine);
       if (commandLineConfig.isAddRecursive()) {
@@ -144,7 +156,7 @@ class Commands implements ICommands2.IICommands2 {
         .filter(path -> path.contains(path))
         .map(path -> typesByPath.get(path).get(0))
         .forEach(ct -> {
-          CommandLine childCommandLine = new CommandLine(ct.getFactory().getCommandClass(), ct.getFactory());
+          CommandLine childCommandLine = new CommandLine(ct.getCommandClass(), ct.getFactory());
           commandLine.addSubcommand(ct.getName(), childCommandLine);
           addCommandLineRecursive(ct, childCommandLine);
         });
