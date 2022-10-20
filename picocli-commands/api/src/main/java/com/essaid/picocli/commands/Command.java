@@ -1,6 +1,6 @@
 package com.essaid.picocli.commands;
 
-import picocli.CommandLine;
+import com.essaid.picocli.commands.picocli.CommandLine;
 
 public class Command implements ICommand {
   

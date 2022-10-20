@@ -3,7 +3,7 @@ package com.essaid.picocli.commandsold.impl;
 import com.essaid.picocli.commandsold.Command;
 import com.essaid.picocli.commandsold.CommandInfo;
 import com.essaid.picocli.commandsold.Constants;
-import picocli.CommandLine;
+import com.essaid.picocli.commands.picocli.CommandLine;
 
 @CommandInfo(groupId = Constants.GROUP_ID, artifactId = Constants.ARTIFACT_ID, artifactVersion =
     Constants.ARTIFACT_VERSION, commandId = "no" + "-op", commandVersion = "0.0.1")

@@ -4,7 +4,7 @@ import com.essaid.picocli.commandsold.Command;
 import com.essaid.picocli.commandsold.CommandInfo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
-import picocli.CommandLine;
+import com.essaid.picocli.commands.picocli.CommandLine;
 
 import java.util.List;
 import java.util.concurrent.Callable;

@@ -1,6 +1,6 @@
 package com.essaid.picocli.commandsold.impl;
 
-import picocli.CommandLine;
+import com.essaid.picocli.commands.picocli.CommandLine;
 
 public class Util {
   private Util() {

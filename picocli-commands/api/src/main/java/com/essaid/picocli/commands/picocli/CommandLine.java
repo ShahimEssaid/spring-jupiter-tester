@@ -13,7 +13,7 @@
    See the License for the specific language governing permissions and
    limitations under the License.
  */
-package picocli;
+package com.essaid.picocli.commands.picocli;
 
 import java.io.*;
 import java.lang.annotation.Annotation;
@@ -40,16 +40,16 @@ import java.util.concurrent.Callable;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
-import picocli.CommandLine.Help.Ansi.IStyle;
-import picocli.CommandLine.Help.Ansi.Style;
-import picocli.CommandLine.Help.Ansi.Text;
-import picocli.CommandLine.Model.*;
-import picocli.CommandLine.ParseResult.GroupMatchContainer;
+import com.essaid.picocli.commands.picocli.CommandLine.Help.Ansi.IStyle;
+import com.essaid.picocli.commands.picocli.CommandLine.Help.Ansi.Style;
+import com.essaid.picocli.commands.picocli.CommandLine.Help.Ansi.Text;
+import com.essaid.picocli.commands.picocli.CommandLine.Model.*;
+import com.essaid.picocli.commands.picocli.CommandLine.ParseResult.GroupMatchContainer;
 
 import static java.util.Locale.ENGLISH;
-import static picocli.CommandLine.Help.Column.Overflow.SPAN;
-import static picocli.CommandLine.Help.Column.Overflow.TRUNCATE;
-import static picocli.CommandLine.Help.Column.Overflow.WRAP;
+import static com.essaid.picocli.commands.picocli.CommandLine.Help.Column.Overflow.SPAN;
+import static com.essaid.picocli.commands.picocli.CommandLine.Help.Column.Overflow.TRUNCATE;
+import static com.essaid.picocli.commands.picocli.CommandLine.Help.Column.Overflow.WRAP;
 
 /**
  * <p>
@@ -1170,7 +1170,7 @@ public class CommandLine {
   }
   
   /** Returns the color scheme to use when printing help.
-   * The default value is the {@linkplain picocli.CommandLine.Help#defaultColorScheme(CommandLine.Help.Ansi) default color scheme} with {@link Help.Ansi#AUTO Ansi.AUTO}.
+   * The default value is the {@linkplain CommandLine.Help#defaultColorScheme(CommandLine.Help.Ansi) default color scheme} with {@link Help.Ansi#AUTO Ansi.AUTO}.
    * @see #execute(String...)
    * @see #usage(PrintStream)
    * @see #usage(PrintWriter)
@@ -3906,7 +3906,7 @@ public class CommandLine {
      * </p>
      *
      * @return a class whose instances can iterate over the completion candidates for this option
-     * @see picocli.CommandLine.IFactory
+     * @see CommandLine.IFactory
      * @since 3.2 */
     Class<? extends Iterable<String>> completionCandidates() default NoCompletionCandidates.class;
     
@@ -4202,7 +4202,7 @@ public class CommandLine {
      * </p>
      *
      * @return a class whose instances can iterate over the completion candidates for this positional parameter
-     * @see picocli.CommandLine.IFactory
+     * @see CommandLine.IFactory
      * @since 3.2 */
     Class<? extends Iterable<String>> completionCandidates() default NoCompletionCandidates.class;
     
@@ -4709,28 +4709,28 @@ public class CommandLine {
      * @since 4.0 */
     boolean usageHelpAutoWidth() default false;
     
-    /** Exit code for successful termination. {@value picocli.CommandLine.ExitCode#OK} by default.
+    /** Exit code for successful termination. {@value CommandLine.ExitCode#OK} by default.
      * @see #execute(String...)
      * @since 4.0 */
     int exitCodeOnSuccess() default ExitCode.OK;
     
-    /** Exit code for successful termination after printing usage help on user request. {@value picocli.CommandLine.ExitCode#OK} by default.
+    /** Exit code for successful termination after printing usage help on user request. {@value CommandLine.ExitCode#OK} by default.
      * @see #execute(String...)
      * @since 4.0 */
     int exitCodeOnUsageHelp() default ExitCode.OK;
     
-    /** Exit code for successful termination after printing version help on user request. {@value picocli.CommandLine.ExitCode#OK} by default.
+    /** Exit code for successful termination after printing version help on user request. {@value CommandLine.ExitCode#OK} by default.
      * @see #execute(String...)
      * @since 4.0 */
     int exitCodeOnVersionHelp() default ExitCode.OK;
     
-    /** Exit code for command line usage error. {@value picocli.CommandLine.ExitCode#USAGE} by default.
+    /** Exit code for command line usage error. {@value CommandLine.ExitCode#USAGE} by default.
      * @see #execute(String...)
      * @since 4.0 */
     int exitCodeOnInvalidInput() default ExitCode.USAGE;
     
     /** Exit code signifying that an exception occurred when invoking the Runnable, Callable or Method user object of a command.
-     * {@value picocli.CommandLine.ExitCode#SOFTWARE} by default.
+     * {@value CommandLine.ExitCode#SOFTWARE} by default.
      * @see #execute(String...)
      * @since 4.0 */
     int exitCodeOnExecutionException() default ExitCode.SOFTWARE;
@@ -5187,7 +5187,7 @@ public class CommandLine {
    * "Boolean options are turned on with {@code -XX:+<option>} and turned off with {@code -XX:-<option>}".
    * These are the negative forms {@linkplain #createDefault() supported by default} by this class.
    * </p><p>
-   * See the {@link picocli.CommandLine.RegexTransformer.Builder} for an example of customizing this to create negative forms for short options.
+   * See the {@link CommandLine.RegexTransformer.Builder} for an example of customizing this to create negative forms for short options.
    * </p>
    * @since 4.0
    */
@@ -5438,7 +5438,7 @@ public class CommandLine {
    *     System.exit(exitCode);
    * }
    * </pre>
-   * @see picocli.CommandLine#CommandLine(Object, IFactory)
+   * @see CommandLine#CommandLine(Object, IFactory)
    * @see #call(Class, IFactory, PrintStream, PrintStream, Help.Ansi, String...)
    * @see #run(Class, IFactory, PrintStream, PrintStream, Help.Ansi, String...)
    * @see #defaultFactory()
@@ -7049,24 +7049,24 @@ public class CommandLine {
        * @see Command#helpCommand() */
       public boolean helpCommand() { return (isHelpCommand == null) ? DEFAULT_IS_HELP_COMMAND : isHelpCommand; }
       
-      /** Returns exit code for successful termination. {@value picocli.CommandLine.ExitCode#OK} by default, may be set programmatically or via the {@link Command#exitCodeOnSuccess() exitCodeOnSuccess} annotation.
+      /** Returns exit code for successful termination. {@value CommandLine.ExitCode#OK} by default, may be set programmatically or via the {@link Command#exitCodeOnSuccess() exitCodeOnSuccess} annotation.
        * @see #execute(String...)
        * @since 4.0 */
       public int exitCodeOnSuccess() { return exitCodeOnSuccess == null ? ExitCode.OK : exitCodeOnSuccess; }
-      /** Returns exit code for successful termination after printing usage help on user request. {@value picocli.CommandLine.ExitCode#OK} by default, may be set programmatically or via the {@link Command#exitCodeOnVersionHelp() exitCodeOnVersionHelp} annotation.
+      /** Returns exit code for successful termination after printing usage help on user request. {@value CommandLine.ExitCode#OK} by default, may be set programmatically or via the {@link Command#exitCodeOnVersionHelp() exitCodeOnVersionHelp} annotation.
        * @see #execute(String...)
        * @since 4.0 */
       public int exitCodeOnUsageHelp() { return exitCodeOnUsageHelp == null ? ExitCode.OK : exitCodeOnUsageHelp; }
-      /** Returns exit code for successful termination after printing version help on user request. {@value picocli.CommandLine.ExitCode#OK} by default, may be set programmatically or via the {@link Command#exitCodeOnUsageHelp() exitCodeOnUsageHelp} annotation.
+      /** Returns exit code for successful termination after printing version help on user request. {@value CommandLine.ExitCode#OK} by default, may be set programmatically or via the {@link Command#exitCodeOnUsageHelp() exitCodeOnUsageHelp} annotation.
        * @see #execute(String...)
        * @since 4.0 */
       public int exitCodeOnVersionHelp() { return exitCodeOnVersionHelp == null ? ExitCode.OK : exitCodeOnVersionHelp; }
-      /** Returns exit code for command line usage error. {@value picocli.CommandLine.ExitCode#USAGE} by default, may be set programmatically or via the {@link Command#exitCodeOnInvalidInput() exitCodeOnInvalidInput} annotation.
+      /** Returns exit code for command line usage error. {@value CommandLine.ExitCode#USAGE} by default, may be set programmatically or via the {@link Command#exitCodeOnInvalidInput() exitCodeOnInvalidInput} annotation.
        * @see #execute(String...)
        * @since 4.0 */
       public int exitCodeOnInvalidInput() { return exitCodeOnInvalidInput == null ? ExitCode.USAGE : exitCodeOnInvalidInput; }
       /** Returns exit code signifying that an exception occurred when invoking the Runnable, Callable or Method user object of a command.
-       * {@value picocli.CommandLine.ExitCode#SOFTWARE} by default, may be set programmatically or via the {@link Command#exitCodeOnExecutionException() exitCodeOnExecutionException} annotation.
+       * {@value CommandLine.ExitCode#SOFTWARE} by default, may be set programmatically or via the {@link Command#exitCodeOnExecutionException() exitCodeOnExecutionException} annotation.
        * @see #execute(String...)
        * @since 4.0 */
       public int exitCodeOnExecutionException() { return exitCodeOnExecutionException == null ? ExitCode.SOFTWARE : exitCodeOnExecutionException; }
@@ -7139,24 +7139,24 @@ public class CommandLine {
        * @see Command#helpCommand() */
       public CommandSpec helpCommand(boolean newValue) {isHelpCommand = newValue; return this;}
       
-      /** Sets exit code for successful termination. {@value picocli.CommandLine.ExitCode#OK} by default.
+      /** Sets exit code for successful termination. {@value CommandLine.ExitCode#OK} by default.
        * @see #execute(String...)
        * @since 4.0 */
       public CommandSpec exitCodeOnSuccess(int newValue) { exitCodeOnSuccess = newValue; return this; }
-      /** Sets exit code for successful termination after printing usage help on user request. {@value picocli.CommandLine.ExitCode#OK} by default.
+      /** Sets exit code for successful termination after printing usage help on user request. {@value CommandLine.ExitCode#OK} by default.
        * @see #execute(String...)
        * @since 4.0 */
       public CommandSpec exitCodeOnUsageHelp(int newValue) { exitCodeOnUsageHelp = newValue; return this; }
-      /** Sets exit code for successful termination after printing version help on user request. {@value picocli.CommandLine.ExitCode#OK} by default.
+      /** Sets exit code for successful termination after printing version help on user request. {@value CommandLine.ExitCode#OK} by default.
        * @see #execute(String...)
        * @since 4.0 */
       public CommandSpec exitCodeOnVersionHelp(int newValue) { exitCodeOnVersionHelp = newValue; return this; }
-      /** Sets exit code for command line usage error. {@value picocli.CommandLine.ExitCode#USAGE} by default.
+      /** Sets exit code for command line usage error. {@value CommandLine.ExitCode#USAGE} by default.
        * @see #execute(String...)
        * @since 4.0 */
       public CommandSpec exitCodeOnInvalidInput(int newValue) { exitCodeOnInvalidInput = newValue; return this; }
       /** Sets exit code signifying that an exception occurred when invoking the Runnable, Callable or Method user object of a command.
-       * {@value picocli.CommandLine.ExitCode#SOFTWARE} by default.
+       * {@value CommandLine.ExitCode#SOFTWARE} by default.
        * @see #execute(String...)
        * @since 4.0 */
       public CommandSpec exitCodeOnExecutionException(int newValue) { exitCodeOnExecutionException = newValue; return this; }
@@ -14918,7 +14918,7 @@ public class CommandLine {
   
   /** Help commands that provide usage help for other commands can implement this interface to be initialized with the information they need.
    * <p>The {@link #printHelpIfRequested(List, PrintStream, PrintStream, Help.Ansi) CommandLine::printHelpIfRequested} method calls the
-   * {@link #init(CommandLine, picocli.CommandLine.Help.Ansi, PrintStream, PrintStream) init} method on commands marked as {@link Command#helpCommand() helpCommand}
+   * {@link #init(CommandLine, CommandLine.Help.Ansi, PrintStream, PrintStream) init} method on commands marked as {@link Command#helpCommand() helpCommand}
    * before the help command's {@code run} or {@code call} method is called.</p>
    * <p><b>Implementation note:</b></p><p>
    * If an error occurs in the {@code run} or {@code call} method while processing the help request, it is recommended custom Help
@@ -14940,7 +14940,7 @@ public class CommandLine {
   
   /** Help commands that provide usage help for other commands can implement this interface to be initialized with the information they need.
    * <p>The {@link #executeHelpRequest(List) CommandLine::printHelpIfRequested} method calls the
-   * {@link #init(CommandLine, picocli.CommandLine.Help.ColorScheme, PrintWriter, PrintWriter) init} method on commands marked as {@link Command#helpCommand() helpCommand}
+   * {@link #init(CommandLine, CommandLine.Help.ColorScheme, PrintWriter, PrintWriter) init} method on commands marked as {@link Command#helpCommand() helpCommand}
    * before the help command's {@code run} or {@code call} method is called.</p>
    * <p><b>Implementation note:</b></p><p>
    * If an error occurs in the {@code run} or {@code call} method while processing the help request, it is recommended custom Help
@@ -15067,7 +15067,7 @@ public class CommandLine {
      * on the specified class and superclasses.
      * @param command the annotated object to create usage help for
      * @param colorScheme the color scheme to use
-     * @deprecated use {@link picocli.CommandLine.Help#Help(picocli.CommandLine.Model.CommandSpec, picocli.CommandLine.Help.ColorScheme)}  */
+     * @deprecated use {@link CommandLine.Help#Help(CommandLine.Model.CommandSpec, CommandLine.Help.ColorScheme)}  */
     @Deprecated public Help(Object command, ColorScheme colorScheme) {
       this(CommandSpec.forAnnotatedObject(command, new DefaultFactory()), colorScheme);
     }
@@ -16727,7 +16727,7 @@ public class CommandLine {
        * @param columns columns to construct this TextTable with
        * @since 4.2 */
       public static TextTable forColumns(ColorScheme colorScheme, Column... columns) { return new TextTable(colorScheme, columns); }
-      /** @deprecated use {@link picocli.CommandLine.Help.TextTable#TextTable(picocli.CommandLine.Help.ColorScheme, picocli.CommandLine.Help.Column[])}  instead */
+      /** @deprecated use {@link CommandLine.Help.TextTable#TextTable(CommandLine.Help.ColorScheme, CommandLine.Help.Column[])}  instead */
       @Deprecated protected TextTable(Ansi ansi, Column[] columns) { this(Help.defaultColorScheme(ansi), columns); }
       protected TextTable(ColorScheme colorScheme, Column[] columns) {
         this.colorScheme = Assert.notNull(colorScheme, "ansi");

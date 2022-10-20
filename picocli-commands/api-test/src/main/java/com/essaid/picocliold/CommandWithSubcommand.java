@@ -1,6 +1,6 @@
 package com.essaid.picocliold;
 
-import picocli.CommandLine;
+import com.essaid.picocli.commands.picocli.CommandLine;
 
 @CommandLine.Command(name = "command", subcommands = CommandWithSubcommand.SubCommand.class)
 public class CommandWithSubcommand {

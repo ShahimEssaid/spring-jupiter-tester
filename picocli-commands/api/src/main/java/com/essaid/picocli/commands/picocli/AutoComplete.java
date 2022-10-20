@@ -13,7 +13,7 @@
    See the License for the specific language governing permissions and
    limitations under the License.
  */
-package picocli;
+package com.essaid.picocli.commands.picocli;
 
 import static java.lang.String.format;
 
@@ -33,18 +33,18 @@ import java.util.Map;
 import java.util.Set;
 import java.util.concurrent.Callable;
 
-import picocli.CommandLine.Command;
-import picocli.CommandLine.HelpCommand;
-import picocli.CommandLine.IExecutionExceptionHandler;
-import picocli.CommandLine.IFactory;
-import picocli.CommandLine.Model.ArgSpec;
-import picocli.CommandLine.Model.CommandSpec;
-import picocli.CommandLine.Model.OptionSpec;
-import picocli.CommandLine.Model.PositionalParamSpec;
-import picocli.CommandLine.Option;
-import picocli.CommandLine.Parameters;
-import picocli.CommandLine.ParseResult;
-import picocli.CommandLine.Spec;
+import com.essaid.picocli.commands.picocli.CommandLine.Command;
+import com.essaid.picocli.commands.picocli.CommandLine.HelpCommand;
+import com.essaid.picocli.commands.picocli.CommandLine.IExecutionExceptionHandler;
+import com.essaid.picocli.commands.picocli.CommandLine.IFactory;
+import com.essaid.picocli.commands.picocli.CommandLine.Model.ArgSpec;
+import com.essaid.picocli.commands.picocli.CommandLine.Model.CommandSpec;
+import com.essaid.picocli.commands.picocli.CommandLine.Model.OptionSpec;
+import com.essaid.picocli.commands.picocli.CommandLine.Model.PositionalParamSpec;
+import com.essaid.picocli.commands.picocli.CommandLine.Option;
+import com.essaid.picocli.commands.picocli.CommandLine.Parameters;
+import com.essaid.picocli.commands.picocli.CommandLine.ParseResult;
+import com.essaid.picocli.commands.picocli.CommandLine.Spec;
 
 /**
  * Stand-alone tool that generates bash auto-complete scripts for picocli-based command line applications.

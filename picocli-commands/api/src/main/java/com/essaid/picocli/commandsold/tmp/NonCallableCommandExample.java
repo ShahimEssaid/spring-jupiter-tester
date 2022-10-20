@@ -1,6 +1,6 @@
 package com.essaid.picocli.commandsold.tmp;
 
-import picocli.CommandLine;
+import com.essaid.picocli.commands.picocli.CommandLine;
 
 @CommandLine.Command(name = "NonCallableCommandExample")
 public class NonCallableCommandExample {

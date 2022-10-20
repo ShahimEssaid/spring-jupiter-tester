@@ -3,7 +3,7 @@ package com.essaid.picocli.commandsold.impl;
 import com.essaid.picocli.commandsold.ICommandLine;
 import com.essaid.picocli.commandsold.ICommandType;
 
-public class CommandLine extends picocli.CommandLine implements ICommandLine {
+public class CommandLine extends com.essaid.picocli.commands.picocli.CommandLine implements ICommandLine {
   
   private final ICommandType commandType;
   
