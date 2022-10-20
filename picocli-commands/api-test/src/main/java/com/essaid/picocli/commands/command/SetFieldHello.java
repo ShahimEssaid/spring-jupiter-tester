@@ -1,7 +1,7 @@
 package com.essaid.picocli.commands.command;
 
 import com.essaid.picocli.commands.Command;
-import com.essaid.picocli.commands.picocli.CommandLine;
+import picocli.CommandLine;
 
 @CommandLine.Command(name = "set-field-hello")
 public class SetFieldHello extends Command {

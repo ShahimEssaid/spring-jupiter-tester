@@ -1,6 +1,6 @@
 package com.essaid.picocli.commandsold;
 
-import com.essaid.picocli.commands.picocli.CommandLine;
+import picocli.CommandLine;
 
 public interface ICommandFactory extends CommandLine.IFactory {
 

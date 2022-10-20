@@ -6,7 +6,7 @@ import com.essaid.picocli.commandsold.ICommandRegistry;
 import com.essaid.picocli.commandsold.ICommandType;
 import com.essaid.picocli.commandsold.ICommands;
 //import org.semver4j.Semver;
-import com.essaid.picocli.commands.picocli.CommandLine;
+import picocli.CommandLine;
 
 import java.util.Comparator;
 import java.util.Map;

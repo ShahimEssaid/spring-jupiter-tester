@@ -1,6 +1,6 @@
 package com.essaid.picocli.commands;
 
-import com.essaid.picocli.commands.picocli.CommandLine;
+import picocli.CommandLine;
 
 import java.util.ArrayList;
 import java.util.Collection;
