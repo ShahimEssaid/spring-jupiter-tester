@@ -1,4 +1,4 @@
-package com.essaid.picocli.commands.tmp;
+package com.essaid.picocli.tmp;
 
 import picocli.CommandLine;
 
@@ -7,14 +7,22 @@ import java.util.concurrent.Callable;
 public class WrapperExecutorDemo {
   
   public static void main(String[] args) {
-    CommandLine cl = new CommandLine(A.class);
-    cl.setExecutionStrategy(new WrapperExecutor(new CommandLine.RunAll()));
-    cl.execute(new String[]{"B"});
+    CommandLine a = new CommandLine(A.class);
+    a.setExecutionStrategy(new WrapperExecutor(new CommandLine.RunAll()));
+    
+    CommandLine b = new CommandLine(B.class);
+    b.setExecutionStrategy(new WrapperExecutor2(new CommandLine.RunLast()));
+    
+    a.addSubcommand("z", b);
+    
+    
+    CommandLine.ParseResult parseResult = a.parseArgs(new String[]{"z", "z"});
+    a.execute(new String[]{"z", "z"});
     
   }
   
   
-  @CommandLine.Command(name = "A", subcommands = B.class, subcommandsRepeatable = true)
+  @CommandLine.Command(name = "A", subcommandsRepeatable = true)
   public static class A implements Callable<Integer> {
     
     public A() {
@@ -56,6 +64,13 @@ public class WrapperExecutorDemo {
       System.out.println("Executing: " + parseResult.commandSpec().userObject());
       executionStrategy.execute(parseResult);
       return 0;
+    }
+  }
+  
+  public static class WrapperExecutor2 extends WrapperExecutor {
+    
+    public WrapperExecutor2(CommandLine.IExecutionStrategy executionStrategy) {
+      super(executionStrategy);
     }
   }
   
