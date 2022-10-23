@@ -1,11 +1,12 @@
 package com.essaid.util.intercept;
 
 import com.essaid.util.intercept.data.IDomainData;
-import com.essaid.util.intercept.data.IInterceptorContextData;
+import com.essaid.util.intercept.data.IInterceptorContextGlobalData;
+import com.essaid.util.intercept.data.IInterceptorContextLocalData;
 
 import java.util.List;
 
-public interface IInterceptorContext  {
+public interface IInterceptorContext {
   
   IInterceptorGroup getInterceptorGroup();
   
@@ -13,7 +14,9 @@ public interface IInterceptorContext  {
   
   Object doNextInterceptor();
   
-  IInterceptorContextData getContextData();
+  IInterceptorContextLocalData getLocalData();
+  
+  IInterceptorContextGlobalData getGlobalData();
   
   IDomainData getDomainData();
   
