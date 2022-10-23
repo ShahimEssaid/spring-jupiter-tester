@@ -18,12 +18,13 @@ public interface IInterceptorGroup<D extends IDomain, R extends Object, C extend
    */
   Collection<IInterceptor<D, R, C>> getInterceptors();
   
-  void addInterceptor(IInterceptor<? extends D, ? extends R, ? extends C> interceptor);
+  void addInterceptor(IInterceptor<D, R, C> interceptor);
   
   
-  boolean removeInterceptor(IInterceptor<? extends D, ? extends R, ? extends C> interceptor);
+  boolean removeInterceptor(IInterceptor<D, R, C> interceptor);
   
   IInterceptorGroupData getGroupData();
   
   D getDomain();
+  
 }

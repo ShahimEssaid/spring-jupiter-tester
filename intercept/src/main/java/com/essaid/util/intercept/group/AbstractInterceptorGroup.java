@@ -5,6 +5,7 @@ import com.essaid.util.intercept.context.IInterceptorContext;
 import com.essaid.util.intercept.data.IInterceptorContextGlobalData;
 import com.essaid.util.intercept.data.IInterceptorContextLocalData;
 import com.essaid.util.intercept.data.IInterceptorGroupData;
+import com.essaid.util.intercept.data.InterceptorContextGlobalData;
 import com.essaid.util.intercept.data.InterceptorGroupData;
 import com.essaid.util.intercept.data.InterceptorLocalContextData;
 import com.essaid.util.intercept.domain.IDomain;
@@ -21,7 +22,6 @@ public abstract class AbstractInterceptorGroup<D extends IDomain, R extends Obje
   
   @Override
   final public R doInterceptor(IInterceptorContext<D, R, C> interceptorContext) {
-    Asserts.notNull(interceptorContext, "IInterceptorGroup can't be called with null IInterceptorContext");
     IInterceptorContextGlobalData globalData = doGetGlobalData(interceptorContext);
     IInterceptorContextLocalData localData = doGetLocalData(interceptorContext);
     
@@ -38,7 +38,7 @@ public abstract class AbstractInterceptorGroup<D extends IDomain, R extends Obje
   }
   
   protected IInterceptorContextGlobalData doGetGlobalData(IInterceptorContext<D, R, C> interceptorContext) {
-    return interceptorContext.getGlobalData();
+    return interceptorContext != null? interceptorContext.getGlobalData() : new InterceptorContextGlobalData();
   }
   
   @Override
@@ -50,4 +50,5 @@ public abstract class AbstractInterceptorGroup<D extends IDomain, R extends Obje
   final public D getDomain() {
     return domain;
   }
+
 }
