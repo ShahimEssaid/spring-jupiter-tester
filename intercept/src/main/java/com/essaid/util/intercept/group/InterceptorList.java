@@ -10,7 +10,7 @@ import java.util.Collection;
 
 public class InterceptorList<D extends IDomain, R extends Object, C extends IInterceptorContext<D, R, C>> extends InterceptorGroup<D, R, C> {
   @Override
-  public R doInterceptor(C interceptorContext) {
+  public R doInterceptor(IInterceptorContext<D, R, C> interceptorContext) {
     return null;
   }
   

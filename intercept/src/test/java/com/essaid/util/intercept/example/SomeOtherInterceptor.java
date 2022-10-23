@@ -3,10 +3,10 @@ package com.essaid.util.intercept.example;
 import com.essaid.util.intercept.IInterceptor;
 import com.essaid.util.intercept.context.IInterceptorContext;
 
-public class SomeOtherInterceptor implements IInterceptor<OtherDomain, Object, IInterceptorContext> {
+public class SomeOtherInterceptor<D extends OtherDomain, R extends Object, C extends IInterceptorContext<D, R, C>> implements IInterceptor<D, R, C> {
+  
   @Override
-  public Object doInterceptor(IInterceptorContext interceptorContext) {
-    interceptorContext.getInterceptorGroup().addInterceptor(new SomeOtherInterceptor());
+  public R doInterceptor(IInterceptorContext<D, R, C> interceptorContext) {
     return null;
   }
 }

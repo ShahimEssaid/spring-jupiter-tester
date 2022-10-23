@@ -11,7 +11,7 @@ import java.util.Collection;
 public class InterceptorGroup<D extends IDomain, R extends Object, C extends IInterceptorContext<D, R, C>> implements IInterceptorGroup<D, R, C> {
   
   @Override
-  public R doInterceptor(C interceptorContext) {
+  public R doInterceptor(IInterceptorContext<D, R, C> interceptorContext) {
     return null;
   }
   
