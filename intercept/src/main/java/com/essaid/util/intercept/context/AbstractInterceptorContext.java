@@ -4,7 +4,6 @@ import com.essaid.util.asserts.Asserts;
 import com.essaid.util.intercept.IInterceptor;
 import com.essaid.util.intercept.data.IInterceptorContextGlobalData;
 import com.essaid.util.intercept.data.IInterceptorContextLocalData;
-import com.essaid.util.intercept.domain.IDomain;
 import com.essaid.util.intercept.group.IInterceptorGroup;
 
 import java.util.Collection;

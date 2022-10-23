@@ -3,13 +3,12 @@ package com.essaid.util.intercept.context;
 import com.essaid.util.intercept.IInterceptor;
 import com.essaid.util.intercept.data.IInterceptorContextGlobalData;
 import com.essaid.util.intercept.data.IInterceptorContextLocalData;
-import com.essaid.util.intercept.domain.IDomain;
 import com.essaid.util.intercept.group.IInterceptorGroup;
 
 import java.util.Iterator;
 import java.util.List;
 
-public class ListInterceptorContext<D extends IDomain, R extends Object, C extends IInterceptorContext> extends AbstractInterceptorContext {
+public class ListInterceptorContext extends AbstractInterceptorContext {
   
   private final Iterator<IInterceptor> iterator;
   

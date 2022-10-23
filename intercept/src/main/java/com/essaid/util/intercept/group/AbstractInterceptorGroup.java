@@ -1,6 +1,5 @@
 package com.essaid.util.intercept.group;
 
-import com.essaid.util.asserts.Asserts;
 import com.essaid.util.intercept.context.IInterceptorContext;
 import com.essaid.util.intercept.data.IInterceptorContextGlobalData;
 import com.essaid.util.intercept.data.IInterceptorContextLocalData;
@@ -8,15 +7,14 @@ import com.essaid.util.intercept.data.IInterceptorGroupData;
 import com.essaid.util.intercept.data.InterceptorContextGlobalData;
 import com.essaid.util.intercept.data.InterceptorGroupData;
 import com.essaid.util.intercept.data.InterceptorLocalContextData;
-import com.essaid.util.intercept.domain.IDomain;
+import com.essaid.util.intercept.domain.Domain;
 
-public abstract class AbstractInterceptorGroup<D extends IDomain, R extends Object,
-    C extends IInterceptorContext> implements IInterceptorGroup {
+public abstract class AbstractInterceptorGroup<D extends Domain> implements IInterceptorGroup<D> {
   
   private final IInterceptorGroupData groupData = new InterceptorGroupData();
-  private final D domain;
+  private final Domain domain;
   
-  public AbstractInterceptorGroup(D domain) {
+  public AbstractInterceptorGroup(Domain domain) {
     this.domain = domain;
   }
   
@@ -31,7 +29,7 @@ public abstract class AbstractInterceptorGroup<D extends IDomain, R extends Obje
     return r;
   }
   
-  abstract protected IInterceptorContext doBuildInterceptorContext(AbstractInterceptorGroup<D, R, C> drcAbstractInterceptorGroup, IInterceptorContextGlobalData globalData, IInterceptorContextLocalData localData);
+  abstract protected IInterceptorContext doBuildInterceptorContext(AbstractInterceptorGroup<D> drcAbstractInterceptorGroup, IInterceptorContextGlobalData globalData, IInterceptorContextLocalData localData);
   
   protected IInterceptorContextLocalData doGetLocalData(IInterceptorContext interceptorContext) {
     return new InterceptorLocalContextData();
@@ -47,7 +45,7 @@ public abstract class AbstractInterceptorGroup<D extends IDomain, R extends Obje
   }
   
   @Override
-  final public D getDomain() {
+  final public Domain getDomain() {
     return domain;
   }
 

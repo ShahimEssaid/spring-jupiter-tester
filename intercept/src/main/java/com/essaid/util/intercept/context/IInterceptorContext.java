@@ -1,9 +1,7 @@
 package com.essaid.util.intercept.context;
 
 import com.essaid.util.intercept.IInterceptor;
-import com.essaid.util.intercept.domain.IDomain;
 import com.essaid.util.intercept.group.IInterceptorGroup;
-import com.essaid.util.intercept.data.IDomainData;
 import com.essaid.util.intercept.data.IInterceptorContextGlobalData;
 import com.essaid.util.intercept.data.IInterceptorContextLocalData;
 
