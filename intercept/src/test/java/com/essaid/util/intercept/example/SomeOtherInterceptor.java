@@ -5,11 +5,11 @@ import com.essaid.util.intercept.context.IInterceptorContext;
 
 import java.util.Collection;
 
-public class SomeOtherInterceptor<D extends OtherDomain, R extends Object, C extends IInterceptorContext<D, R, C>> implements IInterceptor<D, R, C> {
+public class SomeOtherInterceptor implements IInterceptor {
   
   
   @Override
-  public R doInterceptor(IInterceptorContext<D, R, C> interceptorContext) {
+  public Object doInterceptor(IInterceptorContext interceptorContext) {
     return null;
   }
   

@@ -5,8 +5,8 @@ import com.essaid.util.intercept.domain.IDomain;
 
 import java.util.Collection;
 
-public interface IInterceptor<D extends IDomain, R extends Object, C extends IInterceptorContext<D, R, C>> {
-  R doInterceptor(IInterceptorContext<D, R, C> interceptorContext);
+public interface IInterceptor {
+  Object doInterceptor(IInterceptorContext interceptorContext);
 
   
 }

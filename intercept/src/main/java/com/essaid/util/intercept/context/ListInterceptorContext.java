@@ -9,18 +9,18 @@ import com.essaid.util.intercept.group.IInterceptorGroup;
 import java.util.Iterator;
 import java.util.List;
 
-public class ListInterceptorContext<D extends IDomain, R extends Object, C extends IInterceptorContext<D, R, C>> extends AbstractInterceptorContext<D, R, C> {
+public class ListInterceptorContext<D extends IDomain, R extends Object, C extends IInterceptorContext> extends AbstractInterceptorContext {
   
-  private final Iterator<IInterceptor<D, R, C>> iterator;
+  private final Iterator<IInterceptor> iterator;
   
-  public ListInterceptorContext(IInterceptorGroup<D, R, C> group, IInterceptorContextGlobalData globalData,
-                                IInterceptorContextLocalData localData, List<IInterceptor<D, R, C>> interceptors) {
+  public ListInterceptorContext(IInterceptorGroup group, IInterceptorContextGlobalData globalData,
+                                IInterceptorContextLocalData localData, List<IInterceptor> interceptors) {
     super(group, globalData, localData, interceptors);
     this.iterator = interceptors.iterator();
   }
   
   @Override
-  protected IInterceptor<D, R, C> getNextInterceptor() {
+  protected IInterceptor getNextInterceptor() {
     return iterator.hasNext() ? iterator.next() : null;
   }
 }

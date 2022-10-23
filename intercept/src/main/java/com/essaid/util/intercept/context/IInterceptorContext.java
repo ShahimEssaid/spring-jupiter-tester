@@ -9,13 +9,13 @@ import com.essaid.util.intercept.data.IInterceptorContextLocalData;
 
 import java.util.Collection;
 
-public interface IInterceptorContext<D extends IDomain, R extends Object, C extends IInterceptorContext<D, R, C>> {
+public interface IInterceptorContext {
   
-  IInterceptorGroup<D, R, C> getInterceptorGroup();
+  IInterceptorGroup getInterceptorGroup();
   
-  Collection<IInterceptor<D, R, C>> getContextInterceptors();
+  Collection<IInterceptor> getContextInterceptors();
   
-  R doNextInterceptor();
+  Object doNextInterceptor();
   
   IInterceptorContextLocalData getLocalData();
   

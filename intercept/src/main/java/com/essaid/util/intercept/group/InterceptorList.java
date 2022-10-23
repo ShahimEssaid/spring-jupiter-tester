@@ -13,34 +13,34 @@ import java.util.Comparator;
 import java.util.List;
 import java.util.concurrent.CopyOnWriteArrayList;
 
-public class InterceptorList<D extends IDomain, R extends Object, C extends IInterceptorContext<D, R, C>> extends AbstractInterceptorGroup<D, R, C> {
+public class InterceptorList<D extends IDomain, R extends Object, C extends IInterceptorContext> extends AbstractInterceptorGroup<D, R, C> {
   
-  private final InterceptorComparator<D, R, C> INTERCEPTOR_COMPARATOR2 = new InterceptorComparator<>();
+  private final InterceptorComparator INTERCEPTOR_COMPARATOR2 = new InterceptorComparator();
   
-  private final CopyOnWriteArrayList<IInterceptor<D, R, C>> interceptors = new CopyOnWriteArrayList<>();
+  private final CopyOnWriteArrayList<IInterceptor> interceptors = new CopyOnWriteArrayList<>();
   
-  public InterceptorList(D domain, List<IInterceptor<D, R, C>> interceptors) {
+  public InterceptorList(D domain, List<IInterceptor> interceptors) {
     super(domain);
     this.interceptors.addAll(interceptors);
     this.interceptors.sort(INTERCEPTOR_COMPARATOR2);
   }
   
   @Override
-  protected IInterceptorContext<D, R, C> doBuildInterceptorContext(AbstractInterceptorGroup<D, R, C> drcAbstractInterceptorGroup, IInterceptorContextGlobalData globalData, IInterceptorContextLocalData localData) {
-    List<IInterceptor<D, R, C>> clone = (List<IInterceptor<D, R, C>>) interceptors.clone();
+  protected IInterceptorContext doBuildInterceptorContext(AbstractInterceptorGroup<D, R, C> drcAbstractInterceptorGroup, IInterceptorContextGlobalData globalData, IInterceptorContextLocalData localData) {
+    List<IInterceptor> clone = (List<IInterceptor>) interceptors.clone();
     clone.sort(INTERCEPTOR_COMPARATOR2);
-    IInterceptorContext<D, R, C> context = new ListInterceptorContext<>(this, globalData, localData,
+    IInterceptorContext context = new ListInterceptorContext<>(this, globalData, localData,
         Collections.unmodifiableList(clone));
     return context;
   }
   
   @Override
-  public List<IInterceptor<D, R, C>> getInterceptors() {
+  public List<IInterceptor> getInterceptors() {
     return Collections.unmodifiableList(interceptors);
   }
   
   @Override
-  public void addInterceptor(IInterceptor<D, R, C> interceptor) {
+  public void addInterceptor(IInterceptor interceptor) {
     synchronized (this.interceptors) {
       interceptors.add(interceptor);
       interceptors.sort(INTERCEPTOR_COMPARATOR2);
@@ -48,17 +48,16 @@ public class InterceptorList<D extends IDomain, R extends Object, C extends IInt
   }
   
   @Override
-  public boolean removeInterceptor(IInterceptor<D, R, C> interceptor) {
+  public boolean removeInterceptor(IInterceptor interceptor) {
     synchronized (this.interceptors) {
       return interceptors.remove(interceptor);
     }
   }
   
-  private static class InterceptorComparator<D extends IDomain, R extends Object, C extends IInterceptorContext<D, R,
-      C>> implements Comparator<IInterceptor<D, R, C>> {
+  private static class InterceptorComparator implements Comparator<IInterceptor> {
     
     @Override
-    public int compare(IInterceptor<D, R, C> o1, IInterceptor<D, R, C> o2) {
+    public int compare(IInterceptor o1, IInterceptor o2) {
       int firstOrder = o1.getClass().getAnnotation(InterceptorOrder.class) == null ? 0 : o1.getClass()
           .getAnnotation(InterceptorOrder.class)
           .value();

@@ -7,7 +7,7 @@ import com.essaid.util.intercept.domain.IDomain;
 
 import java.util.Collection;
 
-public interface IInterceptorGroup<D extends IDomain, R extends Object, C extends IInterceptorContext<D, R, C>> extends IInterceptor<D, R, C> {
+public interface IInterceptorGroup extends IInterceptor {
   
   /**
    * Returns a snapshot of the {@link IInterceptor}'s list of {@link IInterceptor}s that can be modified without
@@ -16,15 +16,15 @@ public interface IInterceptorGroup<D extends IDomain, R extends Object, C extend
    * @return a snapshot of the {@link IInterceptor}'s list of {@link IInterceptor}s that can be modified without
    * affecting the chain's list.
    */
-  Collection<IInterceptor<D, R, C>> getInterceptors();
+  Collection<IInterceptor> getInterceptors();
   
-  void addInterceptor(IInterceptor<D, R, C> interceptor);
+  void addInterceptor(IInterceptor interceptor);
   
   
-  boolean removeInterceptor(IInterceptor<D, R, C> interceptor);
+  boolean removeInterceptor(IInterceptor interceptor);
   
   IInterceptorGroupData getGroupData();
   
-  D getDomain();
+  IDomain getDomain();
   
 }

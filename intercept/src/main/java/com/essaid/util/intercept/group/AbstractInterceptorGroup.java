@@ -11,7 +11,7 @@ import com.essaid.util.intercept.data.InterceptorLocalContextData;
 import com.essaid.util.intercept.domain.IDomain;
 
 public abstract class AbstractInterceptorGroup<D extends IDomain, R extends Object,
-    C extends IInterceptorContext<D, R, C>> implements IInterceptorGroup<D, R, C> {
+    C extends IInterceptorContext> implements IInterceptorGroup {
   
   private final IInterceptorGroupData groupData = new InterceptorGroupData();
   private final D domain;
@@ -21,23 +21,23 @@ public abstract class AbstractInterceptorGroup<D extends IDomain, R extends Obje
   }
   
   @Override
-  final public R doInterceptor(IInterceptorContext<D, R, C> interceptorContext) {
+  final public Object doInterceptor(IInterceptorContext interceptorContext) {
     IInterceptorContextGlobalData globalData = doGetGlobalData(interceptorContext);
     IInterceptorContextLocalData localData = doGetLocalData(interceptorContext);
     
-    IInterceptorContext<D, R, C> context = doBuildInterceptorContext(this, globalData, localData);
-    R r = context.doNextInterceptor();
+    IInterceptorContext context = doBuildInterceptorContext(this, globalData, localData);
+    Object r = context.doNextInterceptor();
   
     return r;
   }
   
-  abstract protected IInterceptorContext<D, R, C> doBuildInterceptorContext(AbstractInterceptorGroup<D, R, C> drcAbstractInterceptorGroup, IInterceptorContextGlobalData globalData, IInterceptorContextLocalData localData);
+  abstract protected IInterceptorContext doBuildInterceptorContext(AbstractInterceptorGroup<D, R, C> drcAbstractInterceptorGroup, IInterceptorContextGlobalData globalData, IInterceptorContextLocalData localData);
   
-  protected IInterceptorContextLocalData doGetLocalData(IInterceptorContext<D, R, C> interceptorContext) {
+  protected IInterceptorContextLocalData doGetLocalData(IInterceptorContext interceptorContext) {
     return new InterceptorLocalContextData();
   }
   
-  protected IInterceptorContextGlobalData doGetGlobalData(IInterceptorContext<D, R, C> interceptorContext) {
+  protected IInterceptorContextGlobalData doGetGlobalData(IInterceptorContext interceptorContext) {
     return interceptorContext != null? interceptorContext.getGlobalData() : new InterceptorContextGlobalData();
   }
   
