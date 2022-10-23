@@ -1,10 +1,13 @@
-package com.essaid.util.intercept;
+package com.essaid.util.intercept.group;
 
+import com.essaid.util.intercept.IInterceptor;
+import com.essaid.util.intercept.context.IInterceptorContext;
 import com.essaid.util.intercept.data.IInterceptorGroupData;
+import com.essaid.util.intercept.domain.IDomain;
 
 import java.util.Collection;
 
-public interface IInterceptorGroup<D extends IDomain, R extends Object, C extends IInterceptorContext> extends IInterceptor<D, R, C> {
+public interface IInterceptorGroup<D extends IDomain, R extends Object, C extends IInterceptorContext<D, R, C>> extends IInterceptor<D, R, C> {
   
   /**
    * Returns a snapshot of the {@link IInterceptor}'s list of {@link IInterceptor}s that can be modified without

@@ -1,13 +1,14 @@
-package com.essaid.util.intercept.impl;
+package com.essaid.util.intercept.group;
 
-import com.essaid.util.intercept.IDomain;
+import com.essaid.util.intercept.domain.IDomain;
 import com.essaid.util.intercept.IInterceptor;
-import com.essaid.util.intercept.IInterceptorContext;
+import com.essaid.util.intercept.context.IInterceptorContext;
 import com.essaid.util.intercept.data.IInterceptorGroupData;
+import com.essaid.util.intercept.group.InterceptorGroup;
 
 import java.util.Collection;
 
-public class InterceptorList<D extends IDomain, R extends Object, C extends IInterceptorContext> extends InterceptorGroup<D, R, C>{
+public class InterceptorList<D extends IDomain, R extends Object, C extends IInterceptorContext<D, R, C>> extends InterceptorGroup<D, R, C> {
   @Override
   public R doInterceptor(C interceptorContext) {
     return null;
