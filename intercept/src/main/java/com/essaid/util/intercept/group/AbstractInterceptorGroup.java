@@ -7,14 +7,15 @@ import com.essaid.util.intercept.data.IInterceptorGroupData;
 import com.essaid.util.intercept.data.InterceptorContextGlobalData;
 import com.essaid.util.intercept.data.InterceptorGroupData;
 import com.essaid.util.intercept.data.InterceptorLocalContextData;
-import com.essaid.util.intercept.domain.Domain;
 
-public abstract class AbstractInterceptorGroup<D extends Domain> implements IInterceptorGroup<D> {
+import com.essaid.util.intercept.domain.IDomain;
+
+public abstract class AbstractInterceptorGroup<D extends IDomain> implements IInterceptorGroup<D> {
   
   private final IInterceptorGroupData groupData = new InterceptorGroupData();
-  private final Domain domain;
+  private final IDomain domain;
   
-  public AbstractInterceptorGroup(Domain domain) {
+  public AbstractInterceptorGroup(IDomain domain) {
     this.domain = domain;
   }
   
@@ -45,7 +46,7 @@ public abstract class AbstractInterceptorGroup<D extends Domain> implements IInt
   }
   
   @Override
-  final public Domain getDomain() {
+  final public IDomain getDomain() {
     return domain;
   }
 

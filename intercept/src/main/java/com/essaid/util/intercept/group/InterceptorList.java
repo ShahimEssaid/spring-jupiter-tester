@@ -6,14 +6,14 @@ import com.essaid.util.intercept.context.IInterceptorContext;
 import com.essaid.util.intercept.context.ListInterceptorContext;
 import com.essaid.util.intercept.data.IInterceptorContextGlobalData;
 import com.essaid.util.intercept.data.IInterceptorContextLocalData;
-import com.essaid.util.intercept.domain.Domain;
+import com.essaid.util.intercept.domain.IDomain;
 
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 import java.util.concurrent.CopyOnWriteArrayList;
 
-public class InterceptorList<D extends  Domain> extends AbstractInterceptorGroup<D> {
+public class InterceptorList<D extends IDomain> extends AbstractInterceptorGroup<D> {
   
   private final InterceptorComparator INTERCEPTOR_COMPARATOR2 = new InterceptorComparator();
   
