@@ -10,6 +10,7 @@
         <module name="command-hello" />
         <module name="app-boot-1" />
         <module name="api-test" />
+        <module name="intercept" />
       </profile>
     </annotationProcessing>
     <bytecodeTargetLevel target="17">

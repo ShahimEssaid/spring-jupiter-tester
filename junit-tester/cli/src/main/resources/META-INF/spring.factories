@@ -1,2 +1,2 @@
-org.springframework.context.ApplicationContextInitializer=\
+org.springframework.IChainStepContext.ApplicationContextInitializer=\
 com.essaid.spring.jupiter.tester.api.JupiterContextInitializer

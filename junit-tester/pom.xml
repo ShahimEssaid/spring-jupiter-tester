@@ -85,7 +85,7 @@
 
             <dependency>
               <groupId>org.springframework</groupId>
-              <artifactId>spring-context</artifactId>
+              <artifactId>spring-IChainStepContext</artifactId>
               <version>${spring.version}</version>
             </dependency>
 
