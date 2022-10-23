@@ -23,7 +23,7 @@ public interface IInterceptorGroup<D extends IDomain, R extends Object, C extend
   
   boolean removeInterceptor(IInterceptor<? extends D, ? extends R, ? extends C> interceptor);
   
-  IInterceptorGroupData getData();
+  IInterceptorGroupData getGroupData();
   
   D getDomain();
 }

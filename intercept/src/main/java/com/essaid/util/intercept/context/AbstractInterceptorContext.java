@@ -9,15 +9,15 @@ import com.essaid.util.intercept.group.IInterceptorGroup;
 
 import java.util.Collection;
 
-public abstract class InterceptorContext<D extends IDomain, R extends Object, C extends IInterceptorContext<D, R, C>> implements IInterceptorContext<D, R, C> {
+public abstract class AbstractInterceptorContext<D extends IDomain, R extends Object, C extends IInterceptorContext<D, R, C>> implements IInterceptorContext<D, R, C> {
   
   private final IInterceptorGroup<D, R, C> group;
   private final IInterceptorContextGlobalData globalData;
   private final IInterceptorContextLocalData localData;
   private final Collection<IInterceptor<D, R, C>> interceptors;
   
-  public InterceptorContext(IInterceptorGroup<D, R, C> group, IInterceptorContextGlobalData globalData,
-                            IInterceptorContextLocalData localData, Collection<IInterceptor<D, R, C>> interceptors) {
+  public AbstractInterceptorContext(IInterceptorGroup<D, R, C> group, IInterceptorContextGlobalData globalData,
+                                    IInterceptorContextLocalData localData, Collection<IInterceptor<D, R, C>> interceptors) {
     Asserts.notNull(group, "IInterceptorGroup can't be null while constructing InterceptorContext");
     Asserts.notNull(globalData, "IInterceptorContextGlobalData can't be null while constructing InterceptorContext");
     Asserts.notNull(localData, "IInterceptorContextLocalData can't be null while constructing InterceptorContext");
@@ -38,9 +38,8 @@ public abstract class InterceptorContext<D extends IDomain, R extends Object, C 
     return interceptors;
   }
   
-  
   @Override
-  final public Object doNextInterceptor() {
+  final public R doNextInterceptor() {
     IInterceptor<D, R, C> nextInterceptor = getNextInterceptor();
     return nextInterceptor == null ? null : nextInterceptor.doInterceptor(this);
   }

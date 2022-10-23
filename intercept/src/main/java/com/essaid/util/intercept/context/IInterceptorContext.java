@@ -15,7 +15,7 @@ public interface IInterceptorContext<D extends IDomain, R extends Object, C exte
   
   Collection<IInterceptor<D, R, C>> getContextInterceptors();
   
-  Object doNextInterceptor();
+  R doNextInterceptor();
   
   IInterceptorContextLocalData getLocalData();
   
