@@ -13,4 +13,13 @@ public class SomeOtherInterceptor implements IInterceptor {
     return null;
   }
   
+  @Override
+  public void run() {
+  
+  }
+  
+  @Override
+  public Object call() throws Exception {
+    return null;
+  }
 }

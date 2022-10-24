@@ -1,7 +1,7 @@
 package com.essaid.util.intercept.test;
 
 import com.essaid.util.intercept.IInterceptor;
-import com.essaid.util.intercept.InterceptorOrder;
+import com.essaid.util.intercept.Interceptor;
 import com.essaid.util.intercept.context.IInterceptorContext;
 import com.essaid.util.intercept.domain.Domain;
 import com.essaid.util.intercept.domain.IDomain;
@@ -17,33 +17,53 @@ public class MiscTests {
   @Test
   void tryListGroup() {
   
-    List<IInterceptor<? extends IDomain>> interceptors = new ArrayList<>();
+    List<IInterceptor> interceptors = new ArrayList<>();
     interceptors.add(new Hello());
     interceptors.add(new There());
 
-    IInterceptorGroup<IDomain> group = new InterceptorList<>(new Domain(), interceptors);
+    IInterceptorGroup group = new InterceptorList(new Domain(), interceptors);
 
     group.doInterceptor(null);
   }
   
-  @InterceptorOrder(1)
-  static class Hello implements IInterceptor<IDomain> {
+  @Interceptor(1)
+  static class Hello implements IInterceptor {
     @Override
     public String doInterceptor(IInterceptorContext interceptorContext) {
       System.out.println("Hello called");
       interceptorContext.doNextInterceptor();
       return "Hello";
     }
+  
+    @Override
+    public void run() {
+    
+    }
+  
+    @Override
+    public Object call() throws Exception {
+      return null;
+    }
   }
   
-  @InterceptorOrder(2)
-  static class There implements IInterceptor<IDomain> {
+  @Interceptor(2)
+  static class There implements IInterceptor {
   
     @Override
     public Object doInterceptor(IInterceptorContext interceptorContext) {
       System.out.println("There called");
       interceptorContext.doNextInterceptor();
       return "There";
+    }
+  
+    @Override
+    public void run() {
+    
+    }
+  
+    @Override
+    public Object call() throws Exception {
+      return null;
     }
   }
 }

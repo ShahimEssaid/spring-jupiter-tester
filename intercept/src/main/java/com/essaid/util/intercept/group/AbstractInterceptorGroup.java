@@ -10,7 +10,7 @@ import com.essaid.util.intercept.data.InterceptorLocalContextData;
 
 import com.essaid.util.intercept.domain.IDomain;
 
-public abstract class AbstractInterceptorGroup<D extends IDomain> implements IInterceptorGroup<D> {
+public abstract class AbstractInterceptorGroup implements IInterceptorGroup {
   
   private final IInterceptorGroupData groupData = new InterceptorGroupData();
   private final IDomain domain;
@@ -30,7 +30,7 @@ public abstract class AbstractInterceptorGroup<D extends IDomain> implements IIn
     return r;
   }
   
-  abstract protected IInterceptorContext doBuildInterceptorContext(AbstractInterceptorGroup<D> drcAbstractInterceptorGroup, IInterceptorContextGlobalData globalData, IInterceptorContextLocalData localData);
+  abstract protected IInterceptorContext doBuildInterceptorContext(AbstractInterceptorGroup drcAbstractInterceptorGroup, IInterceptorContextGlobalData globalData, IInterceptorContextLocalData localData);
   
   protected IInterceptorContextLocalData doGetLocalData(IInterceptorContext interceptorContext) {
     return new InterceptorLocalContextData();

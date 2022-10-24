@@ -11,6 +11,6 @@ import java.lang.annotation.Target;
 @Retention(RetentionPolicy.RUNTIME)
 @Inherited
 @Target({ElementType.TYPE, ElementType.ANNOTATION_TYPE})
-public @interface InterceptorOrder {
-  int value();
+public @interface Interceptor {
+  int value() default 0;
 }
