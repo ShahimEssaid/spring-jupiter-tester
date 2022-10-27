@@ -6,17 +6,27 @@ import com.essaid.util.modelproxy.support.TestingInterface;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.Test;
 
-import java.lang.reflect.Method;
+import java.util.concurrent.locks.Lock;
 
 public class ModelProxyTests {
-
+  
   @Test
-  void testOne(){
+  void testOne() {
     TestPropertyProxy testProxy = new TestPropertyProxy();
-    BeanPropertyProxyConfigurer<TestPropertyProxy> beanPropertyProxyConfigurer = new BeanPropertyProxyConfigurer<TestPropertyProxy>();
+    BeanPropertyProxyConfigurer<TestPropertyProxy> beanPropertyProxyConfigurer =
+        new BeanPropertyProxyConfigurer<TestPropertyProxy>();
     testProxy.configure(beanPropertyProxyConfigurer);
+    TestingInterface as = null;
     
-    TestingInterface as = testProxy.as(TestingInterface.class);
+    Assertions.assertThatExceptionOfType(IModelInterfaceNotAvailableException.class)
+        .isThrownBy(() -> testProxy.as(TestingInterface.class));
+  
+    Lock lock = testProxy.writeLock();
+    lock.lock();
+    testProxy.getInterfaces().add(TestingInterface.class);
+    lock.unlock();
+    
+    as = testProxy.as(TestingInterface.class);
     Assertions.assertThat(as).isNotNull();
     
     // String value
@@ -30,11 +40,11 @@ public class ModelProxyTests {
     Assertions.assertThat(as.isCurrent()).isFalse();
     as.setCurrent(true);
     Assertions.assertThat(as.isCurrent()).isTrue();
-  
+    
     // int
     Assertions.assertThat(as.getNumber()).isEqualTo(0);
     as.setNumber(10);
     Assertions.assertThat(as.getNumber()).isEqualTo(10);
   }
-
+  
 }

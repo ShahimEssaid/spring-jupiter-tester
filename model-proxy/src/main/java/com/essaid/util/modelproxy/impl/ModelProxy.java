@@ -2,6 +2,7 @@ package com.essaid.util.modelproxy.impl;
 
 import com.essaid.util.concurrent.ReentrantReadWriteLockEx;
 import com.essaid.util.modelproxy.IModelInterface;
+import com.essaid.util.modelproxy.IModelInterfaceNotAvailableException;
 import com.essaid.util.modelproxy.IModelInvocationHandler;
 import com.essaid.util.modelproxy.IModelProxy;
 import com.essaid.util.modelproxy.IModelProxyConfigurer;
@@ -27,7 +28,7 @@ public class ModelProxy<P extends IModelProxy<P>> implements IModelProxy.IModelP
   private final Map<Object, Object> data = new ConcurrentHashMap<>();
   
   private final ReentrantReadWriteLock readWriteLock = new ReentrantReadWriteLockEx();
-//  private final List<IModelInterfacesDescription<T>> interfaceDescriptions = new ArrayList<>();
+  //  private final List<IModelInterfacesDescription<T>> interfaceDescriptions = new ArrayList<>();
   private final Set<Class<? extends IModelInterface>> modelInterfaces = new HashSet<>();
   private final Set<Class<? extends IModelInvocationHandler<P>>> modelHandlers = new HashSet<>();
   private volatile List<IModelInvocationHandler<P>> invocationHandlers = new ArrayList<>();
@@ -35,7 +36,7 @@ public class ModelProxy<P extends IModelProxy<P>> implements IModelProxy.IModelP
   @Override
   public void addHandler(Class<? extends IModelInvocationHandler<P>> handlerClass,
                          Class<? extends IModelProxy> proxyClass) {
-    if(modelHandlers.contains(handlerClass)){
+    if (modelHandlers.contains(handlerClass)) {
       return;
     }
     modelHandlers.add(handlerClass);
@@ -70,11 +71,15 @@ public class ModelProxy<P extends IModelProxy<P>> implements IModelProxy.IModelP
   @Override
   public void configure(IModelProxyConfigurer<P> configurer) {
     configurer.configure(this);
-  
+    
   }
   
   @Override
   public <I extends IModelInterface> I as(Class<I> cls) {
+    if (!modelInterfaces.contains(cls)) {
+      throw new IModelInterfaceNotAvailableException("Interface not available: " + cls);
+    }
+    
     I i = (I) Proxy.newProxyInstance(cls.getClassLoader(), new Class[]{cls}, this);
     return i;
   }
