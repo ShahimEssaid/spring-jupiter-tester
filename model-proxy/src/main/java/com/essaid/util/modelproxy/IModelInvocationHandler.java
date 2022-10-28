@@ -3,7 +3,7 @@ package com.essaid.util.modelproxy;
 import java.lang.reflect.InvocationHandler;
 import java.lang.reflect.Method;
 
-public interface IModelInvocationHandler<T extends IModelProxy<T>> {
+public interface IModelInvocationHandler {
   
   public InvocationResult doInvoke(Object proxy, Method method, Object[] args);
   

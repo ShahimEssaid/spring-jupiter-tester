@@ -9,7 +9,7 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.concurrent.locks.Lock;
 
-public class ModelProxyConfigurer<P extends IModelProxy<P>> implements IModelProxyConfigurer<P> {
+public class ModelProxyConfigurer implements IModelProxyConfigurer {
   
   private final String id;
   private final String name;
@@ -19,12 +19,12 @@ public class ModelProxyConfigurer<P extends IModelProxy<P>> implements IModelPro
   private final String description;
   private final String notes;
   private final List<Class<? extends IModelInterface>> interfaceClasses;
-  private final List<Class<? extends IModelInvocationHandler<P>>> handlerClasses;
+  private final List<Class<? extends IModelInvocationHandler>> handlerClasses;
   private final Class<? extends IModelProxy> proxyClass;
   
   public ModelProxyConfigurer(String id, String name, String version, int priority, String shortDescription,
                               String description, String notes, Class<? extends IModelInterface>[] interfaces, Class<
-      ? extends IModelInvocationHandler<P>>[] handlers, Class<? extends IModelProxy> proxyClass) {
+      ? extends IModelInvocationHandler>[] handlers, Class<? extends IModelProxy> proxyClass) {
     this.id = id;
     this.name = name;
     this.version = version;
@@ -73,8 +73,8 @@ public class ModelProxyConfigurer<P extends IModelProxy<P>> implements IModelPro
   }
   
   @Override
-  public void configure(IModelProxy<P> proxy) {
-    IModelProxy.IModelProxyInternal<P> internal = proxy.internal();
+  public void configure(IModelProxy proxy) {
+    IModelProxy.IModelProxyInternal internal = proxy.internal();
     Lock lock = internal.writeLock();
     lock.lock();
   
@@ -82,7 +82,7 @@ public class ModelProxyConfigurer<P extends IModelProxy<P>> implements IModelPro
         internal.getInterfaces().add(cls);
     }
     
-    for(Class<? extends IModelInvocationHandler<P>> handler: handlerClasses){
+    for(Class<? extends IModelInvocationHandler> handler: handlerClasses){
       internal.addHandler(handler,proxyClass);
     }
     lock.unlock();

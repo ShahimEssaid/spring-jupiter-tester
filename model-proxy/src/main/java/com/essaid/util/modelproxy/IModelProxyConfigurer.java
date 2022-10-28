@@ -2,7 +2,7 @@ package com.essaid.util.modelproxy;
 
 import java.util.Collection;
 
-public interface IModelProxyConfigurer<P extends IModelProxy<P>> {
+public interface IModelProxyConfigurer {
   
   String id();
   
@@ -18,6 +18,6 @@ public interface IModelProxyConfigurer<P extends IModelProxy<P>> {
   
   String notes();
   
-  void configure(IModelProxy<P> proxy);
+  void configure(IModelProxy proxy);
 
 }

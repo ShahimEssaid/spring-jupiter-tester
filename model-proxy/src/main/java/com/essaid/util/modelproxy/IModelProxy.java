@@ -4,17 +4,17 @@ import java.util.Map;
 import java.util.Set;
 import java.util.concurrent.locks.ReadWriteLock;
 
-public interface IModelProxy<P extends IModelProxy<P>> extends IProxiable, ReadWriteLock {
+public interface IModelProxy extends IProxiable, ReadWriteLock {
   
-  void configure(IModelProxyConfigurer<P> configurer);
+  void configure(IModelProxyConfigurer configurer);
   
-  IModelProxyInternal<P> internal();
+  IModelProxyInternal internal();
   
-  interface IModelProxyInternal<P extends IModelProxy<P>> extends IModelProxy<P>, ReadWriteLock {
+  interface IModelProxyInternal extends IModelProxy, ReadWriteLock {
     
-    void addHandler(Class<? extends IModelInvocationHandler<P>> handlerClass, Class<? extends IModelProxy> proxyClass);
+    void addHandler(Class<? extends IModelInvocationHandler> handlerClass, Class<? extends IModelProxy> proxyClass);
     
-    Set<Class<? extends IModelInvocationHandler<P>>> getHandlers();
+    Set<Class<? extends IModelInvocationHandler>> getHandlers();
     
     Set<Class<? extends IModelInterface>> getInterfaces();
     

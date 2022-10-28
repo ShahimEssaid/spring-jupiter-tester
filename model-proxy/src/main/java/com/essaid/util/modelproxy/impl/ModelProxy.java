@@ -23,27 +23,27 @@ import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantReadWriteLock;
 
-public class ModelProxy<P extends IModelProxy<P>> implements IModelProxy.IModelProxyInternal<P>, InvocationHandler {
+public class ModelProxy implements IModelProxy.IModelProxyInternal, InvocationHandler {
   
   private final Map<Object, Object> data = new ConcurrentHashMap<>();
   
   private final ReentrantReadWriteLock readWriteLock = new ReentrantReadWriteLockEx();
   //  private final List<IModelInterfacesDescription<T>> interfaceDescriptions = new ArrayList<>();
   private final Set<Class<? extends IModelInterface>> modelInterfaces = new HashSet<>();
-  private final Set<Class<? extends IModelInvocationHandler<P>>> modelHandlers = new HashSet<>();
-  private volatile List<IModelInvocationHandler<P>> invocationHandlers = new ArrayList<>();
+  private final Set<Class<? extends IModelInvocationHandler>> modelHandlers = new HashSet<>();
+  private volatile List<IModelInvocationHandler> invocationHandlers = new ArrayList<>();
   
   @Override
-  public void addHandler(Class<? extends IModelInvocationHandler<P>> handlerClass,
+  public void addHandler(Class<? extends IModelInvocationHandler> handlerClass,
                          Class<? extends IModelProxy> proxyClass) {
     if (modelHandlers.contains(handlerClass)) {
       return;
     }
     modelHandlers.add(handlerClass);
     try {
-      Constructor<? extends IModelInvocationHandler<P>> declaredConstructor =
-          handlerClass.getDeclaredConstructor(new Class[]{proxyClass});
-      IModelInvocationHandler<P> iModelInvocationHandler = declaredConstructor.newInstance(this);
+      Constructor<? extends IModelInvocationHandler> declaredConstructor =
+          handlerClass.getDeclaredConstructor(proxyClass);
+      IModelInvocationHandler iModelInvocationHandler = declaredConstructor.newInstance(this);
       invocationHandlers.add(iModelInvocationHandler);
     } catch (NoSuchMethodException | InstantiationException | IllegalAccessException | InvocationTargetException e) {
       throw new RuntimeException(e);
@@ -51,7 +51,7 @@ public class ModelProxy<P extends IModelProxy<P>> implements IModelProxy.IModelP
   }
   
   @Override
-  public Set<Class<? extends IModelInvocationHandler<P>>> getHandlers() {
+  public Set<Class<? extends IModelInvocationHandler>> getHandlers() {
     checkReadLock();
     return Collections.unmodifiableSet(modelHandlers);
   }
@@ -69,7 +69,7 @@ public class ModelProxy<P extends IModelProxy<P>> implements IModelProxy.IModelP
   
   
   @Override
-  public void configure(IModelProxyConfigurer<P> configurer) {
+  public void configure(IModelProxyConfigurer configurer) {
     configurer.configure(this);
     
   }
@@ -85,14 +85,14 @@ public class ModelProxy<P extends IModelProxy<P>> implements IModelProxy.IModelP
   }
   
   @Override
-  public IModelProxyInternal<P> internal() {
+  public IModelProxyInternal internal() {
     return this;
   }
   
   @Override
   public Object invoke(Object proxy, Method method, Object[] args) throws Throwable {
     // todo: fix thread safety
-    for (IModelInvocationHandler<P> handler : invocationHandlers) {
+    for (IModelInvocationHandler handler : invocationHandlers) {
       IModelInvocationHandler.InvocationResult invocationResult = handler.doInvoke(proxy, method, args);
       if (invocationResult.isHandled()) {
         return invocationResult.getResult();

@@ -7,7 +7,7 @@ import java.lang.reflect.Method;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
-public class BeanPropertyHandler<P extends IBeanPropertyProxy<P>> implements IModelInvocationHandler<P> {
+public class BeanPropertyHandler implements IModelInvocationHandler {
   
   private final IModelInvocationHandler.InvocationResult UN_HANDLED =
       new IModelInvocationHandler.InvocationResult(false, null);
@@ -20,9 +20,9 @@ public class BeanPropertyHandler<P extends IBeanPropertyProxy<P>> implements IMo
       new IModelInvocationHandler.InvocationResult(true, false);
   
   
-  private final IBeanPropertyProxy<P> beanProxy;
+  private final IBeanPropertyProxy beanProxy;
   
-  public BeanPropertyHandler(IBeanPropertyProxy<P> beanProxy) {
+  public BeanPropertyHandler(IBeanPropertyProxy beanProxy) {
     this.beanProxy = beanProxy;
   }
   

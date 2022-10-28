@@ -13,8 +13,8 @@ public class ModelProxyTests {
   @Test
   void testOne() {
     TestPropertyProxy testProxy = new TestPropertyProxy();
-    BeanPropertyProxyConfigurer<TestPropertyProxy> beanPropertyProxyConfigurer =
-        new BeanPropertyProxyConfigurer<TestPropertyProxy>();
+    BeanPropertyProxyConfigurer beanPropertyProxyConfigurer =
+        new BeanPropertyProxyConfigurer();
     testProxy.configure(beanPropertyProxyConfigurer);
     TestingInterface as = null;
     
