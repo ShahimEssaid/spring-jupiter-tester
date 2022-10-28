@@ -1,8 +1,6 @@
 package com.essaid.util.modelproxy;
 
-import java.util.Collection;
-
-public interface IModelProxyConfigurer {
+public interface IModelConfigurer {
   
   String id();
   
@@ -18,6 +16,6 @@ public interface IModelProxyConfigurer {
   
   String notes();
   
-  void configure(IModelProxy proxy);
+  void configure(IModel proxy, boolean append);
 
 }

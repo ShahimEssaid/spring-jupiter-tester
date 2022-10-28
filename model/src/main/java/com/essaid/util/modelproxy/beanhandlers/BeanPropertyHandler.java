@@ -1,4 +1,4 @@
-package com.essaid.util.modelproxy.bean;
+package com.essaid.util.modelproxy.beanhandlers;
 
 import com.essaid.util.modelproxy.IModelInvocationHandler;
 import com.essaid.util.modelproxy.ModelProxyUtil;
@@ -8,9 +8,6 @@ import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
 public class BeanPropertyHandler implements IModelInvocationHandler {
-  
-  private final IModelInvocationHandler.InvocationResult UN_HANDLED =
-      new IModelInvocationHandler.InvocationResult(false, null);
   
   private final IModelInvocationHandler.InvocationResult HANDLED_NULL =
       new IModelInvocationHandler.InvocationResult(true, null);

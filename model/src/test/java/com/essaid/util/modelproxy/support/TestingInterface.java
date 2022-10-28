@@ -15,4 +15,8 @@ public interface TestingInterface extends IModelInterface {
   boolean isCurrent();
   
   void setCurrent(boolean isCurrent);
+  
+  Boolean getBoolean();
+  
+  void setBoolean(Boolean isCurrent);
 }

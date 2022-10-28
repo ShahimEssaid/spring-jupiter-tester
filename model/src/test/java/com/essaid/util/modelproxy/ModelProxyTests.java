@@ -1,6 +1,6 @@
 package com.essaid.util.modelproxy;
 
-import com.essaid.util.modelproxy.bean.BeanPropertyProxyConfigurer;
+import com.essaid.util.modelproxy.beanhandlers.BeanPropertyConfigurer;
 import com.essaid.util.modelproxy.support.TestPropertyProxy;
 import com.essaid.util.modelproxy.support.TestingInterface;
 import org.assertj.core.api.Assertions;
@@ -13,9 +13,9 @@ public class ModelProxyTests {
   @Test
   void testOne() {
     TestPropertyProxy testProxy = new TestPropertyProxy();
-    BeanPropertyProxyConfigurer beanPropertyProxyConfigurer =
-        new BeanPropertyProxyConfigurer();
-    testProxy.configure(beanPropertyProxyConfigurer);
+    BeanPropertyConfigurer beanPropertyProxyConfigurer =
+        new BeanPropertyConfigurer();
+    testProxy.appendConfiguration(beanPropertyProxyConfigurer);
     TestingInterface as = null;
     
     Assertions.assertThatExceptionOfType(IModelInterfaceNotAvailableException.class)
@@ -45,6 +45,12 @@ public class ModelProxyTests {
     Assertions.assertThat(as.getNumber()).isEqualTo(0);
     as.setNumber(10);
     Assertions.assertThat(as.getNumber()).isEqualTo(10);
+    
+    // Boolean
+    Assertions.assertThat(as.getBoolean()).isNull();;
+    as.setBoolean(true);
+    Assertions.assertThat(as.getBoolean()).isEqualTo(Boolean.TRUE);
+    
   }
   
 }
