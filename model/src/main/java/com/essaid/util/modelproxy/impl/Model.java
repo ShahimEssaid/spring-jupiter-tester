@@ -1,11 +1,11 @@
 package com.essaid.util.modelproxy.impl;
 
 import com.essaid.util.concurrent.ReentrantReadWriteLockEx;
+import com.essaid.util.modelproxy.IModel;
+import com.essaid.util.modelproxy.IModelConfigurer;
 import com.essaid.util.modelproxy.IModelInterface;
 import com.essaid.util.modelproxy.IModelInterfaceNotAvailableException;
 import com.essaid.util.modelproxy.IModelInvocationHandler;
-import com.essaid.util.modelproxy.IModel;
-import com.essaid.util.modelproxy.IModelConfigurer;
 
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationHandler;
@@ -30,25 +30,37 @@ public class Model implements IModel.IModelInternal, InvocationHandler {
   private final List<Class<? extends IModelInterface>> modelInterfaces = new ArrayList<>();
   private final List<Class<? extends IModelInvocationHandler>> modelHandlers = new ArrayList<>();
   private volatile List<IModelInvocationHandler> invocationHandlers = new ArrayList<>();
+  
   public Model(boolean permissive) {
     this.permissive = permissive;
   }
+  
   public Model() {
     this.permissive = false;
   }
   
   @Override
-  public void addHandler(Class<? extends IModelInvocationHandler> handlerClass,
-                         Class<? extends IModel> proxyClass) {
+  public void addHandler(Class<? extends IModelInvocationHandler> handlerClass, Class<? extends IModel> proxyClass,
+                         boolean append) {
     if (modelHandlers.contains(handlerClass)) {
       return;
     }
-    modelHandlers.add(handlerClass);
+    
+    if (append) {
+      modelHandlers.add(handlerClass);
+    } else {
+      modelHandlers.add(0, handlerClass);
+    }
+    
     try {
       Constructor<? extends IModelInvocationHandler> declaredConstructor =
           handlerClass.getDeclaredConstructor(proxyClass);
       IModelInvocationHandler iModelInvocationHandler = declaredConstructor.newInstance(this);
-      invocationHandlers.add(iModelInvocationHandler);
+      if (append) {
+        invocationHandlers.add(iModelInvocationHandler);
+      } else {
+        invocationHandlers.add(0, iModelInvocationHandler);
+      }
     } catch (NoSuchMethodException | InstantiationException | IllegalAccessException | InvocationTargetException e) {
       throw new RuntimeException(e);
     }
