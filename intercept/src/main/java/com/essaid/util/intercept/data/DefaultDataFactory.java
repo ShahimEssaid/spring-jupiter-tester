@@ -14,7 +14,7 @@ public class DefaultDataFactory implements IDataFactory {
   
   public DefaultDataFactory(IDomain domain) {
     this.domain = domain;
-    this.interceptConfig = domain.as(IInterceptConfig.class);
+    this.interceptConfig = domain.modelableAs(IInterceptConfig.class);
   }
 
   

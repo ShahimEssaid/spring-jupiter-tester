@@ -5,9 +5,7 @@ import com.essaid.util.intercept.context.IInterceptorContext;
 import com.essaid.util.intercept.data.IData;
 import com.essaid.util.intercept.domain.IDomain;
 
-import com.essaid.util.intercept.interceptor.IInterceptor;
 import com.essaid.util.intercept.interceptor.IInterceptorGroup;
-import com.essaid.util.model.IModel;
 import com.essaid.util.model.IModelConfigurer;
 import com.essaid.util.intercept.interceptor.IInterceptorOutcome;
 
@@ -38,7 +36,7 @@ public class AbstractInterceptorGroup implements IInterceptorGroup {
   }
   
   protected IInterceptorContext buildContext(IInterceptorContext interceptorContext) {
-    IInterceptConfig factories = getDomain().as(IInterceptConfig.class);
+    IInterceptConfig factories = getDomain().modelableAs(IInterceptConfig.class);
     IData data = factories.getIDataFactory()
         .createData(interceptorContext, overridePermissiveness, dataConfigurerOverrides);
     IData localData = factories.getIDataFactory()

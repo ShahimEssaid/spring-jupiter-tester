@@ -26,7 +26,7 @@ public class MiscTests {
 
   
     IDomain defaultDomain = new Domain();
-    IInterceptConfig config = defaultDomain.as(IInterceptConfig.class);
+    IInterceptConfig config = defaultDomain.modelableAs(IInterceptConfig.class);
     
     config.getContextDataConfigurers().add(new HelloDataConfigurer());
     config.getContextLocalDataConfigurers().add(new HelloDataConfigurer());

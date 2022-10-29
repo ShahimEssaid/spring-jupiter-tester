@@ -32,12 +32,12 @@ public class Domain implements IDomain {
   
   
   @Override
-  public <I extends IModelInterface> I as(Class<I> cls) {
+  public <I extends IModelInterface> I modelableAs(Class<I> cls) {
     return model.as(cls);
   }
   
   @Override
-  public IModel getModel() {
+  public IModel getModelableModel() {
     return model;
   }
 }
