@@ -5,7 +5,7 @@ import picocli.CommandLine;
 import java.util.List;
 
 public interface IExecutionStrategyExtended extends CommandLine.IExecutionStrategy,
-    Iterable<IExecutionStrategyExtended.IExecution> {
+    Iterable<IExecution> {
   
   
   int execute(CommandLine.ParseResult parseResult, boolean withHelp);
@@ -23,19 +23,5 @@ public interface IExecutionStrategyExtended extends CommandLine.IExecutionStrate
   List<CommandLine.IExitCodeGenerator> getExitCodeGenerators();
   
   int getExitCode();
-  
-  interface IExecution {
-  
-  
-    boolean isExecuted();
-  
-    Object getResult();
-  
-    Object execute();
-    
-    int getExitCode();
-    
-    boolean isExitGenerator();
-  }
   
 }

@@ -9,7 +9,7 @@ import java.lang.reflect.Method;
 import java.lang.reflect.Modifier;
 import java.util.concurrent.Callable;
 
-public class Execution implements IExecutionStrategyExtended.IExecution {
+public class Execution implements IExecution {
   final private IExecutionStrategyExtended strategyExtended;
   final private CommandLine.ParseResult parseResult;
   final private IInterceptor interceptor;
