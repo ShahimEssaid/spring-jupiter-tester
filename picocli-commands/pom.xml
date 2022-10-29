@@ -21,6 +21,7 @@
     <maven-shade-plugin.version>3.4.0</maven-shade-plugin.version>
     <semver4j.version>2.1.1</semver4j.version>
     <commons-lang3.version>3.12.0</commons-lang3.version>
+    <com.essaid.util.intercept.version>1.0-SNAPSHOT</com.essaid.util.intercept.version>
   </properties>
 
 
@@ -106,6 +107,13 @@
         <artifactId>commons-lang3</artifactId>
         <version>${commons-lang3.version}</version>
       </dependency>
+
+      <dependency>
+        <groupId>com.essaid</groupId>
+        <artifactId>com.essaid.intercept</artifactId>
+        <version>${com.essaid.util.intercept.version}</version>
+      </dependency>
+
 
     </dependencies>
 

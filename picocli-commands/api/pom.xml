@@ -78,10 +78,15 @@
       <artifactId>picocli</artifactId>
     </dependency>
 
-<!--    <dependency>-->
-<!--      <groupId>org.apache.commons</groupId>-->
-<!--      <artifactId>commons-lang3</artifactId>-->
-<!--    </dependency>-->
+    <dependency>
+      <groupId>org.apache.commons</groupId>
+      <artifactId>commons-lang3</artifactId>
+    </dependency>
+
+    <dependency>
+      <groupId>com.essaid</groupId>
+      <artifactId>com.essaid.intercept</artifactId>
+    </dependency>
 
 <!--    <dependency>-->
 <!--      <groupId>org.springframework</groupId>-->
