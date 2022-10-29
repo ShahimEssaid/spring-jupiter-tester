@@ -6,26 +6,14 @@
         <sourceOutputDir name="target/generated-sources/annotations" />
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
+        <module name="com.essaid.util.model" />
         <module name="com.essaid.picocli.commands.api" />
-        <module name="command-hello" />
-        <module name="app-boot-1" />
-        <module name="api-test" />
-        <module name="util" />
-        <module name="intercept" />
+        <module name="com.essaid.picocli.commands.example.app-boot-1" />
+        <module name="com.essaid.pico.commands.api-test" />
+        <module name="com.essaid.picocli.commands.example.command-hello" />
+        <module name="com.essaid.util" />
+        <module name="com.essaid.intercept" />
       </profile>
     </annotationProcessing>
-    <bytecodeTargetLevel target="17">
-      <module name="com.essaid.pico.commands" target="17" />
-      <module name="com.essaid.pico.commands.cli" target="17" />
-      <module name="com.essaid.pico.commands.parent" target="17" />
-      <module name="com.essaid.picocli.commands" target="17" />
-      <module name="com.essaid.spring.jupiter.tester.api" target="1.5" />
-      <module name="com.essaid.spring.jupiter.tester.cli" target="1.5" />
-      <module name="com.essaid.spring.jupiter.tester.example-tests-1" target="1.5" />
-      <module name="com.essaid.spring.jupiter.tester.example-tests-1-executable-jar" target="17" />
-      <module name="com.essaid.spring.jupiter.tester.examples" target="1.5" />
-      <module name="com.essaid.spring.jupiter.tester.parent" target="1.5" />
-      <module name="example-1" target="17" />
-    </bytecodeTargetLevel>
   </component>
 </project>

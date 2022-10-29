@@ -17,6 +17,7 @@
     <module>picocli-commands</module>
     <module>intercept</module>
     <module>util</module>
+    <module>model</module>
     <!--    <module>junit-tester</module>-->
   </modules>
 
