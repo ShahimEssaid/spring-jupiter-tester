@@ -1,4 +1,4 @@
-package com.essaid.util.modelproxy;
+package com.essaid.util.model;
 
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;

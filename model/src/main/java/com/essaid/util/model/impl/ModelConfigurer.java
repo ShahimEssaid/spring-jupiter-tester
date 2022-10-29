@@ -1,9 +1,9 @@
-package com.essaid.util.modelproxy.impl;
+package com.essaid.util.model.impl;
 
-import com.essaid.util.modelproxy.IModel;
-import com.essaid.util.modelproxy.IModelConfigurer;
-import com.essaid.util.modelproxy.IModelInterface;
-import com.essaid.util.modelproxy.IModelInvocationHandler;
+import com.essaid.util.model.IModel;
+import com.essaid.util.model.IModelConfigurer;
+import com.essaid.util.model.IModelInterface;
+import com.essaid.util.model.IModelInvocationHandler;
 
 import java.util.ArrayList;
 import java.util.Arrays;

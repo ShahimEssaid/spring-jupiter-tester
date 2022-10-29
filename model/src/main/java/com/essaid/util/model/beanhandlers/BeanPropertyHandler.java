@@ -1,7 +1,7 @@
-package com.essaid.util.modelproxy.beanhandlers;
+package com.essaid.util.model.beanhandlers;
 
-import com.essaid.util.modelproxy.IModelInvocationHandler;
-import com.essaid.util.modelproxy.ModelProxyUtil;
+import com.essaid.util.model.IModelInvocationHandler;
+import com.essaid.util.model.ModelProxyUtil;
 
 import java.lang.reflect.Method;
 import java.util.Map;

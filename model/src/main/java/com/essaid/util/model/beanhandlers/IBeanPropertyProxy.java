@@ -1,6 +1,6 @@
-package com.essaid.util.modelproxy.beanhandlers;
+package com.essaid.util.model.beanhandlers;
 
-import com.essaid.util.modelproxy.IModel;
+import com.essaid.util.model.IModel;
 
 import java.util.Map;
 

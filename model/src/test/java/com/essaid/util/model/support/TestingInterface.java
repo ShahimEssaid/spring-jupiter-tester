@@ -1,6 +1,6 @@
-package com.essaid.util.modelproxy.support;
+package com.essaid.util.model.support;
 
-import com.essaid.util.modelproxy.IModelInterface;
+import com.essaid.util.model.IModelInterface;
 
 public interface TestingInterface extends IModelInterface {
   

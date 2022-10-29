@@ -1,11 +1,11 @@
-package com.essaid.util.modelproxy.impl;
+package com.essaid.util.model.impl;
 
 import com.essaid.util.concurrent.ReentrantReadWriteLockEx;
-import com.essaid.util.modelproxy.IModel;
-import com.essaid.util.modelproxy.IModelConfigurer;
-import com.essaid.util.modelproxy.IModelInterface;
-import com.essaid.util.modelproxy.IModelInterfaceNotAvailableException;
-import com.essaid.util.modelproxy.IModelInvocationHandler;
+import com.essaid.util.model.IModel;
+import com.essaid.util.model.IModelConfigurer;
+import com.essaid.util.model.IModelInterface;
+import com.essaid.util.model.IModelInterfaceNotAvailableException;
+import com.essaid.util.model.IModelInvocationHandler;
 
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationHandler;
@@ -86,13 +86,17 @@ public class Model implements IModel.IModelInternal, InvocationHandler {
   
   @Override
   public void appendConfiguration(IModelConfigurer configurer) {
-    configurer.configure(this, true);
+    if(configurer != null){
+      configurer.configure(this, true);
+    }
     
   }
   
   @Override
   public void prependConfiguration(IModelConfigurer configurer) {
-    configurer.configure(this, false);
+    if(configurer != null){
+      configurer.configure(this, false);
+    }
   }
   
   @Override

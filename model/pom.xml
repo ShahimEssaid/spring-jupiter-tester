@@ -10,7 +10,7 @@
   <modelVersion>4.0.0</modelVersion>
 
   <groupId>com.essaid.util</groupId>
-  <artifactId>com.essaid.util.model-proxy</artifactId>
+  <artifactId>com.essaid.util.model</artifactId>
 
   <properties>
     <maven.compiler.source>17</maven.compiler.source>

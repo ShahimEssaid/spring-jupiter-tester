@@ -1,6 +1,6 @@
-package com.essaid.util.modelproxy.beanhandlers;
+package com.essaid.util.model.beanhandlers;
 
-import com.essaid.util.modelproxy.impl.ModelConfigurer;
+import com.essaid.util.model.impl.ModelConfigurer;
 
 public class BeanPropertyConfigurer extends ModelConfigurer {
   

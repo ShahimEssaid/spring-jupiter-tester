@@ -1,6 +1,6 @@
-package com.essaid.util.modelproxy.defaulthandler;
+package com.essaid.util.model.defaulthandler;
 
-import com.essaid.util.modelproxy.IModelInvocationHandler;
+import com.essaid.util.model.IModelInvocationHandler;
 
 import java.lang.reflect.InvocationHandler;
 import java.lang.reflect.Method;

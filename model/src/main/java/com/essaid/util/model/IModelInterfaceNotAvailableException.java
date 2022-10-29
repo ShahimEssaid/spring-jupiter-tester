@@ -1,4 +1,4 @@
-package com.essaid.util.modelproxy;
+package com.essaid.util.model;
 
 public class IModelInterfaceNotAvailableException extends IllegalArgumentException {
   public IModelInterfaceNotAvailableException() {
