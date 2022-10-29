@@ -1,57 +1,46 @@
 package com.essaid.util.intercept.data;
 
+import com.essaid.util.intercept.config.IInterceptConfig;
 import com.essaid.util.intercept.context.IInterceptorContext;
-import com.essaid.util.model.IModel;
+import com.essaid.util.intercept.domain.IDomain;
 import com.essaid.util.model.IModelConfigurer;
-import com.essaid.util.model.impl.Model;
 
 import java.util.List;
 
 public class DefaultDataFactory implements IDataFactory {
+
+  private final IDomain domain;
+  private final IInterceptConfig interceptConfig;
   
-  private final boolean permissive;
-  private final List<IModelConfigurer> configurerList;
-  private final List<IModelConfigurer> localConfigurerList;
-  private final boolean localInterfacePermissive;
-  
-  public DefaultDataFactory(List<IModelConfigurer> configurerList, boolean interfacePermissive,
-                            List<IModelConfigurer> localConfigurerList, boolean localInterfacePermissive) {
-    this.configurerList = configurerList;
-    this.permissive = interfacePermissive;
-    
-    this.localConfigurerList = localConfigurerList;
-    this.localInterfacePermissive = localInterfacePermissive;
+  public DefaultDataFactory(IDomain domain) {
+    this.domain = domain;
+    this.interceptConfig = domain.as(IInterceptConfig.class);
   }
-//
-//  public DefaultDataFactory(){
-//    this.configurerList = null;
-//    this.permissive = false;
-//    this.localConfigurerList = null;
-//    this.localInterfacePermissive = false;
-//  }
+
   
   @Override
-  public IData createData(IInterceptorContext context, List<IModelConfigurer> overrideConfigurers,
-                           Boolean permissiveData) {
+  public IData createData(IInterceptorContext context,
+                           Boolean permissiveDataOverride, List<IModelConfigurer> configurersOverride) {
     if (context != null) {
       IData data = context.internal().getData();
-      data.internal().prependConfiguration(overrideConfigurers);
+      data.internal().prependConfiguration(configurersOverride);
       return data;
     } else {
-      IData data = new Data(permissiveData != null ? permissiveData : permissive);
-      data.internal().appendConfiguration(configurerList);
-      data.internal().prependConfiguration(overrideConfigurers);
+      IData data = new Data(permissiveDataOverride != null ? permissiveDataOverride : interceptConfig.isContextDataPermissive());
+      List<IModelConfigurer> contextDataConfigurers = interceptConfig.getContextDataConfigurers();
+      data.internal().appendConfiguration(contextDataConfigurers);
+      data.internal().prependConfiguration(configurersOverride);
       return data;
     }
   }
   
   @Override
-  public IData createNewLocalData(IInterceptorContext context, List<IModelConfigurer> overrideConfigurers,
-                                   Boolean permissiveData) {
+  public IData createNewLocalData(IInterceptorContext context,
+                                   Boolean permissiveLocalDataOverride, List<IModelConfigurer> configurersOverride ) {
   
-    IData localData = new Data(permissiveData != null ? permissiveData : localInterfacePermissive);
-    localData.internal().appendConfiguration(localConfigurerList);
-    localData.internal().prependConfiguration(overrideConfigurers);
+    IData localData = new Data(permissiveLocalDataOverride != null ? permissiveLocalDataOverride : interceptConfig.isContextLocalDataPermissive());
+    localData.internal().appendConfiguration(interceptConfig.getContextLocalDataConfigurers());
+    localData.internal().prependConfiguration(configurersOverride);
     
     return localData;
   }

@@ -28,10 +28,10 @@ public class InterceptorList extends AbstractInterceptorGroup implements IInterc
   }
   
   @Override
-  public void addInterceptor(IInterceptor interceptor) {
+  public void addInterceptors(List<IInterceptor> interceptors) {
     synchronized (this.interceptors) {
-      interceptors.add(interceptor);
-      interceptors.sort(INTERCEPTOR_COMPARATOR);
+      this.interceptors.addAll(interceptors);
+      this.interceptors.sort(INTERCEPTOR_COMPARATOR);
     }
   }
   

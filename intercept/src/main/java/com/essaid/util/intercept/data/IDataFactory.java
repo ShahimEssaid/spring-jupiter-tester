@@ -4,14 +4,25 @@ import com.essaid.util.intercept.context.IInterceptorContext;
 import com.essaid.util.model.IModel;
 import com.essaid.util.model.IModelConfigurer;
 
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 public interface IDataFactory {
   
-  IData createData(IInterceptorContext context, List<IModelConfigurer> overrideConfigurers,
-                    Boolean overridePermissiveness);
+  default IData createData(IInterceptorContext context,
+                   Boolean overridePermissiveness, IModelConfigurer... overrideConfigurers){
+    return createData(context, overridePermissiveness, Arrays.asList(overrideConfigurers));
+  }
   
-  IData createNewLocalData(IInterceptorContext context, List<IModelConfigurer> overrideLocalConfigurers,
-                            Boolean overrideLocalPermissiveness);
+  IData createData(IInterceptorContext context,
+                    Boolean overridePermissiveness, List<IModelConfigurer> overrideConfigurers);
+  
+  default IData createNewLocalData(IInterceptorContext context,
+                           Boolean overridePermissiveness, IModelConfigurer... overrideConfigurers){
+    return createNewLocalData(context, overridePermissiveness, Arrays.asList(overrideConfigurers));
+  }
+  IData createNewLocalData(IInterceptorContext context,
+                            Boolean overrideLocalPermissiveness, List<IModelConfigurer> overrideLocalConfigurers);
   
 }

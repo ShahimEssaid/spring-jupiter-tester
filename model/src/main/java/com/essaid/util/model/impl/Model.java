@@ -84,18 +84,15 @@ public class Model implements IModel.IModelInternal, InvocationHandler {
   
   
   @Override
-  public void appendConfiguration(IModelConfigurer configurer) {
-    if(configurer != null){
-      configurer.configure(this, true);
-    }
-    
+  public void appendConfiguration(List<IModelConfigurer> configurers) {
+    if(configurers == null) return;
+    configurers.forEach(iModelConfigurer -> iModelConfigurer.configure(this, true));
   }
   
   @Override
-  public void prependConfiguration(IModelConfigurer configurer) {
-    if(configurer != null){
-      configurer.configure(this, false);
-    }
+  public void prependConfiguration(List<IModelConfigurer> configurers) {
+    if(configurers == null) return;
+    configurers.forEach(iModelConfigurer -> iModelConfigurer.configure(this, false));
   }
   
   @Override

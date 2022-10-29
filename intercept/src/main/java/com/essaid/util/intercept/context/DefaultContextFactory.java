@@ -1,11 +1,11 @@
 package com.essaid.util.intercept.context;
 
+import com.essaid.util.asserts.Asserts;
 import com.essaid.util.intercept.data.IData;
 import com.essaid.util.intercept.domain.IDomain;
 import com.essaid.util.intercept.interceptor.IInterceptor;
 import com.essaid.util.intercept.interceptor.IInterceptorGroup;
 import com.essaid.util.intercept.interceptor.IInterceptorList;
-import com.essaid.util.model.IModel;
 
 import java.util.Collections;
 import java.util.Iterator;
@@ -13,10 +13,9 @@ import java.util.Iterator;
 public class DefaultContextFactory implements IContextFactory {
   
   @Override
-  public IInterceptorContext createContext(IDomain domain, IData data, IData localData,
-                                           IInterceptor interceptor) {
+  public IInterceptorContext createContext(IDomain domain, IData data, IData localData, IInterceptor interceptor) {
+    Asserts.allNotNull("Null argument wile constructing context", domain, data, localData, interceptor);
     if (IInterceptorGroup.class.isAssignableFrom(interceptor.getClass())) {
-      
       if (IInterceptorList.class.isAssignableFrom(interceptor.getClass())) {
         IInterceptorList listInterceptor = (IInterceptorList) interceptor;
         Iterator<IInterceptor> iterator = listInterceptor.getIterator();

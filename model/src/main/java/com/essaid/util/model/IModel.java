@@ -1,5 +1,7 @@
 package com.essaid.util.model;
 
+import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.locks.ReadWriteLock;
@@ -11,22 +13,19 @@ public interface IModel extends IInterfaceable, ReadWriteLock {
   
   interface IModelInternal extends IModel, ReadWriteLock {
     
-    void appendConfiguration(IModelConfigurer configurer);
-    
-    default void appendConfiguration(List<IModelConfigurer> configurerList) {
-      if (configurerList != null){
-        configurerList.forEach(this::appendConfiguration);
-      }
+    default void appendConfiguration(IModelConfigurer... configurer){
+      appendConfiguration(Arrays.asList(configurer));
     }
     
-    void prependConfiguration(IModelConfigurer configurer);
+    void appendConfiguration(List<IModelConfigurer> configurers);
     
     
-    default void prependConfiguration(List<IModelConfigurer> configurerList) {
-      if (configurerList != null){
-        configurerList.forEach(this::prependConfiguration);
-      }
+    default void prependConfiguration(IModelConfigurer... configurer){
+      prependConfiguration(Arrays.asList(configurer));
     }
+    
+    void prependConfiguration(List<IModelConfigurer> configurers);
+    
     
     void addHandler(Class<? extends IModelInvocationHandler> handlerClass, Class<? extends IModel> modelClass,
                     boolean append);
