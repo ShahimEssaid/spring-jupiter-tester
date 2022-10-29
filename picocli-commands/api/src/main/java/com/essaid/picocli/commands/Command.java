@@ -4,15 +4,15 @@ import picocli.CommandLine;
 
 public class Command implements ICommand {
   
-  private ICommandType2 commandType;
+  private ICommandType commandType;
   
   @Override
-  public ICommandType2 getCommandType() {
+  public ICommandType getCommandType() {
     return commandType;
   }
   
   @Override
-  public void setCommandType(ICommandType2 commandType) {
+  public void setCommandType(ICommandType commandType) {
     this.commandType = commandType;
   }
   
@@ -23,7 +23,7 @@ public class Command implements ICommand {
 }
 
 
-@CommandLine.Command(name = ICommands2.DEFAULT_ROOT_COMMAND_PATH, hidden = true, subcommandsRepeatable = true)
+@CommandLine.Command(name = ICommands.DEFAULT_ROOT_COMMAND_PATH, hidden = true, subcommandsRepeatable = true)
 class DefaultRootCommand extends Command{
 
 

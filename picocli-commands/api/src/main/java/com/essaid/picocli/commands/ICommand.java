@@ -4,7 +4,7 @@ import java.util.concurrent.Callable;
 
 public interface ICommand extends Callable<Integer> {
   
-  ICommandType2 getCommandType();
-  void setCommandType(ICommandType2 commandType);
+  ICommandType getCommandType();
+  void setCommandType(ICommandType commandType);
   
 }

@@ -1,7 +1,7 @@
 package com.essaid.picocli.commands.unit;
 
 import com.essaid.picocli.commands.CommandLineConfig;
-import com.essaid.picocli.commands.ICommands2;
+import com.essaid.picocli.commands.ICommands;
 import com.essaid.picocli.commands.command.SetFieldHello;
 import org.junit.jupiter.api.Test;
 
@@ -11,7 +11,7 @@ public class ICommandTests {
   
   @Test
   void setHelloField() {
-    ICommands2 commands = ICommands2.getDefaultInstance();
+    ICommands commands = ICommands.getDefaultInstance();
     commands.addCommandType(null, "test.setField", SetFieldHello.class, null, "test " + "example");
     
     CommandLineConfig config = commands.getDefaultCommandLineConfig();

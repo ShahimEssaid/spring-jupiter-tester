@@ -74,25 +74,26 @@ public abstract class AbstractExecutionStrategyExtended implements IExecutionStr
     next.execute();
     executions.add(next);
     
-    
-    CommandLine.IExecutionStrategy nextStrategy = nextParseResult.commandSpec().commandLine().getExecutionStrategy();
-    
-    if (!(nextStrategy instanceof IExecutionStrategyExtended)) {
-      throw new IllegalStateException("This execution strategy needs IExecutionStrategyExtended children but " +
-          "found:" + nextStrategy);
-    }
-    
-    IExecutionStrategyExtended extendedNextStrategy = (IExecutionStrategyExtended) nextStrategy;
-    if (this != nextStrategy) {
-      children.add(extendedNextStrategy);
-      extendedNextStrategy.next();
-    }
+    // todo
+//    CommandLine.IExecutionStrategy nextStrategy = nextParseResult.commandSpec().commandLine().getExecutionStrategy();
+//
+//    if (!(nextStrategy instanceof IExecutionStrategyExtended)) {
+//      throw new IllegalStateException("This execution strategy needs IExecutionStrategyExtended children but " +
+//          "found:" + nextStrategy);
+//    }
+//
+//    IExecutionStrategyExtended extendedNextStrategy = (IExecutionStrategyExtended) nextStrategy;
+//    if (this != nextStrategy) {
+//      children.add(extendedNextStrategy);
+//      extendedNextStrategy.next();
+//    }
     
 
     
-    Integer exitCode = executeUserObject(nextParseResult);
+    // todo: Integer exitCode = executeUserObject(nextParseResult);
     
-    return exitCode;
+    // todo: return exitCode;
+    return  0;
   }
   
   protected int returnExitCode() {
@@ -123,7 +124,7 @@ public abstract class AbstractExecutionStrategyExtended implements IExecutionStr
           ((CommandLine.IHelpCommandInitializable) parsed.getCommand()).init(parsed,
               Reflect.getCommandLine_Help_ColorScheme_ansi(colorScheme), System.out, System.err);
         }
-        executeUserObject(parsed.getParseResult());
+        //todo: executeUserObject(parsed.getParseResult());
         return parsed.getCommandSpec().exitCodeOnUsageHelp();
       }
     }

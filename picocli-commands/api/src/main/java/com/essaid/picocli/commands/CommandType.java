@@ -7,49 +7,17 @@ import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.stream.Collectors;
 
-public interface ICommandType2 {
-  
-  String getName();
-  
-  String getPath();
-  
-  CommandLine.IFactory getFactory();
-  
-  String getInfo();
-  
-  Class<?> getCommandClass();
-  
-  IICommandType2 internal();
-  
-  interface IICommandType2 extends ICommandType2 {
-    
-    ICommands2 getCommands();
-    
-    boolean isTopCommand();
-    
-    String getDirectParentPath();
-    
-    List<String> getDirectChildPaths();
-    
-    Map<Object, Object> getContext();
-    
-
-    
-  }
-}
-
-
-class CommandType implements ICommandType2.IICommandType2 {
+class CommandType implements ICommandType.IICommandType {
   
   private final CommandLine.IFactory factory;
   private final String path;
   private final String name;
-  private final ICommands2 commands;
+  private final ICommands commands;
   private final String info;
   private final Map<Object, Object> context = new ConcurrentHashMap<>();
   private final Class<?> commandClass;
   
-  CommandType(String name, String path, Class<?> commandClass, CommandLine.IFactory factory, ICommands2 commands,
+  CommandType(String name, String path, Class<?> commandClass, CommandLine.IFactory factory, ICommands commands,
               String info) {
     this.name = name;
     this.path = path;
@@ -75,17 +43,27 @@ class CommandType implements ICommandType2.IICommandType2 {
   }
   
   @Override
-  public String getInfo() {
-    return info;
+  public String title() {
+    return null;
   }
   
   @Override
-  public IICommandType2 internal() {
+  public String shortDescription() {
+    return null;
+  }
+  
+  @Override
+  public String longDescription() {
+    return null;
+  }
+  
+  @Override
+  public IICommandType internal() {
     return this;
   }
   
   @Override
-  public ICommands2 getCommands() {
+  public ICommands getCommands() {
     return commands;
   }
   

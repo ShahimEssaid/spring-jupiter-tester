@@ -16,7 +16,7 @@ public class CommandLineConfig {
   private final boolean addRecursive;
   private final boolean recursivelyAdded;
   private final List<CommandLineConfig> subCommands = new ArrayList<>();
-  private ICommandType2 commandType;
+  private ICommandType commandType;
   private CommandLine commandLine;
   
   public CommandLineConfig(String name, String path, boolean addRecursive, boolean recursivelyAdded) {
@@ -35,7 +35,7 @@ public class CommandLineConfig {
   }
   
   /**
-   * Clears this config recursively as if it wasn't resolved against a {@link ICommands2} instance so that it can be
+   * Clears this config recursively as if it wasn't resolved against a {@link ICommands} instance so that it can be
    * re-resolved again.  It removes all the {@link CommandLineConfig#recursivelyAdded} instances and clears
    * {@link CommandLineConfig#commandType} and {@link CommandLineConfig#commandLine};
    */
@@ -46,11 +46,11 @@ public class CommandLineConfig {
     getSubCommands().removeIf(RECURSIVELY_ADDED_FILTER);
   }
   
-  public ICommandType2 getCommandType() {
+  public ICommandType getCommandType() {
     return commandType;
   }
   
-  public void setCommandType(ICommandType2 commandType) {
+  public void setCommandType(ICommandType commandType) {
     this.commandType = commandType;
   }
   
