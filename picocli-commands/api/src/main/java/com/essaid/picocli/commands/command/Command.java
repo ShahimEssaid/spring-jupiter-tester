@@ -1,5 +1,7 @@
-package com.essaid.picocli.commands;
+package com.essaid.picocli.commands.command;
 
+import com.essaid.picocli.commands.ICommands;
+import com.essaid.picocli.commands.type.ICommandType;
 import picocli.CommandLine;
 
 public class Command implements ICommand {
@@ -20,11 +22,4 @@ public class Command implements ICommand {
   public Integer call() throws Exception {
     return null;
   }
-}
-
-
-@CommandLine.Command(name = ICommands.DEFAULT_ROOT_COMMAND_PATH, hidden = true, subcommandsRepeatable = true)
-class DefaultRootCommand extends Command{
-
-
 }

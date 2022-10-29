@@ -1,13 +1,16 @@
 package com.essaid.picocli.commands;
 
+import com.essaid.picocli.commands.command.CommandLineConfig;
 import com.essaid.picocli.commands.factory.PicoCollectionFactory;
 import com.essaid.picocli.commands.factory.PicoGroovyFactory;
 import com.essaid.picocli.commands.factory.PicoInstanceFactory;
 import com.essaid.picocli.commands.factory.PicoMapFactory;
+import com.essaid.picocli.commands.type.CommandType;
+import com.essaid.picocli.commands.type.ICommandType;
 import picocli.CommandLine;
 
 import java.util.ArrayList;
-import java.util.Iterator;
+import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
@@ -19,13 +22,12 @@ class Commands implements ICommands.IICommands {
   private final Map<String, List<ICommandType>> typesByPath = new ConcurrentHashMap<>();
   private final Map<Object, Object> context = new ConcurrentHashMap<>();
   
-  static CommandLine.IFactory getDefaultFactory() {
-    return new PicoGroovyFactory(new PicoCollectionFactory(new PicoMapFactory(new PicoInstanceFactory())));
-  }
-  
   Commands(String instanceName) {
     this.name = instanceName;
-    addCommandType(null, DEFAULT_ROOT_COMMAND_PATH, DefaultRootCommand.class, getDefaultFactory(), null);
+  }
+  
+  static CommandLine.IFactory getDefaultFactory() {
+    return new PicoGroovyFactory(new PicoCollectionFactory(new PicoMapFactory(new PicoInstanceFactory())));
   }
   
   @Override
@@ -34,30 +36,19 @@ class Commands implements ICommands.IICommands {
   }
   
   @Override
-  public ICommandType addCommandType(String name, String path, Class<?> commandClass, CommandLine.IFactory factory,
-                                     String info) {
-    if (factory == null) {
-      factory = getDefaultFactory();
-    }
-    ICommandType type = new CommandType(name, path, commandClass, factory, this, info);
-    typesByPath.computeIfAbsent(path, s -> new ArrayList<>()).add(type);
-    typesList.add(type);
+  public ICommandType addCommandType(ICommands commands, String name, String path, int order, String title,
+                                     String shortDescription, String longDescription, String notes,
+                                     Class<?> commandClass, CommandLine.IFactory factory,
+                                     CommandLine.IExecutionStrategy strategy) {
+    
+    ICommandType type = new CommandType(commands, name, path, order, title, shortDescription, longDescription, notes,
+        commandClass, factory, strategy);
+    List<ICommandType> typeList = typesByPath.computeIfAbsent(path, pathKey -> new ArrayList<>());
+    typeList.add(type);
+    Collections.sort(typeList);
     return type;
   }
   
-  @Override
-  public void removeCommandType(ICommandType commandType) {
-    typesList.remove(commandType);
-    Iterator<String> pathIterator = typesByPath.keySet().iterator();
-    while (pathIterator.hasNext()) {
-      String path = pathIterator.next();
-      List<ICommandType> pathCommandTypes = typesByPath.get(path);
-      pathCommandTypes.remove(commandType);
-      if (pathCommandTypes.isEmpty()) {
-        pathIterator.remove();
-      }
-    }
-  }
   
   @Override
   public CommandLineConfig getDefaultCommandLineConfig() {
@@ -76,7 +67,7 @@ class Commands implements ICommands.IICommands {
     
     if (commandTypes != null) {
       ICommandType commandType = commandTypes.get(0);
-      commandLine = new CommandLine(commandType.getCommandClass(), commandType.getFactory());
+      commandLine = new CommandLine(commandType.getCommandClass(), commandType.getCommandFactory());
       commandLineConfig.setCommandType(commandType);
       commandLineConfig.setCommandLine(commandLine);
       if (commandLineConfig.isAddRecursive()) {
@@ -102,7 +93,7 @@ class Commands implements ICommands.IICommands {
         .filter(path -> path.contains(path))
         .map(path -> typesByPath.get(path).get(0))
         .forEach(ct -> {
-          CommandLine childCommandLine = new CommandLine(ct.getCommandClass(), ct.getFactory());
+          CommandLine childCommandLine = new CommandLine(ct.getCommandClass(), ct.getCommandFactory());
           commandLine.addSubcommand(ct.getName(), childCommandLine);
           addCommandLineRecursive(ct, childCommandLine);
         });
