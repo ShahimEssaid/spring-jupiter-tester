@@ -25,6 +25,11 @@ public class BeanPropertyHandler implements IModelInvocationHandler {
   
   @Override
   public InvocationResult doInvoke(Object proxy, Method method, Object[] args) {
+    
+    if (method.isDefault()) {
+      return IModelInvocationHandler.UN_HANDLED;
+    }
+    
     String methodName = method.getName();
     String normalizedMethodName = ModelProxyUtil.getNormalizedName(methodName);
     

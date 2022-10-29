@@ -12,6 +12,12 @@ import java.util.Iterator;
 
 public class DefaultContextFactory implements IContextFactory {
   
+  private final IDomain domain;
+  
+  public DefaultContextFactory(IDomain domain){
+    this.domain = domain;
+  }
+  
   @Override
   public IInterceptorContext createContext(IDomain domain, IData data, IData localData, IInterceptor interceptor) {
     Asserts.allNotNull("Null argument wile constructing context", domain, data, localData, interceptor);

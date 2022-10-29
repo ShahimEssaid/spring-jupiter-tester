@@ -20,5 +20,7 @@ public interface IInterceptor extends Callable<Object>, Runnable {
     
     String getInstanceId();
     
+    IInterceptorGroup getInterceptorGroup();
+    
   }
 }

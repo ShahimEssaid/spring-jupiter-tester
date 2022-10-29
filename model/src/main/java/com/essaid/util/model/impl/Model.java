@@ -22,7 +22,7 @@ import java.util.concurrent.locks.ReentrantReadWriteLock;
 
 public class Model implements IModel.IModelInternal, InvocationHandler {
   
-  private final boolean permissive;
+  private boolean permissive;
   private final Map<Object, Object> data = new ConcurrentHashMap<>();
   private final ReentrantReadWriteLock readWriteLock = new ReentrantReadWriteLock();
   //  private final List<IModelInterfacesDescription<T>> interfaceDescriptions = new ArrayList<>();
@@ -82,6 +82,16 @@ public class Model implements IModel.IModelInternal, InvocationHandler {
     return (Map<Object, Object>) data.computeIfAbsent(proxyClass, o -> new ConcurrentHashMap<>());
   }
   
+  
+  @Override
+  public boolean isPermissive() {
+    return permissive;
+  }
+  
+  @Override
+  public void setPermissable(boolean isPermissive) {
+    this.permissive = isPermissive;
+  }
   
   @Override
   public void appendConfiguration(List<IModelConfigurer> configurers) {

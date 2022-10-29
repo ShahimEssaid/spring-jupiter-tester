@@ -6,13 +6,14 @@ import com.essaid.util.intercept.data.IData;
 import com.essaid.util.intercept.domain.IDomain;
 
 import com.essaid.util.intercept.interceptor.IInterceptor;
+import com.essaid.util.intercept.interceptor.IInterceptorGroup;
 import com.essaid.util.model.IModel;
 import com.essaid.util.model.IModelConfigurer;
 import com.essaid.util.intercept.interceptor.IInterceptorOutcome;
 
 import java.util.List;
 
-public class AbstractInterceptorGroup implements IInterceptor.IInterceptorInternal {
+public class AbstractInterceptorGroup implements IInterceptorGroup {
   
   private final IDomain domain;
   private final List<IModelConfigurer> dataConfigurerOverrides;
@@ -69,5 +70,10 @@ public class AbstractInterceptorGroup implements IInterceptor.IInterceptorIntern
   @Override
   public String getInstanceId() {
     return null;
+  }
+  
+  @Override
+  public IInterceptorGroup getInterceptorGroup() {
+    return this;
   }
 }
