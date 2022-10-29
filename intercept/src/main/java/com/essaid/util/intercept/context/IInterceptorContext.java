@@ -1,23 +1,34 @@
 package com.essaid.util.intercept.context;
 
-import com.essaid.util.intercept.IInterceptor;
-import com.essaid.util.intercept.domain.DomainProvider;
-import com.essaid.util.intercept.group.IInterceptorGroup;
-import com.essaid.util.intercept.data.IInterceptorContextGlobalData;
-import com.essaid.util.intercept.data.IInterceptorContextLocalData;
+import com.essaid.util.intercept.domain.IDomain;
+import com.essaid.util.intercept.interceptor.IInterceptorOutcome;
+import com.essaid.util.model.IModelInterface;
+import com.essaid.util.model.IModel;
 
-import java.util.Collection;
-
-public interface IInterceptorContext extends DomainProvider {
+/**
+ * TODO: implement global data as a thread local
+ */
+public interface IInterceptorContext {
   
-  IInterceptorGroup getInterceptorGroup();
+  IInterceptorOutcome nextIntercept();
   
-  Collection<IInterceptor> getContextInterceptors();
+  IDomain getDomain();
   
-  Object doNextInterceptor();
+  <I extends IModelInterface> I getDataAs(Class<I> cls);
   
-  IInterceptorContextLocalData getLocalData();
   
-  IInterceptorContextGlobalData getGlobalData();
+  default IInterceptorContextInternal internal() {
+    return (IInterceptorContextInternal) this;
+  }
+  
+  interface IInterceptorContextInternal extends IInterceptorContext {
+    
+    IModel getData();
+    
+    IModel getLocalData();
+    
+    <I extends IModelInterface> I getLocalDataAs(Class<I> cls);
+    
+  }
   
 }

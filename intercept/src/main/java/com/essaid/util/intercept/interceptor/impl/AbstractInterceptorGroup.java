@@ -1,0 +1,71 @@
+package com.essaid.util.intercept.interceptor.impl;
+
+import com.essaid.util.intercept.context.IInterceptorContext;
+import com.essaid.util.intercept.domain.IDomain;
+
+import com.essaid.util.intercept.interceptor.IInterceptor;
+import com.essaid.util.model.IModel;
+import com.essaid.util.model.IModelConfigurer;
+import com.essaid.util.intercept.interceptor.IInterceptorOutcome;
+
+import java.util.List;
+
+public class AbstractInterceptorGroup implements IInterceptor.IInterceptorInternal {
+  
+  private final IDomain domain;
+  private final List<IModelConfigurer> dataConfigurerOverrides;
+  private final List<IModelConfigurer> localDataConfigurerOverrides;
+  private final Boolean overridePermissiveness;
+  private final Boolean overrideLocalPermissiveness;
+  
+  public AbstractInterceptorGroup(IDomain domain, List<IModelConfigurer> dataConfigurerOverrides,
+                                  Boolean overridePermissiveness, List<IModelConfigurer> localDataConfigurerOverrides
+      , Boolean overrideLocalPermissiveness) {
+    this.domain = domain;
+    this.dataConfigurerOverrides = dataConfigurerOverrides;
+    this.localDataConfigurerOverrides = localDataConfigurerOverrides;
+    this.overridePermissiveness = overridePermissiveness;
+    this.overrideLocalPermissiveness = overrideLocalPermissiveness;
+  }
+  
+  @Override
+  final public IInterceptorOutcome intercept(IInterceptorContext interceptorContext) {
+    interceptorContext = buildContext(interceptorContext);
+    return interceptorContext.nextIntercept();
+  }
+  
+  protected IInterceptorContext buildContext(IInterceptorContext interceptorContext) {
+    IInterceptFactories factories = getDomain().as(IInterceptFactories.class);
+    IModel data = factories.getIDataFactory()
+        .createData(interceptorContext, dataConfigurerOverrides, overridePermissiveness);
+    IModel localData = factories.getIDataFactory()
+        .createNewLocalData(interceptorContext, localDataConfigurerOverrides, overrideLocalPermissiveness);
+    
+    return factories.createContext(interceptorContext.getDomain(), data, localData, this);
+  }
+  
+  @Override
+  final public IDomain getDomain() {
+    return domain;
+  }
+  
+  @Override
+  public void run() {
+    intercept(null);
+  }
+  
+  @Override
+  public Object call() throws Exception {
+    return intercept(null);
+  }
+  
+  @Override
+  public String getId() {
+    return null;
+  }
+  
+  @Override
+  public String getInstanceId() {
+    return null;
+  }
+}

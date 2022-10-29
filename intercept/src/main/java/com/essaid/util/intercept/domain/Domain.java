@@ -1,22 +1,19 @@
 package com.essaid.util.intercept.domain;
 
-import com.essaid.util.intercept.data.DomainData;
-import com.essaid.util.intercept.data.IDomainData;
+import com.essaid.util.model.IModelInterface;
+import com.essaid.util.model.IInterfaceable;
 
 public class Domain implements IDomain {
   
   
-  private final IDomainData domainData;
+  private final IInterfaceable proxy;
   
-  public Domain(IDomainData domainData) {
-    this.domainData = domainData;
+  public Domain(IInterfaceable domainProxy) {
+    this.proxy = domainProxy;
   }
   
-  public Domain() {
-    this.domainData = new DomainData();
-  }
-  
-  public IDomainData getData() {
-    return domainData;
+  @Override
+  public <I extends IModelInterface> I as(Class<I> cls) {
+    return proxy.as(cls);
   }
 }

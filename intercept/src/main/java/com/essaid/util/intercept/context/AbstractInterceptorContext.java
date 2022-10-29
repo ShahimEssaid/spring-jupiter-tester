@@ -1,58 +1,64 @@
 package com.essaid.util.intercept.context;
 
 import com.essaid.util.asserts.Asserts;
-import com.essaid.util.intercept.IInterceptor;
-import com.essaid.util.intercept.data.IInterceptorContextGlobalData;
-import com.essaid.util.intercept.data.IInterceptorContextLocalData;
-import com.essaid.util.intercept.group.IInterceptorGroup;
+import com.essaid.util.intercept.domain.IDomain;
+import com.essaid.util.intercept.interceptor.IInterceptor;
+import com.essaid.util.intercept.interceptor.IInterceptorOutcome;
+import com.essaid.util.model.IModelInterface;
+import com.essaid.util.model.IModel;
 
-import java.util.Collection;
-
-public abstract class AbstractInterceptorContext implements IInterceptorContext {
+abstract  public class AbstractInterceptorContext implements IInterceptorContext.IInterceptorContextInternal {
   
-  private final IInterceptorGroup group;
-  private final IInterceptorContextGlobalData globalData;
-  private final IInterceptorContextLocalData localData;
-  private final Collection<IInterceptor> interceptors;
+  private final IDomain domain;
+  private final IModel data;
+  private final IModel localData;
   
-  public AbstractInterceptorContext(IInterceptorGroup group, IInterceptorContextGlobalData globalData,
-                                    IInterceptorContextLocalData localData, Collection<IInterceptor> interceptors) {
-    Asserts.notNull(group, "IInterceptorGroup can't be null while constructing InterceptorContext");
-    Asserts.notNull(globalData, "IInterceptorContextGlobalData can't be null while constructing InterceptorContext");
-    Asserts.notNull(localData, "IInterceptorContextLocalData can't be null while constructing InterceptorContext");
-    this.group = group;
-    this.globalData = globalData;
+  public AbstractInterceptorContext(IDomain domain, IModel data, IModel localData) {
+    Asserts.notNull(domain, "IDomain can't be null while constructing AbstractInterceptorContext");
+    Asserts.notNull(data, "IModelProxy interceptor data can't be null while constructing " +
+        "AbstractInterceptorContext");
+    Asserts.notNull(localData, "IModelProxy interceptor local data can't be null while constructing " +
+        "AbstractInterceptorContext");
+    
+    this.domain = domain;
+    this.data = data;
     this.localData = localData;
-    this.interceptors = interceptors;
-  }
-  
-  
-  @Override
-  final public IInterceptorGroup getInterceptorGroup() {
-    return group;
   }
   
   @Override
-  final public Collection<IInterceptor> getContextInterceptors() {
-    return interceptors;
+  public IModel getData() {
+    return data;
   }
   
   @Override
-  final public Object doNextInterceptor() {
-    IInterceptor nextInterceptor = getNextInterceptor();
-    return nextInterceptor == null ? null : nextInterceptor.doInterceptor(this);
-  }
-  
-  @Override
-  final public IInterceptorContextLocalData getLocalData() {
+  public IModel getLocalData() {
     return localData;
   }
   
   @Override
-  final public IInterceptorContextGlobalData getGlobalData() {
-    return globalData;
+  public <I extends IModelInterface> I getLocalDataAs(Class<I> cls) {
+    return localData.as(cls);
+  }
+  
+  @Override
+  public IInterceptorOutcome nextIntercept() {
+    IInterceptor nextInterceptor = getNextInterceptor();
+    IInterceptorOutcome outcome = null;
+    if (nextInterceptor != null) {
+      outcome = nextInterceptor.intercept(this);
+    }
+    return outcome;
+  }
+  
+  @Override
+  public IDomain getDomain() {
+    return domain;
+  }
+  
+  @Override
+  public <I extends IModelInterface> I getDataAs(Class<I> cls) {
+    return data.as(cls);
   }
   
   abstract protected IInterceptor getNextInterceptor();
-  
 }

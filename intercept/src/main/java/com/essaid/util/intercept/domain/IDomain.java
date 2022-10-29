@@ -1,9 +1,8 @@
 package com.essaid.util.intercept.domain;
 
-import com.essaid.util.intercept.data.IDomainData;
+import com.essaid.util.model.IInterfaceable;
 
-public interface IDomain {
-  
-  IDomainData getData();
+public interface IDomain extends IInterfaceable {
+
   
 }

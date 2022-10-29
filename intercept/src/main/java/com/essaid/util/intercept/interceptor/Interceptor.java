@@ -1,4 +1,4 @@
-package com.essaid.util.intercept;
+package com.essaid.util.intercept.interceptor;
 
 import java.lang.annotation.Documented;
 import java.lang.annotation.ElementType;

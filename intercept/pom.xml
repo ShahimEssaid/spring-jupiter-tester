@@ -9,8 +9,8 @@
   </parent>
   <modelVersion>4.0.0</modelVersion>
 
-  <groupId>com.essaid.util</groupId>
-  <artifactId>com.essaid.util.intercept</artifactId>
+  <groupId>com.essaid</groupId>
+  <artifactId>com.essaid.intercept</artifactId>
 
   <properties>
     <maven.compiler.source>17</maven.compiler.source>
@@ -26,6 +26,12 @@
       <groupId>com.essaid.util</groupId>
       <artifactId>com.essaid.util</artifactId>
       <version>${com.essaid.util.version}</version>
+    </dependency>
+
+    <dependency>
+      <groupId>com.essaid.util</groupId>
+      <artifactId>com.essaid.util.model</artifactId>
+      <version>1.0-SNAPSHOT</version>
     </dependency>
 
     <dependency>
