@@ -1,5 +1,6 @@
 package com.essaid.util.intercept.context;
 
+import com.essaid.util.intercept.data.IData;
 import com.essaid.util.intercept.domain.IDomain;
 import com.essaid.util.intercept.interceptor.IInterceptor;
 import com.essaid.util.intercept.interceptor.IInterceptorGroup;
@@ -12,7 +13,7 @@ import java.util.Iterator;
 public class DefaultContextFactory implements IContextFactory {
   
   @Override
-  public IInterceptorContext createContext(IDomain domain, IModel data, IModel localData,
+  public IInterceptorContext createContext(IDomain domain, IData data, IData localData,
                                            IInterceptor interceptor) {
     if (IInterceptorGroup.class.isAssignableFrom(interceptor.getClass())) {
       

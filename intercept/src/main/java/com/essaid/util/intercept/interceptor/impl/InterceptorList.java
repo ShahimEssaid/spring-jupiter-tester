@@ -11,8 +11,7 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.concurrent.CopyOnWriteArrayList;
 
-public class InterceptorList extends AbstractInterceptorGroup implements IInterceptorList,
-    IInterceptor.IInterceptorInternal {
+public class InterceptorList extends AbstractInterceptorGroup implements IInterceptorList {
   
   private final InterceptorComparator INTERCEPTOR_COMPARATOR = new InterceptorComparator();
   

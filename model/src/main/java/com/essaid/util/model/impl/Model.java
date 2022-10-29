@@ -1,6 +1,5 @@
 package com.essaid.util.model.impl;
 
-import com.essaid.util.concurrent.ReentrantReadWriteLockEx;
 import com.essaid.util.model.IModel;
 import com.essaid.util.model.IModelConfigurer;
 import com.essaid.util.model.IModelInterface;
@@ -25,7 +24,7 @@ public class Model implements IModel.IModelInternal, InvocationHandler {
   
   private final boolean permissive;
   private final Map<Object, Object> data = new ConcurrentHashMap<>();
-  private final ReentrantReadWriteLock readWriteLock = new ReentrantReadWriteLockEx();
+  private final ReentrantReadWriteLock readWriteLock = new ReentrantReadWriteLock();
   //  private final List<IModelInterfacesDescription<T>> interfaceDescriptions = new ArrayList<>();
   private final List<Class<? extends IModelInterface>> modelInterfaces = new ArrayList<>();
   private final List<Class<? extends IModelInvocationHandler>> modelHandlers = new ArrayList<>();
@@ -40,7 +39,7 @@ public class Model implements IModel.IModelInternal, InvocationHandler {
   }
   
   @Override
-  public void addHandler(Class<? extends IModelInvocationHandler> handlerClass, Class<? extends IModel> proxyClass,
+  public void addHandler(Class<? extends IModelInvocationHandler> handlerClass, Class<? extends IModel> modelClass,
                          boolean append) {
     if (modelHandlers.contains(handlerClass)) {
       return;
@@ -54,7 +53,7 @@ public class Model implements IModel.IModelInternal, InvocationHandler {
     
     try {
       Constructor<? extends IModelInvocationHandler> declaredConstructor =
-          handlerClass.getDeclaredConstructor(proxyClass);
+          handlerClass.getDeclaredConstructor(modelClass);
       IModelInvocationHandler iModelInvocationHandler = declaredConstructor.newInstance(this);
       if (append) {
         invocationHandlers.add(iModelInvocationHandler);

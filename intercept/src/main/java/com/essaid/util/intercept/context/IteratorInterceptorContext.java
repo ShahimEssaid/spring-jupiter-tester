@@ -1,5 +1,6 @@
 package com.essaid.util.intercept.context;
 
+import com.essaid.util.intercept.data.IData;
 import com.essaid.util.intercept.domain.IDomain;
 import com.essaid.util.intercept.interceptor.IInterceptor;
 import com.essaid.util.model.IModel;
@@ -9,7 +10,7 @@ import java.util.Iterator;
 public class IteratorInterceptorContext extends AbstractInterceptorContext {
   private final Iterator<IInterceptor> iterator;
   
-  public IteratorInterceptorContext(IDomain domain, IModel data, IModel localData,
+  public IteratorInterceptorContext(IDomain domain, IData data, IData localData,
                                     Iterator<IInterceptor> interceptorIterator) {
     super(domain, data, localData);
     this.iterator = interceptorIterator;

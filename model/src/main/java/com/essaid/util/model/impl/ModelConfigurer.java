@@ -22,11 +22,11 @@ public class ModelConfigurer implements IModelConfigurer {
   private final String notes;
   private final List<Class<? extends IModelInterface>> interfaceClasses;
   private final List<Class<? extends IModelInvocationHandler>> handlerClasses;
-  private final Class<? extends IModel> proxyClass;
+  private final Class<? extends IModel> modelClass;
   
   public ModelConfigurer(String id, String name, String version, int priority, String shortDescription,
                          String description, String notes, Class<? extends IModelInterface>[] interfaces, Class<?
-      extends IModelInvocationHandler>[] handlers, Class<? extends IModel> proxyClass) {
+      extends IModelInvocationHandler>[] handlers, Class<? extends IModel> modelClass) {
     this.id = id;
     this.name = name;
     this.version = version;
@@ -36,7 +36,7 @@ public class ModelConfigurer implements IModelConfigurer {
     this.notes = notes;
     this.interfaceClasses = Arrays.asList(interfaces);
     this.handlerClasses = Arrays.asList(handlers);
-    this.proxyClass = proxyClass;
+    this.modelClass = modelClass;
   }
   
   @Override
@@ -85,7 +85,7 @@ public class ModelConfigurer implements IModelConfigurer {
       internal.getInterfaces().addAll(interfaceClasses);
       
       for (Class<? extends IModelInvocationHandler> handlerClass : handlerClasses) {
-        internal.addHandler(handlerClass, proxyClass, true);
+        internal.addHandler(handlerClass, modelClass, true);
       }
     } else {
       List<Class<? extends IModelInterface>> reversed = new ArrayList<>(interfaceClasses);
@@ -99,7 +99,7 @@ public class ModelConfigurer implements IModelConfigurer {
       reversedHandlers.forEach(aClass -> proxy.internal().getHandlers().add(0, aClass));
       
       for (Class<? extends IModelInvocationHandler> handlerClass : reversedHandlers) {
-        internal.addHandler(handlerClass, proxyClass, false);
+        internal.addHandler(handlerClass, modelClass, false);
       }
       //TODO: implement
       throw new UnsupportedOperationException("Not implemented yet.");

@@ -28,7 +28,7 @@ public interface IModel extends IInterfaceable, ReadWriteLock {
       }
     }
     
-    void addHandler(Class<? extends IModelInvocationHandler> handlerClass, Class<? extends IModel> proxyClass,
+    void addHandler(Class<? extends IModelInvocationHandler> handlerClass, Class<? extends IModel> modelClass,
                     boolean append);
     
     List<Class<? extends IModelInvocationHandler>> getHandlers();

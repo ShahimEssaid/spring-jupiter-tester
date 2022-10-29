@@ -5,7 +5,7 @@ import com.essaid.util.model.IModelConfigurer;
 
 import java.util.List;
 
-public interface IDomainInterceptConfiguration extends IModelInterface {
+public interface IDomainInterceptConfigurationInterface extends IModelInterface {
   
   boolean isPermissive();
   

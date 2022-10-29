@@ -1,6 +1,7 @@
 package com.essaid.util.intercept.context;
 
 import com.essaid.util.asserts.Asserts;
+import com.essaid.util.intercept.data.IData;
 import com.essaid.util.intercept.domain.IDomain;
 import com.essaid.util.intercept.interceptor.IInterceptor;
 import com.essaid.util.intercept.interceptor.IInterceptorOutcome;
@@ -10,10 +11,10 @@ import com.essaid.util.model.IModel;
 abstract  public class AbstractInterceptorContext implements IInterceptorContext.IInterceptorContextInternal {
   
   private final IDomain domain;
-  private final IModel data;
-  private final IModel localData;
+  private final IData data;
+  private final IData localData;
   
-  public AbstractInterceptorContext(IDomain domain, IModel data, IModel localData) {
+  public AbstractInterceptorContext(IDomain domain, IData data, IData localData) {
     Asserts.notNull(domain, "IDomain can't be null while constructing AbstractInterceptorContext");
     Asserts.notNull(data, "IModelProxy interceptor data can't be null while constructing " +
         "AbstractInterceptorContext");
@@ -26,12 +27,12 @@ abstract  public class AbstractInterceptorContext implements IInterceptorContext
   }
   
   @Override
-  public IModel getData() {
+  public IData getData() {
     return data;
   }
   
   @Override
-  public IModel getLocalData() {
+  public IData getLocalData() {
     return localData;
   }
   

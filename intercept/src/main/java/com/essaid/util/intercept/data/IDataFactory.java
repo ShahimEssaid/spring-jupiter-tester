@@ -8,10 +8,10 @@ import java.util.List;
 
 public interface IDataFactory {
   
-  IModel createData(IInterceptorContext context, List<IModelConfigurer> overrideConfigurers,
+  IData createData(IInterceptorContext context, List<IModelConfigurer> overrideConfigurers,
                     Boolean overridePermissiveness);
   
-  IModel createNewLocalData(IInterceptorContext context, List<IModelConfigurer> overrideLocalConfigurers,
+  IData createNewLocalData(IInterceptorContext context, List<IModelConfigurer> overrideLocalConfigurers,
                             Boolean overrideLocalPermissiveness);
   
 }

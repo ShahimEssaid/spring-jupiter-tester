@@ -22,16 +22,23 @@ public class DefaultDataFactory implements IDataFactory {
     this.localConfigurerList = localConfigurerList;
     this.localInterfacePermissive = localInterfacePermissive;
   }
+//
+//  public DefaultDataFactory(){
+//    this.configurerList = null;
+//    this.permissive = false;
+//    this.localConfigurerList = null;
+//    this.localInterfacePermissive = false;
+//  }
   
   @Override
-  public IModel createData(IInterceptorContext context, List<IModelConfigurer> overrideConfigurers,
+  public IData createData(IInterceptorContext context, List<IModelConfigurer> overrideConfigurers,
                            Boolean permissiveData) {
     if (context != null) {
-      IModel data = context.internal().getData();
+      IData data = context.internal().getData();
       data.internal().prependConfiguration(overrideConfigurers);
       return data;
     } else {
-      IModel data = new Model(permissiveData != null ? permissiveData : permissive);
+      IData data = new Data(permissiveData != null ? permissiveData : permissive);
       data.internal().appendConfiguration(configurerList);
       data.internal().prependConfiguration(overrideConfigurers);
       return data;
@@ -39,10 +46,10 @@ public class DefaultDataFactory implements IDataFactory {
   }
   
   @Override
-  public IModel createNewLocalData(IInterceptorContext context, List<IModelConfigurer> overrideConfigurers,
+  public IData createNewLocalData(IInterceptorContext context, List<IModelConfigurer> overrideConfigurers,
                                    Boolean permissiveData) {
-    
-    IModel localData = new Model(permissiveData != null ? permissiveData : localInterfacePermissive);
+  
+    IData localData = new Data(permissiveData != null ? permissiveData : localInterfacePermissive);
     localData.internal().appendConfiguration(localConfigurerList);
     localData.internal().prependConfiguration(overrideConfigurers);
     
