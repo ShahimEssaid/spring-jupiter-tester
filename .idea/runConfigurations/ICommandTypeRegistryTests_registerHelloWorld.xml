@@ -1,0 +1,18 @@
+<component name="ProjectRunConfigurationManager">
+  <configuration default="false" name="ICommandTypeRegistryTests.registerHelloWorld" type="JUnit" factoryName="JUnit" nameIsGenerated="true">
+    <module name="com.essaid.pico.commands.api-test" />
+    <extension name="coverage">
+      <pattern>
+        <option name="PATTERN" value="com.essaid.pcli.test.unit.*" />
+        <option name="ENABLED" value="true" />
+      </pattern>
+    </extension>
+    <option name="PACKAGE_NAME" value="com.essaid.pcli.test.unit" />
+    <option name="MAIN_CLASS_NAME" value="com.essaid.pcli.test.unit.ICommandTypeRegistryTests" />
+    <option name="METHOD_NAME" value="registerHelloWorld" />
+    <option name="TEST_OBJECT" value="method" />
+    <method v="2">
+      <option name="Make" enabled="true" />
+    </method>
+  </configuration>
+</component>
