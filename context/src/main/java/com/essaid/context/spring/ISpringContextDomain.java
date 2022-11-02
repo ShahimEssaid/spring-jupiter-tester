@@ -7,6 +7,11 @@ import org.springframework.context.event.ApplicationContextEvent;
 public interface ISpringContextDomain extends ISpringScope, ISpringScopeData,
     ApplicationListener<ApplicationContextEvent> {
   
+  static ISpringContextDomain createDomain(String domainName, boolean autoCreateContext, boolean autoCreateScopeData,
+                                           boolean inheritableApplicationScope) {
+    return new SpringContextDomain(domainName, autoCreateContext, autoCreateScopeData, inheritableApplicationScope);
+  }
+  
   static ISpringContextDomain getDomain() {
     return SpringContextUtil.getDomain();
   }
@@ -15,9 +20,11 @@ public interface ISpringContextDomain extends ISpringScope, ISpringScopeData,
     return SpringContextUtil.setDomain(domain, inheritable);
   }
   
-  static ISpringContextDomain resetDomain(){
+  static ISpringContextDomain resetDomain() {
     return SpringContextUtil.resetDomain();
   }
+  
+  String getDomainName();
   
   ISpringContext resetThreadContext();
   

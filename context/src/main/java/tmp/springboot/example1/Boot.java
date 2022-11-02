@@ -3,7 +3,6 @@ package tmp.springboot.example1;
 import com.essaid.context.spring.ISpringContext;
 import com.essaid.context.spring.ISpringContextDomain;
 import com.essaid.context.spring.ISpringScope;
-import com.essaid.context.spring.SpringContextDomain;
 import com.essaid.context.spring.SpringScopes;
 import org.springframework.beans.factory.config.BeanDefinition;
 import org.springframework.beans.factory.config.Scope;
@@ -19,7 +18,8 @@ import tmp.springboot.example1.comp.SessionBeanA;
 public class Boot {
   
   public static void main(String[] args) {
-    SpringContextDomain domain = new SpringContextDomain(true, true, true);
+    ISpringContextDomain domain = ISpringContextDomain.createDomain("example-domain", true, true, true);
+    
     ISpringContextDomain.setDomain(domain, false);
     SpringApplication application = new SpringApplication(Boot.class) {
     };
@@ -27,7 +27,6 @@ public class Boot {
     application.addInitializers(new ApplicationContextInitializer<ConfigurableApplicationContext>() {
       @Override
       public void initialize(ConfigurableApplicationContext applicationContext) {
-        
         
         ISpringScope scope = domain.createSessionScope(applicationContext);
         applicationContext.getBeanFactory().registerScope(scope.getScopeName(), scope);
@@ -41,6 +40,7 @@ public class Boot {
         applicationContext.getBeanFactory().registerScope(SpringScopes.APPLICATION_NAME, domain);
         
         applicationContext.addApplicationListener(domain);
+        
       }
     });
     

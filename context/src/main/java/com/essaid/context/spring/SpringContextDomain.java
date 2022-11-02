@@ -15,7 +15,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-public class SpringContextDomain implements ISpringContextDomain {
+class SpringContextDomain implements ISpringContextDomain {
   
   private final ThreadLocal<ISpringContext> contextHolder = new NamedThreadLocal<>("Spring " + "context");
 //  private final ThreadLocal<ISpringContext> inheritableContextHolder = new NamedThreadLocal<>("Spring " +
@@ -23,13 +23,20 @@ public class SpringContextDomain implements ISpringContextDomain {
   
   private final ISpringScopeData applicationScopeData;
   private final boolean inheritableApplicationScope;
+  
+  public String getDomainName() {
+    return domainName;
+  }
+  
+  private final String domainName;
   Set<ISpringContext> contexts = new HashSet<>();
   private boolean autoCreateScopeData = true;
   private boolean autoCreateContext = true;
   private final Map<ConfigurableApplicationContext, Map<String, ISpringScope>> scopes = new HashMap<>();
   
-  public SpringContextDomain(boolean autoCreateContext, boolean autoCreateScopeData,
+  SpringContextDomain(String domainName, boolean autoCreateContext, boolean autoCreateScopeData,
                              boolean inheritableApplicationScope) {
+    this.domainName = domainName;
     this.autoCreateContext = autoCreateContext;
     this.autoCreateScopeData = autoCreateScopeData;
     this.inheritableApplicationScope = inheritableApplicationScope;
