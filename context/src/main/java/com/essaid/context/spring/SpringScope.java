@@ -9,11 +9,6 @@ public class SpringScope implements ISpringScope {
   private final ConfigurableApplicationContext applicationContext;
   private final int order;
   private final ISpringContextDomain domain;
-  
-  public boolean isScopeThreadInheritable() {
-    return threadInheritable;
-  }
-  
   private final boolean threadInheritable;
   
   public SpringScope(String scopeName, int order, ConfigurableApplicationContext applicationContext,
@@ -23,6 +18,10 @@ public class SpringScope implements ISpringScope {
     this.order = order;
     this.domain = domain;
     this.threadInheritable = threadInheritable;
+  }
+  
+  public boolean isScopeThreadInheritable() {
+    return threadInheritable;
   }
   
   public ConfigurableApplicationContext getScopeApplicationContext() {
@@ -69,7 +68,7 @@ public class SpringScope implements ISpringScope {
   public Object resolveContextualObject(String key) {
     ISpringScopeData scopeData = getScopeData();
     if (scopeData != null) {
-      return  scopeData.resolveContextualObject(key);
+      return scopeData.resolveContextualObject(key);
     }
     return null;
   }
@@ -78,7 +77,7 @@ public class SpringScope implements ISpringScope {
   public String getConversationId() {
     ISpringScopeData scopeData = getScopeData();
     if (scopeData != null) {
-      return  scopeData.getConversationId();
+      return scopeData.getConversationId();
     }
     return null;
   }

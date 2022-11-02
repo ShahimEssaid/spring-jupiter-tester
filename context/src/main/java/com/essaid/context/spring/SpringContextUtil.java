@@ -3,13 +3,12 @@ package com.essaid.context.spring;
 import org.springframework.core.NamedThreadLocal;
 
 class SpringContextUtil {
-
+  
   
   private static final ThreadLocal<ISpringContextDomain> domainHolder = new NamedThreadLocal<>("Spring context " +
       "domain");
   private static final ThreadLocal<ISpringContextDomain> inheritableDomainHolder =
       new NamedThreadLocal<>("Spring " + "inheritable context " + "domain");
-  
   
   
   static ISpringContextDomain resetDomain() {
@@ -41,6 +40,11 @@ class SpringContextUtil {
       domain = inheritableDomainHolder.get();
     }
     return domain;
+  }
+  
+  static ISpringContextDomain createDomain(String domainName, boolean autoCreateContext, boolean autoCreateScopeData,
+                                           boolean inheritableApplicationScope) {
+    return new SpringContextDomain(domainName, autoCreateContext, autoCreateScopeData, inheritableApplicationScope);
   }
   
 }

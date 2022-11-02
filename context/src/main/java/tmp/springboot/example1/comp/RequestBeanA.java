@@ -11,7 +11,7 @@ import javax.annotation.PreDestroy;
 public class RequestBeanA {
   
   @PreDestroy
-  void preDestroy(){
+  void preDestroy() {
     System.out.println("=============== in pre destroy RequestBeanA");
   }
 }

@@ -9,13 +9,13 @@ import javax.annotation.PreDestroy;
 @Scope(SpringScopes.APPLICATION_NAME)
 @Component
 public class ApplicationBean {
-  public ApplicationBean(){
+  public ApplicationBean() {
     System.out.println("============= ApplicationBean constructed");
   }
   
   
   @PreDestroy
-  void preDestroy(){
+  void preDestroy() {
     System.out.println("=============== in pre destroy ApplicationBean");
   }
 }

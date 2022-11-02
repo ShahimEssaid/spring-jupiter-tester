@@ -12,7 +12,7 @@ class SpringScopeData implements ISpringScopeData {
   private final ISpringScope scope;
   private volatile boolean active;
   
-  SpringScopeData(ISpringScope scope){
+  SpringScopeData(ISpringScope scope) {
     this.scope = scope;
   }
   
@@ -30,7 +30,7 @@ class SpringScopeData implements ISpringScopeData {
   public void close() {
     scopeObjects.keySet().forEach(key -> {
       Runnable destructor = scopeDestructors.remove(key);
-      if(destructor!= null){
+      if (destructor != null) {
         destructor.run();
       }
     });

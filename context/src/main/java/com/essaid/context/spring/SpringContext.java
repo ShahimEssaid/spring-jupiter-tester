@@ -20,6 +20,8 @@ class SpringContext implements ISpringContext {
   
   @Override
   public ISpringScopeData setScopeData(ISpringScope scope, ISpringScopeData data) {
+    assert scope == data.getScope() : "Adding scope data to context with a scope mismatch. assert scope == data" +
+        ".getScope() " + "failed.";
     return scopes.put(scope, data);
   }
   

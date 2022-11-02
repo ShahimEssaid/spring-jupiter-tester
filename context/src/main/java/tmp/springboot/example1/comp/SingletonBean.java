@@ -8,7 +8,7 @@ import javax.annotation.PreDestroy;
 public class SingletonBean {
   
   @PreDestroy
-  void preDestroy(){
+  void preDestroy() {
     System.out.println("============ Pre destroying SingletonBean");
   }
 }

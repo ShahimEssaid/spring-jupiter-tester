@@ -23,24 +23,22 @@ class SpringContextDomain implements ISpringContextDomain {
   
   private final ISpringScopeData applicationScopeData;
   private final boolean inheritableApplicationScope;
-  
-  public String getDomainName() {
-    return domainName;
-  }
-  
   private final String domainName;
+  private final Map<ConfigurableApplicationContext, Map<String, ISpringScope>> scopes = new HashMap<>();
   Set<ISpringContext> contexts = new HashSet<>();
   private boolean autoCreateScopeData = true;
   private boolean autoCreateContext = true;
-  private final Map<ConfigurableApplicationContext, Map<String, ISpringScope>> scopes = new HashMap<>();
-  
   SpringContextDomain(String domainName, boolean autoCreateContext, boolean autoCreateScopeData,
-                             boolean inheritableApplicationScope) {
+                      boolean inheritableApplicationScope) {
     this.domainName = domainName;
     this.autoCreateContext = autoCreateContext;
     this.autoCreateScopeData = autoCreateScopeData;
     this.inheritableApplicationScope = inheritableApplicationScope;
     this.applicationScopeData = createScopeData(this, null, null);
+  }
+  
+  public String getDomainName() {
+    return domainName;
   }
   
   @Override
@@ -100,7 +98,7 @@ class SpringContextDomain implements ISpringContextDomain {
   public boolean isAutoCreateContext() {
     return autoCreateContext;
   }
-
+  
   @Override
   public ISpringScope createScope(String scopeName, int order, ConfigurableApplicationContext applicationContext,
                                   Thread thread, boolean threadInheritable) {

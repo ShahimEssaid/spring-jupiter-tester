@@ -10,7 +10,7 @@ import javax.annotation.PreDestroy;
 public class SessionBeanA {
   
   @PreDestroy
-  void preDestroy(){
+  void preDestroy() {
     System.out.println("=============== in pre destroy SessionBeanA");
   }
 }

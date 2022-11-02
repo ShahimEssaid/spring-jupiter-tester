@@ -18,9 +18,9 @@ import tmp.springboot.example1.comp.SessionBeanA;
 public class Boot {
   
   public static void main(String[] args) {
-    ISpringContextDomain domain = ISpringContextDomain.createDomain("example-domain", true, true, true);
+    ISpringContextDomain domain = SpringScopes.createDomain("example-domain", true, true, true);
     
-    ISpringContextDomain.setDomain(domain, false);
+    SpringScopes.setDomain(domain, false);
     SpringApplication application = new SpringApplication(Boot.class) {
     };
     
@@ -28,13 +28,13 @@ public class Boot {
       @Override
       public void initialize(ConfigurableApplicationContext applicationContext) {
         
-        ISpringScope scope = domain.createSessionScope(applicationContext);
+        ISpringScope scope = SpringScopes.createSessionScope(domain, applicationContext);
         applicationContext.getBeanFactory().registerScope(scope.getScopeName(), scope);
         
-        scope = domain.createRequestScope(applicationContext);
+        scope = SpringScopes.createRequestScope(domain, applicationContext);
         applicationContext.getBeanFactory().registerScope(scope.getScopeName(), scope);
         
-        scope = domain.createConversationScope(applicationContext);
+        scope = SpringScopes.createConversationScope(domain, applicationContext);
         applicationContext.getBeanFactory().registerScope(scope.getScopeName(), scope);
         
         applicationContext.getBeanFactory().registerScope(SpringScopes.APPLICATION_NAME, domain);
