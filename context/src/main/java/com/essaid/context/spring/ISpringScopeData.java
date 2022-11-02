@@ -8,4 +8,6 @@ public interface ISpringScopeData extends Scope {
   void setActive(boolean active);
   
   void close();
+  
+  ISpringScope getScope();
 }

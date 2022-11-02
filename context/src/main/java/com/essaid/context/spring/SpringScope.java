@@ -5,70 +5,58 @@ import org.springframework.context.ConfigurableApplicationContext;
 
 public class SpringScope implements ISpringScope {
   
-  private final int scopeId;
   private final String scopeName;
   private final ConfigurableApplicationContext applicationContext;
+  private final int order;
   
-  public ConfigurableApplicationContext getApplicationContext() {
+  public SpringScope(String scopeName, int order, ConfigurableApplicationContext applicationContext) {
+    this.scopeName = scopeName;
+    this.applicationContext = applicationContext;
+    this.order = order;
+  }
+  
+  public ConfigurableApplicationContext getScopeApplicationContext() {
     return applicationContext;
   }
   
-  public SpringScope(String scopeName, int scopeId, ConfigurableApplicationContext applicationContext) {
-    this.scopeName = scopeName;
-    this.scopeId = scopeId;
-    this.applicationContext = applicationContext;
+  @Override
+  public ISpringScopeData getScopeData() {
+    return  SpringThreadManager.getContext().getScopeData(this);
   }
   
-  public int getScopeId() {
-    return scopeId;
+  @Override
+  public Object get(String name, ObjectFactory<?> objectFactory) {
+    return getScopeData().get(name, objectFactory);
   }
   
+  @Override
+  public Object remove(String name) {
+    return getScopeData().remove(name);
+  }
+  
+  @Override
+  public void registerDestructionCallback(String name, Runnable callback) {
+    getScopeData().registerDestructionCallback(name, callback);
+  }
+  
+  @Override
+  public Object resolveContextualObject(String key) {
+    return getScopeData().resolveContextualObject(key);
+  }
+  
+  @Override
+  public String getConversationId() {
+    return getScopeData().getConversationId();
+  }
+  
+  @Override
   public String getScopeName() {
     return scopeName;
   }
   
   @Override
-  public Object get(String name, ObjectFactory<?> objectFactory) {
-    ISpringContext context = SpringThreadManager.getContext();
-    ISpringScopeData scopeData = context.getScopeData(this);
-    return scopeData.get(name, objectFactory);
+  public int getScopeOrder() {
+    return order;
   }
   
-  @Override
-  public Object remove(String name) {
-    ISpringContext context = SpringThreadManager.getContext();
-    ISpringScopeData scopeData = context.getScopeData(this);
-    return scopeData.remove(name);
-  }
-  
-  @Override
-  public void registerDestructionCallback(String name, Runnable callback) {
-    ISpringContext context = SpringThreadManager.getContext();
-    ISpringScopeData scopeData = context.getScopeData(this);
-    scopeData.registerDestructionCallback(name, callback);
-  }
-  
-  @Override
-  public Object resolveContextualObject(String key) {
-    ISpringContext context = SpringThreadManager.getContext();
-    ISpringScopeData scopeData = context.getScopeData(this);
-    return scopeData.resolveContextualObject(key);
-  }
-  
-  @Override
-  public String getConversationId() {
-    ISpringContext context = SpringThreadManager.getContext();
-    ISpringScopeData scopeData = context.getScopeData(this);
-    return scopeData.getConversationId();
-  }
-  
-  @Override
-  public String getName() {
-    return scopeName;
-  }
-  
-  @Override
-  public int getId() {
-    return scopeId;
-  }
 }

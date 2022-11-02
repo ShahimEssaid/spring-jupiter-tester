@@ -9,7 +9,12 @@ public class SpringScopeData implements ISpringScopeData {
   
   private final Map<String, Object> scopeObjects = new HashMap<>();
   private final Map<String, Runnable> scopeDestructors = new HashMap<>();
+  private final ISpringScope scope;
   private volatile boolean active;
+  
+  public SpringScopeData(ISpringScope scope){
+    this.scope = scope;
+  }
   
   @Override
   public boolean isActive() {
@@ -30,6 +35,11 @@ public class SpringScopeData implements ISpringScopeData {
       }
     });
     scopeObjects.clear();
+  }
+  
+  @Override
+  public ISpringScope getScope() {
+    return scope;
   }
   
   @Override

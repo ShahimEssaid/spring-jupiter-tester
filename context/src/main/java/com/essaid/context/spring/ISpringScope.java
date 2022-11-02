@@ -5,10 +5,12 @@ import org.springframework.context.ConfigurableApplicationContext;
 
 public interface ISpringScope extends Scope {
   
-  String getName();
+  String getScopeName();
   
-  int getId();
+  int getScopeOrder();
   
-  ConfigurableApplicationContext getApplicationContext();
+  ConfigurableApplicationContext getScopeApplicationContext();
+  
+  ISpringScopeData getScopeData();
   
 }
