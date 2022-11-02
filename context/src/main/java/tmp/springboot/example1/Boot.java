@@ -1,8 +1,8 @@
 package tmp.springboot.example1;
 
-import com.essaid.context.spring.ISpringThreadContext;
-import com.essaid.context.spring.ISpringScopeDomain;
 import com.essaid.context.spring.ISpringScope;
+import com.essaid.context.spring.ISpringScopeDomain;
+import com.essaid.context.spring.ISpringThreadContext;
 import com.essaid.context.spring.SpringScopes;
 import org.springframework.beans.factory.config.BeanDefinition;
 import org.springframework.beans.factory.config.Scope;
@@ -51,13 +51,6 @@ public class Boot {
     
     BeanDefinition sessionBeanADefinition = context.getBeanFactory().getBeanDefinition("sessionBeanA");
     String scope = sessionBeanADefinition.getScope();
-    
-    //String[] beanDefinitionNames = context.getBeanDefinitionNames();
-//    ISpringContext context2 = domain.createContext(Thread.currentThread());
-//    Scope sessionScope = context.getBeanFactory().getRegisteredScope(SpringScopes.SESSION_NAME);
-//    context2.setScopeData((ISpringScope) sessionScope, domain.createScopeData((ISpringScope) sessionScope,
-//    context2, null));
-//    SpringThreadManager.setContext(context2);
     
     
     SessionBeanA sessionBeanA = context.getBean(SessionBeanA.class);

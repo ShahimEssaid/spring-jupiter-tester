@@ -16,8 +16,8 @@ public class SpringScopes {
   
   private static final ThreadLocal<ISpringScopeDomain> domainHolder = new NamedThreadLocal<>("Spring context " +
       "domain");
-  private static final ThreadLocal<ISpringScopeDomain> inheritableDomainHolder =
-      new NamedThreadLocal<>("Spring " + "inheritable context " + "domain");
+  private static final ThreadLocal<ISpringScopeDomain> inheritableDomainHolder = new NamedThreadLocal<>("Spring " +
+      "inheritable context " + "domain");
   
   private SpringScopes() {
   }

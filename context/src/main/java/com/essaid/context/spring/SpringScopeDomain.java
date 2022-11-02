@@ -28,6 +28,7 @@ class SpringScopeDomain implements ISpringScopeDomain {
   Set<ISpringThreadContext> contexts = new HashSet<>();
   private boolean autoCreateScopeData = true;
   private boolean autoCreateContext = true;
+  
   SpringScopeDomain(String domainName, boolean autoCreateContext, boolean autoCreateScopeData,
                     boolean inheritableApplicationScope) {
     this.domainName = domainName;
@@ -161,7 +162,6 @@ class SpringScopeDomain implements ISpringScopeDomain {
       }
       this.scopes.remove(applicationContext);
     }
-    System.out.println("==== application even:" + event);
   }
   
   
