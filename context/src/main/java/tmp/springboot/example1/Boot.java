@@ -20,6 +20,8 @@ public class Boot {
   
   public static void main(String[] args) {
     SpringContextDomain domain = new SpringContextDomain();
+    domain.setAutoCreateContext(true);
+    domain.setAutoCreateScopeData(true);
     SpringThreadManager.setDomain(domain);
     SpringApplication application = new SpringApplication(Boot.class) {
     };
@@ -39,8 +41,8 @@ public class Boot {
         applicationContext.getBeanFactory().registerScope(scope.getScopeName(), scope);
         
         applicationContext.getBeanFactory().registerScope(SpringScopes.APPLICATION_NAME, domain);
-        applicationContext.addApplicationListener(domain);
         
+        applicationContext.addApplicationListener(domain);
       }
     });
     
@@ -53,6 +55,11 @@ public class Boot {
     String scope = sessionBeanADefinition.getScope();
     
     //String[] beanDefinitionNames = context.getBeanDefinitionNames();
+//    ISpringContext context2 = domain.createContext(Thread.currentThread());
+//    Scope sessionScope = context.getBeanFactory().getRegisteredScope(SpringScopes.SESSION_NAME);
+//    context2.setScopeData((ISpringScope) sessionScope, domain.createScopeData((ISpringScope) sessionScope, context2, null));
+//    SpringThreadManager.setContext(context2);
+    
     
     SessionBeanA sessionBeanA = context.getBean(SessionBeanA.class);
     RequestBeanA requestBeanA = context.getBean(RequestBeanA.class);

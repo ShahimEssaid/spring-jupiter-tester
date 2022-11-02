@@ -16,7 +16,7 @@ public class SpringContext implements ISpringContext {
   
   @Override
   public ISpringScopeData getScopeData(ISpringScope scope) {
-    return getScopeData(scope, SpringThreadManager.getDomain().isAutoCreateScopes());
+    return getScopeData(scope, SpringThreadManager.getDomain().isAutoCreateScopeData());
   }
   
   @Override

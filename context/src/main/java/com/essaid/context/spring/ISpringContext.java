@@ -13,6 +13,15 @@ public interface ISpringContext {
   
   ISpringScopeData removeScopeData(ISpringScope scope);
   
+  /**
+   * This is a list because a ISpringContext can hold multiple {@link ISpringScopeData} for a scope name, one per
+   * {@link org.springframework.context.ApplicationContext} if there are multiple. Each ISpringScopeData will have its
+   * own {@link ISpringScope} which in turn holds the ApplicationContext.  The ISpringScope for the "application" scope
+   * name has null for the application context.
+   *
+   * @param scopeName
+   * @return
+   */
   List<ISpringScopeData> getScopeData(String scopeName);
   
   ISpringScopeData getScopeData(String scopeName, ConfigurableApplicationContext applicationContext);

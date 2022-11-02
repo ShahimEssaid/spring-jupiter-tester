@@ -24,7 +24,11 @@ public class SpringScope implements ISpringScope {
   
   @Override
   public ISpringScopeData getScopeData() {
-    return  SpringThreadManager.getContext().getScopeData(this);
+    ISpringContext context = SpringThreadManager.getContext();
+    if (context != null) {
+      return context.getScopeData(this);
+    }
+    return null;
   }
   
   @Override
@@ -34,27 +38,46 @@ public class SpringScope implements ISpringScope {
   
   @Override
   public Object get(String name, ObjectFactory<?> objectFactory) {
-    return getScopeData().get(name, objectFactory);
+    ISpringScopeData scopeData = getScopeData();
+    if (scopeData != null) {
+      return scopeData.get(name, objectFactory);
+    }
+    return null;
   }
   
   @Override
   public Object remove(String name) {
-    return getScopeData().remove(name);
+    ISpringScopeData scopeData = getScopeData();
+    if (scopeData != null) {
+      return scopeData.remove(name);
+    }
+    return null;
   }
   
   @Override
   public void registerDestructionCallback(String name, Runnable callback) {
-    getScopeData().registerDestructionCallback(name, callback);
+    ISpringScopeData scopeData = getScopeData();
+    if (scopeData != null) {
+      scopeData.registerDestructionCallback(name, callback);
+    }
   }
   
   @Override
   public Object resolveContextualObject(String key) {
-    return getScopeData().resolveContextualObject(key);
+    ISpringScopeData scopeData = getScopeData();
+    if (scopeData != null) {
+      return  scopeData.resolveContextualObject(key);
+    }
+    return null;
   }
   
   @Override
   public String getConversationId() {
-    return getScopeData().getConversationId();
+    ISpringScopeData scopeData = getScopeData();
+    if (scopeData != null) {
+      return  scopeData.getConversationId();
+    }
+    return null;
   }
   
   @Override

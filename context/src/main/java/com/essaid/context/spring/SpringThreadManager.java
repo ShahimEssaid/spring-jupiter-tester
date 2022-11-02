@@ -38,7 +38,7 @@ public class SpringThreadManager {
     }
     if(context == null){
       ISpringContextDomain domain = getDomain();
-      if(domain.isAutoCreateContexts()){
+      if(domain.isAutoCreateContext()){
         context = domain.createContext(Thread.currentThread());
         setContext(context);
       }

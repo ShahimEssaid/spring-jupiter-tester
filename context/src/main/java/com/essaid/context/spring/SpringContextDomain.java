@@ -32,16 +32,16 @@ public class SpringContextDomain implements ISpringContextDomain {
   }
   
   @Override
-  public boolean isAutoCreateScopes() {
+  public boolean isAutoCreateScopeData() {
     return autoScopes;
   }
   
-  public void setAutoCreateScopes(boolean autoScopes) {
+  public void setAutoCreateScopeData(boolean autoScopes) {
     this.autoScopes = autoScopes;
   }
   
   @Override
-  public boolean isAutoCreateContexts() {
+  public boolean isAutoCreateContext() {
     return autoContexts;
   }
   

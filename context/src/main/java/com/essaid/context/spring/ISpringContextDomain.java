@@ -7,9 +7,9 @@ import org.springframework.context.event.ApplicationContextEvent;
 public interface ISpringContextDomain extends ISpringScope, ISpringScopeData,
     ApplicationListener<ApplicationContextEvent> {
   
-  boolean isAutoCreateScopes();
+  boolean isAutoCreateScopeData();
   
-  boolean isAutoCreateContexts();
+  boolean isAutoCreateContext();
   
   ISpringScope createScope(String scopeName, int order, ConfigurableApplicationContext applicationContext,
                            Thread thread);
