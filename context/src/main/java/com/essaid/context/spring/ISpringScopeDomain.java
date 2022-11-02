@@ -23,6 +23,8 @@ public interface ISpringScopeDomain extends ISpringScope, ISpringScopeData,
   
   boolean isAutoCreateContext();
   
+  boolean isPermissiveScopeDataModel();
+  
   ISpringScope createScope(String scopeName, int order, ConfigurableApplicationContext applicationContext,
                            Thread thread, boolean threadInheritable);
   

@@ -1,7 +1,7 @@
 package com.essaid.util.model;
 
 import com.essaid.util.model.beanhandlers.BeanPropertyConfigurer;
-import com.essaid.util.model.support.TestPropertyProxy;
+import com.essaid.util.model.support.TestPropertyModel;
 import com.essaid.util.model.support.TestingInterface;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.Test;
@@ -12,7 +12,7 @@ public class ModelProxyTests {
   
   @Test
   void testOne() {
-    TestPropertyProxy testProxy = new TestPropertyProxy();
+    TestPropertyModel testProxy = new TestPropertyModel();
     BeanPropertyConfigurer beanPropertyProxyConfigurer =
         new BeanPropertyConfigurer();
     testProxy.appendConfiguration(beanPropertyProxyConfigurer);

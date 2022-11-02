@@ -36,8 +36,10 @@ public class SpringScopes {
   }
   
   public static ISpringScopeDomain createDomain(String domainName, boolean autoCreateContext,
-                                                boolean autoCreateScopeData, boolean inheritableApplicationScope) {
-    return new SpringScopeDomain(domainName, autoCreateContext, autoCreateScopeData, inheritableApplicationScope);
+                                                boolean autoCreateScopeData, boolean inheritableApplicationScope,
+                                                boolean permissiveScopeDataModel) {
+    return new SpringScopeDomain(domainName, autoCreateContext, autoCreateScopeData, inheritableApplicationScope,
+        permissiveScopeDataModel);
   }
   
   public static ISpringScopeDomain getDomain() {
@@ -69,5 +71,9 @@ public class SpringScopes {
     domainHolder.remove();
     inheritableDomainHolder.remove();
     return currentDomain;
+  }
+  
+  public static ISpringScopeDataModel createScopeDataModel(ISpringScopeDomain scopeDomain) {
+    return new SpringScopeDataModel(scopeDomain.isPermissiveScopeDataModel());
   }
 }

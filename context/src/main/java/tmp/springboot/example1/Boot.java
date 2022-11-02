@@ -18,7 +18,7 @@ import tmp.springboot.example1.comp.SessionBeanA;
 public class Boot {
   
   public static void main(String[] args) {
-    ISpringScopeDomain domain = SpringScopes.createDomain("example-domain", true, true, true);
+    ISpringScopeDomain domain = SpringScopes.createDomain("example-domain", true, true, true, true);
     
     SpringScopes.setDomain(domain, false);
     SpringApplication application = new SpringApplication(Boot.class) {
@@ -47,6 +47,7 @@ public class Boot {
     ISpringThreadContext context1 = domain.getThreadContext();
     
     ConfigurableApplicationContext context = application.run(args);
+    
     Scope session = context.getBeanFactory().getRegisteredScope("session");
     
     BeanDefinition sessionBeanADefinition = context.getBeanFactory().getBeanDefinition("sessionBeanA");

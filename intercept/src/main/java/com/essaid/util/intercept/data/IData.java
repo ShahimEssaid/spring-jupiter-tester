@@ -1,7 +1,7 @@
 package com.essaid.util.intercept.data;
 
 import com.essaid.util.model.IModel;
-import com.essaid.util.model.beanhandlers.IBeanPropertyProxy;
+import com.essaid.util.model.beanhandlers.IBeanPropertyModel;
 
-public interface IData extends IModel, IBeanPropertyProxy {
+public interface IData extends IModel, IBeanPropertyModel {
 }

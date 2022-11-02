@@ -4,8 +4,8 @@ import com.essaid.util.model.IModel;
 
 import java.util.Map;
 
-public interface IBeanPropertyProxy extends IModel {
+public interface IBeanPropertyModel extends IModel {
   default Map<Object, Object> getBeansData() {
-    return internal().getData(IBeanPropertyProxy.class);
+    return internal().getData(IBeanPropertyModel.class);
   }
 }

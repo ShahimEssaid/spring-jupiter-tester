@@ -1,5 +1,6 @@
 package com.essaid.context.spring;
 
+import com.essaid.util.model.IModelInterface;
 import org.springframework.beans.factory.ObjectFactory;
 import org.springframework.context.ConfigurableApplicationContext;
 import org.springframework.context.event.ApplicationContextEvent;
@@ -14,6 +15,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.concurrent.locks.Lock;
 
 class SpringScopeDomain implements ISpringScopeDomain {
   
@@ -25,17 +27,19 @@ class SpringScopeDomain implements ISpringScopeDomain {
   private final boolean inheritableApplicationScope;
   private final String domainName;
   private final Map<ConfigurableApplicationContext, Map<String, ISpringScope>> scopes = new HashMap<>();
+  private final boolean permissiveScopeDataModel;
   Set<ISpringThreadContext> contexts = new HashSet<>();
   private boolean autoCreateScopeData = true;
   private boolean autoCreateContext = true;
   
   SpringScopeDomain(String domainName, boolean autoCreateContext, boolean autoCreateScopeData,
-                    boolean inheritableApplicationScope) {
+                    boolean inheritableApplicationScope,boolean permissiveScopeDataModel) {
     this.domainName = domainName;
     this.autoCreateContext = autoCreateContext;
     this.autoCreateScopeData = autoCreateScopeData;
     this.inheritableApplicationScope = inheritableApplicationScope;
     this.applicationScopeData = createScopeData(this, null, null);
+    this.permissiveScopeDataModel = permissiveScopeDataModel;
   }
   
   public String getDomainName() {
@@ -98,6 +102,11 @@ class SpringScopeDomain implements ISpringScopeDomain {
   @Override
   public boolean isAutoCreateContext() {
     return autoCreateContext;
+  }
+  
+  @Override
+  public boolean isPermissiveScopeDataModel() {
+    return permissiveScopeDataModel;
   }
   
   @Override
@@ -239,4 +248,25 @@ class SpringScopeDomain implements ISpringScopeDomain {
   public String getConversationId() {
     return applicationScopeData.getConversationId();
   }
+  
+  @Override
+  public <I extends IModelInterface> I as(Class<I> cls) {
+    return applicationScopeData.as(cls);
+  }
+  
+  @Override
+  public IModelInternal internal() {
+    return applicationScopeData.internal();
+  }
+  
+  @Override
+  public Lock readLock() {
+    return applicationScopeData.readLock();
+  }
+  
+  @Override
+  public Lock writeLock() {
+    return applicationScopeData.writeLock();
+  }
+
 }

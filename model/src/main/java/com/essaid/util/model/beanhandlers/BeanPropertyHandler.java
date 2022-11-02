@@ -17,9 +17,9 @@ public class BeanPropertyHandler implements IModelInvocationHandler {
       new IModelInvocationHandler.InvocationResult(true, false);
   
   
-  private final IBeanPropertyProxy beanProxy;
+  private final IBeanPropertyModel beanProxy;
   
-  public BeanPropertyHandler(IBeanPropertyProxy beanProxy) {
+  public BeanPropertyHandler(IBeanPropertyModel beanProxy) {
     this.beanProxy = beanProxy;
   }
   

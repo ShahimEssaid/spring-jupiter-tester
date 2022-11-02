@@ -1,9 +1,11 @@
 package com.essaid.context.spring;
 
+import com.essaid.util.model.IModelInterface;
 import org.springframework.beans.factory.ObjectFactory;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.concurrent.locks.Lock;
 
 class SpringScopeData implements ISpringScopeData {
   
@@ -11,6 +13,7 @@ class SpringScopeData implements ISpringScopeData {
   private final Map<String, Runnable> scopeDestructors = new HashMap<>();
   private final ISpringScope scope;
   private volatile boolean active;
+  private ISpringScopeDataModel dataModel;
   
   SpringScopeData(ISpringScope scope) {
     this.scope = scope;
@@ -78,5 +81,33 @@ class SpringScopeData implements ISpringScopeData {
   @Override
   public String getConversationId() {
     return null;
+  }
+  
+  @Override
+  public <I extends IModelInterface> I as(Class<I> cls) {
+    return getDataModel().as(cls);
+  }
+  
+  @Override
+  public IModelInternal internal() {
+    return getDataModel().internal();
+  }
+  
+  
+  @Override
+  public Lock readLock() {
+    return getDataModel().readLock();
+  }
+  
+  @Override
+  public Lock writeLock() {
+    return getDataModel().writeLock();
+  }
+  
+  private ISpringScopeDataModel getDataModel() {
+    if (this.dataModel == null) {
+      dataModel = SpringScopes.createScopeDataModel(scope.getScopeDomain());
+    }
+    return dataModel;
   }
 }
