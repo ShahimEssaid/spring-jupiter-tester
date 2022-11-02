@@ -16,7 +16,7 @@ public class SpringContext implements ISpringContext {
   
   @Override
   public ISpringScopeData getScopeData(ISpringScope scope) {
-    return getScopeData(scope, SpringThreadManager.getDomain().isAutoCreateScopeData());
+    return getScopeData(scope, SpringContextUtil.getDomain().isAutoCreateScopeData());
   }
   
   @Override
@@ -56,7 +56,7 @@ public class SpringContext implements ISpringContext {
     synchronized (scopes) {
       ISpringScopeData iSpringScopeData = scopes.get(scope);
       if (iSpringScopeData == null && create) {
-        iSpringScopeData = SpringThreadManager.getDomain().createScopeData(scope, this, Thread.currentThread());
+        iSpringScopeData = SpringContextUtil.getDomain().createScopeData(scope, this, Thread.currentThread());
         scopes.put(scope, iSpringScopeData);
       }
       return iSpringScopeData;

@@ -4,6 +4,7 @@ import org.springframework.beans.factory.ObjectFactory;
 import org.springframework.context.ConfigurableApplicationContext;
 import org.springframework.context.event.ApplicationContextEvent;
 import org.springframework.context.event.ContextClosedEvent;
+import org.springframework.core.NamedThreadLocal;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -16,38 +17,86 @@ import java.util.Set;
 
 public class SpringContextDomain implements ISpringContextDomain {
   
-  private final ISpringScopeData applicationScopeData;
-  Set<ISpringContext> contexts = new HashSet<>();
-  private boolean autoScopes = true;
-  private boolean autoContexts = true;
-  private Map<ConfigurableApplicationContext, Map<String, ISpringScope>> scopes = new HashMap<>();
+  private final ThreadLocal<ISpringContext> contextHolder = new NamedThreadLocal<>("Spring " + "context");
+//  private final ThreadLocal<ISpringContext> inheritableContextHolder = new NamedThreadLocal<>("Spring " +
+//      "inheritable context");
   
-  public SpringContextDomain() {
-    
+  private final ISpringScopeData applicationScopeData;
+  private final boolean inheritableApplicationScope;
+  Set<ISpringContext> contexts = new HashSet<>();
+  private boolean autoCreateScopeData = true;
+  private boolean autoCreateContext = true;
+  private final Map<ConfigurableApplicationContext, Map<String, ISpringScope>> scopes = new HashMap<>();
+  
+  public SpringContextDomain(boolean autoCreateContext, boolean autoCreateScopeData,
+                             boolean inheritableApplicationScope) {
+    this.autoCreateContext = autoCreateContext;
+    this.autoCreateScopeData = autoCreateScopeData;
+    this.inheritableApplicationScope = inheritableApplicationScope;
     this.applicationScopeData = createScopeData(this, null, null);
   }
   
-  public void setAutoCreateContext(boolean autoContexts) {
-    this.autoContexts = autoContexts;
+  @Override
+  public ISpringContext resetThreadContext() {
+    ISpringContext currentContext = contextHolder.get();
+//    if (currentContext == null) {
+//      currentContext = inheritableContextHolder.get();
+//    }
+    contextHolder.remove();
+//    inheritableContextHolder.remove();
+    return currentContext;
+  }
+  
+  @Override
+  public ISpringContext getThreadContext() {
+    ISpringContext context = contextHolder.get();
+//    if (context == null) {
+//      context = inheritableContextHolder.get();
+//    }
+    if (context == null) {
+      if (isAutoCreateContext()) {
+        context = createContext(Thread.currentThread());
+        setThreadContext(context);
+      }
+    }
+    return context;
+  }
+  
+  @Override
+  public ISpringContext setThreadContext(ISpringContext context) {
+    
+    ISpringContext currentContext = contextHolder.get();
+//    if (currentContext == null) {
+//      currentContext = inheritableContextHolder.get();
+//    }
+    if (context == null) {
+      return resetThreadContext();
+    } else {
+      contextHolder.set(context);
+//      if (inheritable) {
+//        contextHolder.remove();
+//        inheritableContextHolder.set(context);
+//      } else {
+//        contextHolder.set(context);
+//        inheritableContextHolder.remove();
+//      }
+    }
+    return currentContext;
   }
   
   @Override
   public boolean isAutoCreateScopeData() {
-    return autoScopes;
-  }
-  
-  public void setAutoCreateScopeData(boolean autoScopes) {
-    this.autoScopes = autoScopes;
+    return autoCreateScopeData;
   }
   
   @Override
   public boolean isAutoCreateContext() {
-    return autoContexts;
+    return autoCreateContext;
   }
-  
+
   @Override
   public ISpringScope createScope(String scopeName, int order, ConfigurableApplicationContext applicationContext,
-                                  Thread thread) {
+                                  Thread thread, boolean threadInheritable) {
     Map<String, ISpringScope> stringISpringScopeMap = scopes.get(applicationContext);
     if (stringISpringScopeMap != null) {
       ISpringScope iSpringScope = stringISpringScopeMap.get(scopeName);
@@ -56,7 +105,7 @@ public class SpringContextDomain implements ISpringContextDomain {
       }
     }
     
-    SpringScope springScope = new SpringScope(scopeName, order, applicationContext, this);
+    SpringScope springScope = new SpringScope(scopeName, order, applicationContext, this, threadInheritable);
     Map<String, ISpringScope> stringISpringScopeMap1 = scopes.computeIfAbsent(applicationContext,
         applicationContext1 -> new HashMap<>());
     stringISpringScopeMap1.put(springScope.getScopeName(), springScope);
@@ -88,7 +137,7 @@ public class SpringContextDomain implements ISpringContextDomain {
       }
       
       List<ISpringScope> scopesList = new ArrayList<>(scopesToClear);
-      Collections.sort(scopesList, new Comparator<ISpringScope>() {
+      scopesList.sort(new Comparator<ISpringScope>() {
         @Override
         public int compare(ISpringScope o1, ISpringScope o2) {
           return o1.getScopeOrder() - o2.getScopeOrder();
@@ -128,12 +177,17 @@ public class SpringContextDomain implements ISpringContextDomain {
   
   @Override
   public ISpringScopeData getScopeData() {
-    return SpringThreadManager.getContext().getScopeData(this);
+    return applicationScopeData;
   }
   
   @Override
   public ISpringContextDomain getScopeDomain() {
     return this;
+  }
+  
+  @Override
+  public boolean isScopeThreadInheritable() {
+    return this.inheritableApplicationScope;
   }
   
   @Override

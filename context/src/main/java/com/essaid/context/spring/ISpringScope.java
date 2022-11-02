@@ -15,4 +15,6 @@ public interface ISpringScope extends Scope {
   
   ISpringContextDomain getScopeDomain();
   
+  public boolean isScopeThreadInheritable();
+  
 }

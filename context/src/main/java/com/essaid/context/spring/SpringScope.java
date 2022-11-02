@@ -10,12 +10,19 @@ public class SpringScope implements ISpringScope {
   private final int order;
   private final ISpringContextDomain domain;
   
+  public boolean isScopeThreadInheritable() {
+    return threadInheritable;
+  }
+  
+  private final boolean threadInheritable;
+  
   public SpringScope(String scopeName, int order, ConfigurableApplicationContext applicationContext,
-                     ISpringContextDomain domain) {
+                     ISpringContextDomain domain, boolean threadInheritable) {
     this.scopeName = scopeName;
     this.applicationContext = applicationContext;
     this.order = order;
     this.domain = domain;
+    this.threadInheritable = threadInheritable;
   }
   
   public ConfigurableApplicationContext getScopeApplicationContext() {
@@ -24,11 +31,7 @@ public class SpringScope implements ISpringScope {
   
   @Override
   public ISpringScopeData getScopeData() {
-    ISpringContext context = SpringThreadManager.getContext();
-    if (context != null) {
-      return context.getScopeData(this);
-    }
-    return null;
+    return domain.getScopeData(this);
   }
   
   @Override
