@@ -8,11 +8,11 @@ public class SpringScope implements ISpringScope {
   private final String scopeName;
   private final ConfigurableApplicationContext applicationContext;
   private final int order;
-  private final ISpringContextDomain domain;
+  private final ISpringScopeDomain domain;
   private final boolean threadInheritable;
   
   public SpringScope(String scopeName, int order, ConfigurableApplicationContext applicationContext,
-                     ISpringContextDomain domain, boolean threadInheritable) {
+                     ISpringScopeDomain domain, boolean threadInheritable) {
     this.scopeName = scopeName;
     this.applicationContext = applicationContext;
     this.order = order;
@@ -34,7 +34,7 @@ public class SpringScope implements ISpringScope {
   }
   
   @Override
-  public ISpringContextDomain getScopeDomain() {
+  public ISpringScopeDomain getScopeDomain() {
     return domain;
   }
   

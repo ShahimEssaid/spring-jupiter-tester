@@ -8,14 +8,14 @@ import java.util.Map;
 import java.util.Set;
 import java.util.stream.Collectors;
 
-class SpringContext implements ISpringContext {
+class SpringThreadContext implements ISpringThreadContext {
   
   //private final Map<String, Map<ConfigurableApplicationContext, ISpringScopeData>> scopes2 = new HashMap<>();
   private final Map<ISpringScope, ISpringScopeData> scopes = new HashMap<>();
   
   @Override
   public ISpringScopeData getScopeData(ISpringScope scope) {
-    return getScopeData(scope, SpringContextUtil.getDomain().isAutoCreateScopeData());
+    return getScopeData(scope, SpringScopes.getDomain().isAutoCreateScopeData());
   }
   
   @Override
@@ -55,7 +55,7 @@ class SpringContext implements ISpringContext {
     synchronized (scopes) {
       ISpringScopeData iSpringScopeData = scopes.get(scope);
       if (iSpringScopeData == null && create) {
-        iSpringScopeData = SpringContextUtil.getDomain().createScopeData(scope, this, Thread.currentThread());
+        iSpringScopeData = scope.getScopeDomain().createScopeData(scope, this, Thread.currentThread());
         scopes.put(scope, iSpringScopeData);
       }
       return iSpringScopeData;

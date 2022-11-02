@@ -4,16 +4,16 @@ import org.springframework.context.ApplicationListener;
 import org.springframework.context.ConfigurableApplicationContext;
 import org.springframework.context.event.ApplicationContextEvent;
 
-public interface ISpringContextDomain extends ISpringScope, ISpringScopeData,
+public interface ISpringScopeDomain extends ISpringScope, ISpringScopeData,
     ApplicationListener<ApplicationContextEvent> {
   
   String getDomainName();
   
-  ISpringContext resetThreadContext();
+  ISpringThreadContext resetThreadContext();
   
-  ISpringContext getThreadContext();
+  ISpringThreadContext getThreadContext();
   
-  ISpringContext setThreadContext(ISpringContext context);
+  ISpringThreadContext setThreadContext(ISpringThreadContext context);
   
   default ISpringScopeData getScopeData(ISpringScope scope) {
     return getThreadContext().getScopeData(scope);
@@ -26,8 +26,8 @@ public interface ISpringContextDomain extends ISpringScope, ISpringScopeData,
   ISpringScope createScope(String scopeName, int order, ConfigurableApplicationContext applicationContext,
                            Thread thread, boolean threadInheritable);
   
-  ISpringScopeData createScopeData(ISpringScope scope, ISpringContext context, Thread thread);
+  ISpringScopeData createScopeData(ISpringScope scope, ISpringThreadContext context, Thread thread);
   
-  ISpringContext createContext(Thread thread);
+  ISpringThreadContext createContext(Thread thread);
   
 }

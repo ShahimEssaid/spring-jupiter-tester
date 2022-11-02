@@ -5,7 +5,7 @@ import org.springframework.context.ConfigurableApplicationContext;
 import java.util.List;
 import java.util.Set;
 
-public interface ISpringContext {
+public interface ISpringThreadContext {
   
   ISpringScopeData getScopeData(ISpringScope scope);
   

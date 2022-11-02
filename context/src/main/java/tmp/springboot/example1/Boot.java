@@ -1,7 +1,7 @@
 package tmp.springboot.example1;
 
-import com.essaid.context.spring.ISpringContext;
-import com.essaid.context.spring.ISpringContextDomain;
+import com.essaid.context.spring.ISpringThreadContext;
+import com.essaid.context.spring.ISpringScopeDomain;
 import com.essaid.context.spring.ISpringScope;
 import com.essaid.context.spring.SpringScopes;
 import org.springframework.beans.factory.config.BeanDefinition;
@@ -18,7 +18,7 @@ import tmp.springboot.example1.comp.SessionBeanA;
 public class Boot {
   
   public static void main(String[] args) {
-    ISpringContextDomain domain = SpringScopes.createDomain("example-domain", true, true, true);
+    ISpringScopeDomain domain = SpringScopes.createDomain("example-domain", true, true, true);
     
     SpringScopes.setDomain(domain, false);
     SpringApplication application = new SpringApplication(Boot.class) {
@@ -44,7 +44,7 @@ public class Boot {
       }
     });
     
-    ISpringContext context1 = domain.getThreadContext();
+    ISpringThreadContext context1 = domain.getThreadContext();
     
     ConfigurableApplicationContext context = application.run(args);
     Scope session = context.getBeanFactory().getRegisteredScope("session");

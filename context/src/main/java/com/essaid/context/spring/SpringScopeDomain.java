@@ -15,9 +15,9 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-class SpringContextDomain implements ISpringContextDomain {
+class SpringScopeDomain implements ISpringScopeDomain {
   
-  private final ThreadLocal<ISpringContext> contextHolder = new NamedThreadLocal<>("Spring " + "context");
+  private final ThreadLocal<ISpringThreadContext> contextHolder = new NamedThreadLocal<>("Spring " + "context");
 //  private final ThreadLocal<ISpringContext> inheritableContextHolder = new NamedThreadLocal<>("Spring " +
 //      "inheritable context");
   
@@ -25,11 +25,11 @@ class SpringContextDomain implements ISpringContextDomain {
   private final boolean inheritableApplicationScope;
   private final String domainName;
   private final Map<ConfigurableApplicationContext, Map<String, ISpringScope>> scopes = new HashMap<>();
-  Set<ISpringContext> contexts = new HashSet<>();
+  Set<ISpringThreadContext> contexts = new HashSet<>();
   private boolean autoCreateScopeData = true;
   private boolean autoCreateContext = true;
-  SpringContextDomain(String domainName, boolean autoCreateContext, boolean autoCreateScopeData,
-                      boolean inheritableApplicationScope) {
+  SpringScopeDomain(String domainName, boolean autoCreateContext, boolean autoCreateScopeData,
+                    boolean inheritableApplicationScope) {
     this.domainName = domainName;
     this.autoCreateContext = autoCreateContext;
     this.autoCreateScopeData = autoCreateScopeData;
@@ -42,8 +42,8 @@ class SpringContextDomain implements ISpringContextDomain {
   }
   
   @Override
-  public ISpringContext resetThreadContext() {
-    ISpringContext currentContext = contextHolder.get();
+  public ISpringThreadContext resetThreadContext() {
+    ISpringThreadContext currentContext = contextHolder.get();
 //    if (currentContext == null) {
 //      currentContext = inheritableContextHolder.get();
 //    }
@@ -53,8 +53,8 @@ class SpringContextDomain implements ISpringContextDomain {
   }
   
   @Override
-  public ISpringContext getThreadContext() {
-    ISpringContext context = contextHolder.get();
+  public ISpringThreadContext getThreadContext() {
+    ISpringThreadContext context = contextHolder.get();
 //    if (context == null) {
 //      context = inheritableContextHolder.get();
 //    }
@@ -68,9 +68,9 @@ class SpringContextDomain implements ISpringContextDomain {
   }
   
   @Override
-  public ISpringContext setThreadContext(ISpringContext context) {
+  public ISpringThreadContext setThreadContext(ISpringThreadContext context) {
     
-    ISpringContext currentContext = contextHolder.get();
+    ISpringThreadContext currentContext = contextHolder.get();
 //    if (currentContext == null) {
 //      currentContext = inheritableContextHolder.get();
 //    }
@@ -119,16 +119,16 @@ class SpringContextDomain implements ISpringContextDomain {
   }
   
   @Override
-  public ISpringScopeData createScopeData(ISpringScope scope, ISpringContext context, Thread thread) {
+  public ISpringScopeData createScopeData(ISpringScope scope, ISpringThreadContext context, Thread thread) {
     return new SpringScopeData(scope);
   }
   
   @Override
-  public ISpringContext createContext(Thread thread) {
-    SpringContext springContext = new SpringContext();
-    springContext.setScopeData(this, this);
-    contexts.add(springContext);
-    return springContext;
+  public ISpringThreadContext createContext(Thread thread) {
+    SpringThreadContext springThreadContext = new SpringThreadContext();
+    springThreadContext.setScopeData(this, this);
+    contexts.add(springThreadContext);
+    return springThreadContext;
   }
   
   @Override
@@ -137,7 +137,7 @@ class SpringContextDomain implements ISpringContextDomain {
       ConfigurableApplicationContext applicationContext =
           (ConfigurableApplicationContext) event.getApplicationContext();
       Set<ISpringScope> scopesToClear = new HashSet<>();
-      for (ISpringContext context : contexts) {
+      for (ISpringThreadContext context : contexts) {
         scopesToClear.addAll(context.getApplicationContextScopes(applicationContext));
       }
       
@@ -152,7 +152,7 @@ class SpringContextDomain implements ISpringContextDomain {
       Collections.reverse(scopesList);
       
       for (ISpringScope scope : scopesList) {
-        for (ISpringContext context : contexts) {
+        for (ISpringThreadContext context : contexts) {
           ISpringScopeData iSpringScopeData = context.removeScopeData(scope);
           if (iSpringScopeData != null) {
             iSpringScopeData.close();
@@ -186,7 +186,7 @@ class SpringContextDomain implements ISpringContextDomain {
   }
   
   @Override
-  public ISpringContextDomain getScopeDomain() {
+  public ISpringScopeDomain getScopeDomain() {
     return this;
   }
   
