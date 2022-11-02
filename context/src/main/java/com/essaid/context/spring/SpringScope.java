@@ -8,11 +8,14 @@ public class SpringScope implements ISpringScope {
   private final String scopeName;
   private final ConfigurableApplicationContext applicationContext;
   private final int order;
+  private final ISpringContextDomain domain;
   
-  public SpringScope(String scopeName, int order, ConfigurableApplicationContext applicationContext) {
+  public SpringScope(String scopeName, int order, ConfigurableApplicationContext applicationContext,
+                     ISpringContextDomain domain) {
     this.scopeName = scopeName;
     this.applicationContext = applicationContext;
     this.order = order;
+    this.domain = domain;
   }
   
   public ConfigurableApplicationContext getScopeApplicationContext() {
@@ -22,6 +25,11 @@ public class SpringScope implements ISpringScope {
   @Override
   public ISpringScopeData getScopeData() {
     return  SpringThreadManager.getContext().getScopeData(this);
+  }
+  
+  @Override
+  public ISpringContextDomain getScopeDomain() {
+    return domain;
   }
   
   @Override

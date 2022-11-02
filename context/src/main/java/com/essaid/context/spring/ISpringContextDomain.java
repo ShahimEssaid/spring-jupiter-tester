@@ -17,4 +17,19 @@ public interface ISpringContextDomain extends ISpringScope, ISpringScopeData,
   ISpringScopeData createScopeData(ISpringScope scope, ISpringContext context, Thread thread);
   
   ISpringContext createContext(Thread thread);
+  
+  default ISpringScope createRequestScope(ConfigurableApplicationContext context) {
+    return createScope(SpringScopes.REQUEST_NAME, SpringScopes.REQUEST_ORDER, context, null);
+  }
+  
+  
+  default ISpringScope createConversationScope(ConfigurableApplicationContext context) {
+    return createScope(SpringScopes.CONVERSATION_NAME, SpringScopes.CONVERSATION_ORDER, context, null);
+  }
+  
+  
+  default ISpringScope createSessionScope(ConfigurableApplicationContext context) {
+    return createScope(SpringScopes.SESSION_NAME, SpringScopes.SESSION_ORDER, context, null);
+  }
+  
 }

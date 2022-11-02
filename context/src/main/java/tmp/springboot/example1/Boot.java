@@ -27,10 +27,17 @@ public class Boot {
     application.addInitializers(new ApplicationContextInitializer<ConfigurableApplicationContext>() {
       @Override
       public void initialize(ConfigurableApplicationContext applicationContext) {
-        ISpringScope session = domain.createScope("session", 100, applicationContext, Thread.currentThread());
-        ISpringScope request = domain.createScope("request", 101, applicationContext, Thread.currentThread());
-        applicationContext.getBeanFactory().registerScope("session", session);
-        applicationContext.getBeanFactory().registerScope("request", request);
+  
+  
+        ISpringScope scope = domain.createSessionScope(applicationContext);
+        applicationContext.getBeanFactory().registerScope(scope.getScopeName(), scope);
+        
+        scope = domain.createRequestScope(applicationContext);
+        applicationContext.getBeanFactory().registerScope(scope.getScopeName(), scope);
+        
+        scope = domain.createConversationScope(applicationContext);
+        applicationContext.getBeanFactory().registerScope(scope.getScopeName(), scope);
+        
         applicationContext.getBeanFactory().registerScope(SpringScopes.APPLICATION_NAME, domain);
         applicationContext.addApplicationListener(domain);
         
