@@ -4,21 +4,23 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
   <modelVersion>4.0.0</modelVersion>
 
-  <groupId>com.essaid.tmp.grouper.hFBf5FH9rD7qBG</groupId>
-  <artifactId>com.essaid.tmp.grouper.hFBf5FH9rD7qBG</artifactId>
+  <groupId>com.essaid.tmp-grouper.hFBf5FH9rD7qBG</groupId>
+  <artifactId>_temp-aggrigator</artifactId>
   <version>1.0-SNAPSHOT</version>
   <packaging>pom</packaging>
 
   <properties>
+    <maven.compiler.source>17</maven.compiler.source>
+    <maven.compiler.target>17</maven.compiler.target>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
   </properties>
 
   <modules>
-    <module>picocli-commands</module>
-    <module>intercept</module>
-    <module>util</module>
-    <module>model</module>
-    <!--    <module>junit-tester</module>-->
+    <module>../picocli-commands</module>
+    <module>../intercept</module>
+    <module>../util</module>
+    <module>../model</module>
+    <module>../context</module>
   </modules>
 
 </project>

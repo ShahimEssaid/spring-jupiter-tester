@@ -2,6 +2,9 @@ package com.essaid.util.asserts;
 
 import java.util.Arrays;
 
+/**
+ * Some comments
+ */
 public class Asserts {
   
   public static <T extends Object> T notNull(T object, String errorMessage) {

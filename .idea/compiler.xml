@@ -13,8 +13,12 @@
         <module name="com.essaid.picocli.commands.example.command-hello" />
         <module name="com.essaid.pico.commands.api-test" />
         <module name="com.essaid.util" />
+        <module name="context" />
         <module name="com.essaid.intercept" />
       </profile>
     </annotationProcessing>
+    <bytecodeTargetLevel>
+      <module name="com.essaid.tmp.grouper.hFBf5FH9rD7qBG" target="1.5" />
+    </bytecodeTargetLevel>
   </component>
 </project>

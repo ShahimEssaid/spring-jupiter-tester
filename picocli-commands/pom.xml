@@ -111,7 +111,7 @@
       <dependency>
         <groupId>com.essaid</groupId>
         <artifactId>com.essaid.intercept</artifactId>
-        <version>${com.essaid.util.intercept.version}</version>
+        <version>0.1.0-SNAPSHOT</version>
       </dependency>
 
 
