@@ -34,7 +34,7 @@ public class Context implements IContext {
   
   @Override
   public void addScopeContexts(boolean overwrite, IScopeContext... addedScopeContexts) {
-    for(IScopeContext scopeContext: addedScopeContexts){
+    for (IScopeContext scopeContext : addedScopeContexts) {
       IScopeContext existingContext = getScopeContext(scopeContext.getScope(), false);
       if (existingContext != null && !overwrite) {
         throw new IllegalStateException(

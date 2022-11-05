@@ -41,7 +41,7 @@ public class ThreadContext implements IThreadContext {
   }
   
   @Override
-  public boolean isEmpty(){
+  public boolean isEmpty() {
     return contexts.isEmpty();
   }
 }

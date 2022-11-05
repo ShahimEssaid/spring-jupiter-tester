@@ -84,7 +84,8 @@ public class Scope implements IScope {
   
   @Override
   public Object get(String name, ObjectFactory<?> objectFactory) {
-    IScopeContext scopeContext = getScopeContext(applicationDomain.isAutoThreadContext(), applicationDomain.isAutoContext(), applicationDomain.isAutoScopeContext());
+    IScopeContext scopeContext = getScopeContext(applicationDomain.isAutoThreadContext(),
+        applicationDomain.isAutoContext(), applicationDomain.isAutoScopeContext());
     return scopeContext == null ? null : scopeContext.get(name, objectFactory);
   }
   
@@ -101,7 +102,7 @@ public class Scope implements IScope {
       scopeContext.registerDestructionCallback(name, callback);
     } else {
       throw new IllegalStateException(
-          "Attempting to register destruction callback but no scope context present for bean name: "+ name +" and scope: " + this);
+          "Attempting to register destruction callback but no scope context present for bean name: " + name + " and scope: " + this);
     }
   }
   

@@ -6,7 +6,6 @@ import com.essaid.context.spring.IScope;
 import com.essaid.context.spring.IThreadContext;
 import com.essaid.context.spring.Scopes;
 import org.springframework.beans.factory.config.BeanDefinition;
-import org.springframework.beans.factory.config.Scope;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.ApplicationContextInitializer;
@@ -49,16 +48,17 @@ public class Boot {
         
       }
     });
-  
+    
     IThreadContext threadContext = domain1.getThreadManager().getThreadContext(true);
-  
+    
     ConfigurableApplicationContext context = application.run(args);
     
     IScope session = (IScope) context.getBeanFactory().getRegisteredScope(IFactory.REQUEST_NAME);
-    String scopeContextId = session.getScopeContext(domain1.isAutoThreadContext(), domain1.isAutoContext(), domain1.isAutoScopeContext()).getScopeContextId();
+    String scopeContextId = session.getScopeContext(domain1.isAutoThreadContext(), domain1.isAutoContext(),
+        domain1.isAutoScopeContext()).getScopeContextId();
     System.out.println("======= Request context id:" + scopeContextId);
-  
-  
+    
+    
     BeanDefinition sessionBeanADefinition = context.getBeanFactory().getBeanDefinition("sessionBeanA");
     String scope = sessionBeanADefinition.getScope();
     

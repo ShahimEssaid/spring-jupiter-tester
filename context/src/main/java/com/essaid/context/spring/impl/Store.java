@@ -12,9 +12,9 @@ import java.util.Map;
 
 public class Store implements IStore {
   private final IApplicationDomain domain;
-  private Map<IScope, List<IScopeContext>> createdScopeContexts = new HashMap<>();
+  private final Map<IScope, List<IScopeContext>> createdScopeContexts = new HashMap<>();
   
-  private Map<String, IScopeContext> idScopeContextMap = new HashMap<>();
+  private final Map<String, IScopeContext> idScopeContextMap = new HashMap<>();
   
   public Store(IApplicationDomain domain) {
     this.domain = domain;

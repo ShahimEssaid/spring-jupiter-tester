@@ -28,7 +28,7 @@ public class ApplicationDomain implements IApplicationDomain {
   private final boolean autoScopeContext;
   @Getter
   private final boolean threadInheritable;
-
+  
   @Getter
   private final boolean autoContext;
   private final String name;
@@ -61,8 +61,8 @@ public class ApplicationDomain implements IApplicationDomain {
       if (store == null) {
         store = factory.createStore();
       }
-      if(threadManager == null){
-       threadManager =  factory.createThreadManager();
+      if (threadManager == null) {
+        threadManager = factory.createThreadManager();
       }
       this.applicationScope = Scopes.createApplicationScope(this, null);
       

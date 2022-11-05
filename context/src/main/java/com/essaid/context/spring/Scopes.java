@@ -52,29 +52,34 @@ public class Scopes {
         inheritableApplicationScope);
   }
   
-  public static IScope createApplicationScope(IApplicationDomain domain, ConfigurableApplicationContext context){
+  public static IScope createApplicationScope(IApplicationDomain domain, ConfigurableApplicationContext context) {
     IFactory factory = domain.getFactory();
-    Scope scope = factory.createScope(IFactory.APPLICATION_NAME, context, IFactory.APPLICATION_ORDER, domain, true, null);
+    Scope scope = factory.createScope(IFactory.APPLICATION_NAME, context, IFactory.APPLICATION_ORDER, domain, true,
+        null);
     return scope;
   }
   
   
-  public static IScope createContainerScope(IApplicationDomain domain, ConfigurableApplicationContext context){
+  public static IScope createContainerScope(IApplicationDomain domain, ConfigurableApplicationContext context) {
     IFactory factory = domain.getFactory();
     Scope scope = factory.createScope(IFactory.CONTAINER_NAME, context, IFactory.CONTAINER_ORDER, domain, true, domain);
     return scope;
   }
   
   
-  public static IScope createSessionScope(IApplicationDomain domain, ConfigurableApplicationContext context, IScope parentContainerScope){
+  public static IScope createSessionScope(IApplicationDomain domain, ConfigurableApplicationContext context,
+      IScope parentContainerScope) {
     IFactory factory = domain.getFactory();
-    Scope scope = factory.createScope(IFactory.SESSION_NAME, context, IFactory.SESSION_ORDER, domain, true, parentContainerScope);
+    Scope scope = factory.createScope(IFactory.SESSION_NAME, context, IFactory.SESSION_ORDER, domain, true,
+        parentContainerScope);
     return scope;
   }
   
-  public static IScope createRequestScope(IApplicationDomain domain, ConfigurableApplicationContext context, IScope parentSessionScope){
+  public static IScope createRequestScope(IApplicationDomain domain, ConfigurableApplicationContext context,
+      IScope parentSessionScope) {
     IFactory factory = domain.getFactory();
-    Scope scope = factory.createScope(IFactory.REQUEST_NAME, context, IFactory.REQUEST_ORDER, domain, true, parentSessionScope);
+    Scope scope = factory.createScope(IFactory.REQUEST_NAME, context, IFactory.REQUEST_ORDER, domain, true,
+        parentSessionScope);
     return scope;
   }
 }

@@ -13,7 +13,7 @@ import java.util.Map;
 
 public class ScopeContext implements IScopeContext {
   
-  private static Logger logger = LoggerFactory.getLogger(ScopeContext.class);
+  private static final Logger logger = LoggerFactory.getLogger(ScopeContext.class);
   
   @Getter
   private final IScope scope;

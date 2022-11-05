@@ -7,11 +7,11 @@ import org.springframework.core.NamedThreadLocal;
 @Data
 class ThreadRequestInfo implements IThreadRequestInfo {
   
-  static final NamedThreadLocal<IThreadRequestInfo> threadRequestInfoHolder = new NamedThreadLocal<>("Thread request " +
-      "info.");
+  static final NamedThreadLocal<IThreadRequestInfo> threadRequestInfoHolder = new NamedThreadLocal<>(
+      "Thread request " + "info.");
   
-  static final NamedInheritableThreadLocal<IThreadRequestInfo> inheritableThreadRequestInfoHolder =
-      new NamedInheritableThreadLocal<>("Inheritable thread " + "request info.");
+  static final NamedInheritableThreadLocal<IThreadRequestInfo> inheritableThreadRequestInfoHolder = new NamedInheritableThreadLocal<>(
+      "Inheritable thread " + "request info.");
   private final String sessionId;
   private final String conversationId;
   
