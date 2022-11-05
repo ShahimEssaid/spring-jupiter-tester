@@ -1,12 +1,12 @@
 package tmp.springboot.example1.comp;
 
-import com.essaid.context.spring.SpringScopes;
+import com.essaid.context.spring.IFactory;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 
 import javax.annotation.PreDestroy;
 
-@Scope(SpringScopes.APPLICATION_NAME)
+@Scope(IFactory.APPLICATION_NAME)
 @Component
 public class ApplicationBean {
   public ApplicationBean() {

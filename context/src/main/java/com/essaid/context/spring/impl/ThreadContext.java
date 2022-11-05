@@ -1,8 +1,8 @@
-package com.essaid.context.spring2.impl;
+package com.essaid.context.spring.impl;
 
-import com.essaid.context.spring2.IApplicationDomain;
-import com.essaid.context.spring2.IContext;
-import com.essaid.context.spring2.IThreadContext;
+import com.essaid.context.spring.IApplicationDomain;
+import com.essaid.context.spring.IContext;
+import com.essaid.context.spring.IThreadContext;
 import com.essaid.util.asserts.Asserts;
 import lombok.Getter;
 import lombok.Setter;

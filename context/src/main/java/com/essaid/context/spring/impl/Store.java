@@ -1,9 +1,9 @@
-package com.essaid.context.spring2.impl;
+package com.essaid.context.spring.impl;
 
-import com.essaid.context.spring2.IApplicationDomain;
-import com.essaid.context.spring2.IScope;
-import com.essaid.context.spring2.IScopeContext;
-import com.essaid.context.spring2.IStore;
+import com.essaid.context.spring.IApplicationDomain;
+import com.essaid.context.spring.IScope;
+import com.essaid.context.spring.IScopeContext;
+import com.essaid.context.spring.IStore;
 
 import java.util.ArrayList;
 import java.util.HashMap;

@@ -1,6 +1,6 @@
-package com.essaid.context.spring2;
+package com.essaid.context.spring;
 
-import com.essaid.context.spring2.impl.Scope;
+import com.essaid.context.spring.impl.Scope;
 import org.springframework.context.ConfigurableApplicationContext;
 
 public interface IFactory {

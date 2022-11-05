@@ -1,4 +1,4 @@
-package com.essaid.context.spring2;
+package com.essaid.context.spring;
 
 import org.springframework.context.ApplicationListener;
 import org.springframework.context.event.ApplicationContextEvent;

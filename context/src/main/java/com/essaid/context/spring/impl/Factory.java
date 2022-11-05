@@ -1,13 +1,13 @@
-package com.essaid.context.spring2.impl;
+package com.essaid.context.spring.impl;
 
-import com.essaid.context.spring2.IApplicationDomain;
-import com.essaid.context.spring2.IContext;
-import com.essaid.context.spring2.IFactory;
-import com.essaid.context.spring2.IScope;
-import com.essaid.context.spring2.IScopeContext;
-import com.essaid.context.spring2.IStore;
-import com.essaid.context.spring2.IThreadContext;
-import com.essaid.context.spring2.IThreadManager;
+import com.essaid.context.spring.IApplicationDomain;
+import com.essaid.context.spring.IContext;
+import com.essaid.context.spring.IFactory;
+import com.essaid.context.spring.IScope;
+import com.essaid.context.spring.IScopeContext;
+import com.essaid.context.spring.IStore;
+import com.essaid.context.spring.IThreadContext;
+import com.essaid.context.spring.IThreadManager;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.context.ConfigurableApplicationContext;

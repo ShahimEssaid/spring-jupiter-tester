@@ -7,7 +7,6 @@ import javax.annotation.PreDestroy;
 
 @Component
 @Scope("request")
-
 public class RequestBeanA {
   
   @PreDestroy

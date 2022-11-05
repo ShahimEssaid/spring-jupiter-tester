@@ -1,9 +1,9 @@
 package tmp.springboot.example1;
 
-import com.essaid.context.spring.ISpringScope;
-import com.essaid.context.spring.ISpringScopeDomain;
-import com.essaid.context.spring.ISpringThreadContext;
-import com.essaid.context.spring.SpringScopes;
+import com.essaid.context.spring.IApplicationDomain;
+import com.essaid.context.spring.IScope;
+import com.essaid.context.spring.IThreadContext;
+import com.essaid.context.spring.Scopes;
 import org.springframework.beans.factory.config.BeanDefinition;
 import org.springframework.beans.factory.config.Scope;
 import org.springframework.boot.SpringApplication;
@@ -18,9 +18,11 @@ import tmp.springboot.example1.comp.SessionBeanA;
 public class Boot {
   
   public static void main(String[] args) {
-    ISpringScopeDomain domain = SpringScopes.createDomain("example-domain", true, true, true, true);
     
-    SpringScopes.setDomain(domain, false);
+    IApplicationDomain domain1 = Scopes.createDomain("Boot 2", true, true, true, true);
+    domain1.initialize();
+    Scopes.setDomain(domain1, true);
+    
     SpringApplication application = new SpringApplication(Boot.class) {
     };
     
@@ -28,24 +30,27 @@ public class Boot {
       @Override
       public void initialize(ConfigurableApplicationContext applicationContext) {
         
-        ISpringScope scope = SpringScopes.createSessionScope(domain, applicationContext);
+        IScope scope = Scopes.createApplicationScope(domain1, applicationContext);
         applicationContext.getBeanFactory().registerScope(scope.getScopeName(), scope);
         
-        scope = SpringScopes.createRequestScope(domain, applicationContext);
+        scope = Scopes.createContainerScope(domain1, applicationContext);
+        
+        scope = Scopes.createSessionScope(domain1, applicationContext, scope);
         applicationContext.getBeanFactory().registerScope(scope.getScopeName(), scope);
         
-        scope = SpringScopes.createConversationScope(domain, applicationContext);
+        scope = Scopes.createRequestScope(domain1, applicationContext, scope);
         applicationContext.getBeanFactory().registerScope(scope.getScopeName(), scope);
         
-        applicationContext.getBeanFactory().registerScope(SpringScopes.APPLICATION_NAME, domain);
         
-        applicationContext.addApplicationListener(domain);
+        applicationContext.getBeanFactory().registerScope(domain1.getScopeName(), domain1);
+        
+        applicationContext.addApplicationListener(domain1);
         
       }
     });
-    
-    ISpringThreadContext context1 = domain.getThreadContext();
-    
+  
+    IThreadContext threadContext = domain1.getThreadManager().getThreadContext(true);
+  
     ConfigurableApplicationContext context = application.run(args);
     
     Scope session = context.getBeanFactory().getRegisteredScope("session");
@@ -59,7 +64,7 @@ public class Boot {
     ApplicationBean applicationBean = context.getBean(ApplicationBean.class);
     
     context.close();
-    domain.close();
+    domain1.close();
     System.out.println("Done");
     //Arrays.stream(beanDefinitionNames).sorted().forEach(System.out::println);
   }

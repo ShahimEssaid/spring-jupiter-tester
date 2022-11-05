@@ -1,8 +1,7 @@
-package com.essaid.context.spring2.impl;
+package com.essaid.context.spring.impl;
 
-import com.essaid.context.spring2.IScope;
-import com.essaid.context.spring2.IScopeContext;
-import com.essaid.context.spring2.impl.Scope;
+import com.essaid.context.spring.IScope;
+import com.essaid.context.spring.IScopeContext;
 import com.essaid.util.asserts.Asserts;
 import lombok.Getter;
 import org.springframework.beans.factory.ObjectFactory;

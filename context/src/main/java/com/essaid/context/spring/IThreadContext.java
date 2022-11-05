@@ -1,4 +1,4 @@
-package com.essaid.context.spring2;
+package com.essaid.context.spring;
 
 public interface IThreadContext {
   

@@ -1,13 +1,12 @@
-package com.essaid.context.spring2.impl;
+package com.essaid.context.spring.impl;
 
-import com.essaid.context.spring2.IApplicationDomain;
-import com.essaid.context.spring2.IFactory;
-import com.essaid.context.spring2.IScope;
-import com.essaid.context.spring2.IScopeContext;
-import com.essaid.context.spring2.IStore;
-import com.essaid.context.spring2.IThreadContext;
-import com.essaid.context.spring2.IThreadManager;
-import com.essaid.context.spring2.Scopes;
+import com.essaid.context.spring.IApplicationDomain;
+import com.essaid.context.spring.IFactory;
+import com.essaid.context.spring.IScope;
+import com.essaid.context.spring.IScopeContext;
+import com.essaid.context.spring.IStore;
+import com.essaid.context.spring.IThreadManager;
+import com.essaid.context.spring.Scopes;
 import com.essaid.util.asserts.Asserts;
 import lombok.Getter;
 import org.slf4j.Logger;
@@ -16,7 +15,6 @@ import org.springframework.beans.factory.ObjectFactory;
 import org.springframework.context.ConfigurableApplicationContext;
 import org.springframework.context.event.ApplicationContextEvent;
 import org.springframework.context.event.ContextClosedEvent;
-import org.springframework.core.NamedThreadLocal;
 
 public class ApplicationDomain implements IApplicationDomain {
   
