@@ -67,6 +67,7 @@ public class ApplicationDomain implements IApplicationDomain {
       this.applicationScope = Scopes.createApplicationScope(this, null);
       
       applicationScopeContext = factory.createScopeContext(this);
+      applicationScopeContext.setName(getDomainName());
       this.initialized = true;
     } else {
       logger.warn("Application domain: {} already initialized.", this);
@@ -137,8 +138,8 @@ public class ApplicationDomain implements IApplicationDomain {
   }
   
   @Override
-  public String getName() {
-    return applicationScopeContext.getName();
+  public String getScopeContextName() {
+    return applicationScopeContext.getScopeContextName();
   }
   
   
@@ -167,6 +168,16 @@ public class ApplicationDomain implements IApplicationDomain {
     return applicationScopeContext.isClosed();
   }
   
+  @Override
+  public boolean isProperNamed() {
+    return false;
+  }
+  
+  @Override
+  public IScopeContext save(boolean overwrite) {
+    return null;
+  }
+  
   
   @Override
   public int getOrder() {
@@ -188,5 +199,10 @@ public class ApplicationDomain implements IApplicationDomain {
   @Override
   public IThreadManager getThreadManager() {
     return threadManager;
+  }
+  
+  @Override
+  public String getDomainName() {
+    return name;
   }
 }

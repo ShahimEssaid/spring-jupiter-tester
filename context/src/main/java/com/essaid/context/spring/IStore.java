@@ -11,7 +11,7 @@ public interface IStore {
   
   Map<IScope, List<IScopeContext>> getCreated();
   
-  void save(IScopeContext context);
+  IScopeContext save(IScopeContext context, boolean overwrite);
   
   IScopeContext getSaved(String scopeContextId);
   

@@ -21,5 +21,6 @@ public interface IApplicationDomain extends IScope, IScopeContext, ApplicationLi
   
   void close();
   
+  String getDomainName();
   
 }

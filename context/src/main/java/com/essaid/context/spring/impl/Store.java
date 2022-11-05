@@ -38,14 +38,15 @@ public class Store implements IStore {
   }
   
   @Override
-  public void save(IScopeContext context) {
+  public IScopeContext save(IScopeContext context, boolean overwrite) {
     String scopeContextId = context.getScopeContextId();
-    if (idScopeContextMap.containsKey(scopeContextId)) {
+    IScopeContext saved = getSaved(scopeContextId);
+    if (saved == context) return null;
+    if (saved != null && !overwrite) {
       throw new IllegalStateException(
-          "Scope context with id: " + scopeContextId + " created: " + context + " but such an id already exists in store with context:" + idScopeContextMap.get(
-              scopeContextId));
+          "Scope context id: " + scopeContextId + " being saved as context: " + context + " but different context exists and no overwrite:" + saved);
     }
-    idScopeContextMap.put(scopeContextId, context);
+    return idScopeContextMap.put(scopeContextId, context);
   }
   
   @Override

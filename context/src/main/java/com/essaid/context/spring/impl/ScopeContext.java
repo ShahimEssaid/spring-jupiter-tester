@@ -21,7 +21,6 @@ public class ScopeContext implements IScopeContext {
   private final Map<String, Runnable> destructorMap = new HashMap<>();
   private volatile boolean closed;
   
-  @Getter
   private String name;
   private long timeout;
   private long latestTimestamp;
@@ -85,13 +84,18 @@ public class ScopeContext implements IScopeContext {
   }
   
   @Override
+  public String getScopeContextName() {
+    return name;
+  }
+  
+  @Override
   public String getScopeContextId() {
     
-    if (getName() == null) {
+    if (getScopeContextName() == null) {
       setName(scope.generateContextId());
     }
     
-    String contextId = scope.getScopeName() + ":" + getName();
+    String contextId = scope.getScopeName() + ":" + getScopeContextName();
     contextId = scope.getParent() == null ? contextId : scope.getParent()
         .getScopeContext(scope.getApplicationDomain().isAutoThreadContext(),
             scope.getApplicationDomain().isAutoContext(), scope.getApplicationDomain().isAutoScopeContext())
@@ -104,5 +108,13 @@ public class ScopeContext implements IScopeContext {
     return closed;
   }
   
+  @Override
+  public boolean isProperNamed() {
+    return getScopeContextName() != null && !getScopeContextName().startsWith("_");
+  }
   
+  @Override
+  public IScopeContext save(boolean overwrite) {
+    return scope.getApplicationDomain().getStore().save(this, overwrite);
+  }
 }

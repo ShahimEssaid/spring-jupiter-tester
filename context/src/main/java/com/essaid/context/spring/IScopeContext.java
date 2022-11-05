@@ -10,9 +10,13 @@ public interface IScopeContext extends Scope {
   
   void setName(String name);
   
-  String getName();
+  String getScopeContextName();
   
   String getScopeContextId();
   
   Boolean isClosed();
+  
+  boolean isProperNamed();
+  
+  IScopeContext save(boolean overwrite);
 }
