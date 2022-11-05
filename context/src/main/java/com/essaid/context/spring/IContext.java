@@ -3,7 +3,8 @@ package com.essaid.context.spring;
 public interface IContext {
   IScopeContext getScopeContext(IScope scope, boolean create);
   
-  IScopeContext setScopeContext(IScope scope, IScopeContext context, boolean overwrite);
+  
+  void addScopeContexts(boolean overwrite, IScopeContext... scopeContexts);
   
   IScopeContext removeScopeContext(IScope scope);
 }

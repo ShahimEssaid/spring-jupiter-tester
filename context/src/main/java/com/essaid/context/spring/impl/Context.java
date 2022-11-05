@@ -33,13 +33,16 @@ public class Context implements IContext {
   }
   
   @Override
-  public IScopeContext setScopeContext(IScope scope, IScopeContext context, boolean overwrite) {
-    IScopeContext existingContext = getScopeContext(scope, false);
-    if (existingContext != null && !overwrite) {
-      throw new IllegalStateException(
-          "Can't overwrite IScopeContext. Exising context: " + existingContext + ", new context: " + context);
+  public void addScopeContexts(boolean overwrite, IScopeContext... addedScopeContexts) {
+    for(IScopeContext scopeContext: addedScopeContexts){
+      IScopeContext existingContext = getScopeContext(scopeContext.getScope(), false);
+      if (existingContext != null && !overwrite) {
+        throw new IllegalStateException(
+            "Can't overwrite IScopeContext. Exising context: " + existingContext + ", new context: " + scopeContext);
+      }
+      scopeContexts.put(scopeContext.getScope(), scopeContext);
     }
-    return scopeContexts.put(scope, context);
+    
   }
   
   @Override

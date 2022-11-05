@@ -6,4 +6,8 @@ public interface IThreadManager {
   IThreadContext setThreadContext(IThreadContext context, boolean overwrite);
   
   IThreadContext removeThreadContext();
+  
+  void enterContext(IContext context);
+  
+  IContext exitContext();
 }
