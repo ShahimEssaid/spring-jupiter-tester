@@ -1,6 +1,7 @@
 package tmp.springboot.example1;
 
 import com.essaid.context.spring.IApplicationDomain;
+import com.essaid.context.spring.IFactory;
 import com.essaid.context.spring.IScope;
 import com.essaid.context.spring.IThreadContext;
 import com.essaid.context.spring.Scopes;
@@ -53,8 +54,11 @@ public class Boot {
   
     ConfigurableApplicationContext context = application.run(args);
     
-    Scope session = context.getBeanFactory().getRegisteredScope("session");
-    
+    IScope session = (IScope) context.getBeanFactory().getRegisteredScope(IFactory.REQUEST_NAME);
+    String scopeContextId = session.getScopeContext(domain1.isAutoThreadContext(), domain1.isAutoContext(), domain1.isAutoScopeContext()).getScopeContextId();
+    System.out.println("======= Request context id:" + scopeContextId);
+  
+  
     BeanDefinition sessionBeanADefinition = context.getBeanFactory().getBeanDefinition("sessionBeanA");
     String scope = sessionBeanADefinition.getScope();
     

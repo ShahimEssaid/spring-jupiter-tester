@@ -12,7 +12,7 @@ public interface IScope extends Scope {
   
   void close();
   
-  IScopeContext getScopeContext(boolean create);
+  IScopeContext getScopeContext(boolean createThreadContext, boolean createContext, boolean createScopeContext);
   
   
   String generateContextId();

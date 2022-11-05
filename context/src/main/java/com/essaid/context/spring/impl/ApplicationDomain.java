@@ -127,7 +127,7 @@ public class ApplicationDomain implements IApplicationDomain {
   }
   
   @Override
-  public IScopeContext getScopeContext(boolean create) {
+  public IScopeContext getScopeContext(boolean createThreadContext, boolean createContext, boolean createScopeContext) {
     return applicationScopeContext;
   }
   

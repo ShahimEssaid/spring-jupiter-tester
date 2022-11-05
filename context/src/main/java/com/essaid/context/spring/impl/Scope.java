@@ -84,19 +84,19 @@ public class Scope implements IScope {
   
   @Override
   public Object get(String name, ObjectFactory<?> objectFactory) {
-    IScopeContext scopeContext = getScopeContext(applicationDomain.isAutoScopeContext());
+    IScopeContext scopeContext = getScopeContext(applicationDomain.isAutoThreadContext(), applicationDomain.isAutoContext(), applicationDomain.isAutoScopeContext());
     return scopeContext == null ? null : scopeContext.get(name, objectFactory);
   }
   
   @Override
   public Object remove(String name) {
-    IScopeContext scopeContext = getScopeContext(false);
+    IScopeContext scopeContext = getScopeContext(false, false, false);
     return scopeContext == null ? null : scopeContext.remove(name);
   }
   
   @Override
   public void registerDestructionCallback(String name, Runnable callback) {
-    IScopeContext scopeContext = getScopeContext(false);
+    IScopeContext scopeContext = getScopeContext(false, false, false);
     if (scopeContext != null) {
       scopeContext.registerDestructionCallback(name, callback);
     } else {
@@ -107,23 +107,23 @@ public class Scope implements IScope {
   
   @Override
   public Object resolveContextualObject(String key) {
-    IScopeContext scopeContext = getScopeContext(false);
+    IScopeContext scopeContext = getScopeContext(false, false, false);
     return scopeContext == null ? null : scopeContext.resolveContextualObject(key);
   }
   
   @Override
   public String getConversationId() {
-    IScopeContext scopeContext = getScopeContext(false);
+    IScopeContext scopeContext = getScopeContext(false, false, false);
     return scopeContext == null ? null : scopeContext.getConversationId();
   }
   
   @Override
-  public IScopeContext getScopeContext(boolean create) {
-    IThreadContext threadContext = applicationDomain.getThreadManager().getThreadContext(create);
+  public IScopeContext getScopeContext(boolean createThreadContext, boolean createContext, boolean createScopeContext) {
+    IThreadContext threadContext = applicationDomain.getThreadManager().getThreadContext(createContext);
     if (threadContext != null) {
-      IContext iContext = threadContext.peekContext(applicationDomain.isAutoContext());
+      IContext iContext = threadContext.peekContext(createContext);
       if (iContext != null) {
-        return iContext.getScopeContext(this, applicationDomain.isAutoScopeContext());
+        return iContext.getScopeContext(this, createScopeContext);
       }
     }
     return null;
@@ -137,7 +137,7 @@ public class Scope implements IScope {
   
   @Override
   public Boolean isClosed() {
-    IScopeContext scopeContext = getScopeContext(false);
+    IScopeContext scopeContext = getScopeContext(false, false, false);
     return scopeContext == null ? null : scopeContext.isClosed();
   }
 }

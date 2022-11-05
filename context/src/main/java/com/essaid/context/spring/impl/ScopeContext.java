@@ -92,7 +92,9 @@ public class ScopeContext implements IScopeContext {
     }
     
     String contextId = scope.getScopeName() + ":" + getName();
-    contextId = scope.getParent() == null ? contextId : scope.getParent().getScopeContext(true)
+    contextId = scope.getParent() == null ? contextId : scope.getParent()
+        .getScopeContext(scope.getApplicationDomain().isAutoThreadContext(),
+            scope.getApplicationDomain().isAutoContext(), scope.getApplicationDomain().isAutoScopeContext())
         .getScopeContextId() + "|" + contextId;
     return contextId;
   }
