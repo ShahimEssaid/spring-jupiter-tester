@@ -7,6 +7,7 @@ import com.essaid.context.spring2.IScope;
 import com.essaid.context.spring2.IScopeContext;
 import com.essaid.context.spring2.IStore;
 import com.essaid.context.spring2.IThreadContext;
+import com.essaid.context.spring2.IThreadManager;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.context.ConfigurableApplicationContext;
@@ -65,22 +66,27 @@ public class Factory implements IFactory {
   public IStore createStore() {
     return new Store(domain);
   }
-
+  
   
   @Override
   public void close(ConfigurableApplicationContext context) {
     Map<String, Scope> remove = scopes.remove(context);
-    if(remove!=null){
+    if (remove != null) {
       List<IScope> contextscopes = new ArrayList<>(remove.values());
       Collections.sort(contextscopes, new Comparator<IScope>() {
-    
+        
         @Override
         public int compare(IScope o1, IScope o2) {
           return o2.getOrder() - o1.getOrder();
         }
       });
-      contextscopes.forEach( cs -> cs.close());
+      contextscopes.forEach(cs -> cs.close());
     }
+    
+  }
   
+  @Override
+  public IThreadManager createThreadManager() {
+    return new ThreadManager(domain);
   }
 }

@@ -27,4 +27,6 @@ public interface IFactory {
   IStore createStore();
   
   void close(ConfigurableApplicationContext context);
+  
+  IThreadManager createThreadManager();
 }

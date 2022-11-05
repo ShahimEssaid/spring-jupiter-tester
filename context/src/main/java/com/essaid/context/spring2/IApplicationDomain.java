@@ -3,19 +3,15 @@ package com.essaid.context.spring2;
 import org.springframework.context.ApplicationListener;
 import org.springframework.context.event.ApplicationContextEvent;
 
-public interface IApplicationDomain  extends IScope, IScopeContext, ApplicationListener<ApplicationContextEvent> {
-  
-  IThreadContext getThreadContext(boolean create);
-  
-  IThreadContext setThreadContext(IThreadContext context, boolean overwrite);
-  
-  IThreadContext removeThreadContext();
+public interface IApplicationDomain extends IScope, IScopeContext, ApplicationListener<ApplicationContextEvent> {
   
   void initialize();
   
   IFactory getFactory();
   
   IStore getStore();
+  
+  IThreadManager getThreadManager();
   
   boolean isAutoThreadContext();
   
@@ -24,4 +20,6 @@ public interface IApplicationDomain  extends IScope, IScopeContext, ApplicationL
   boolean isAutoScopeContext();
   
   void close();
+  
+  
 }

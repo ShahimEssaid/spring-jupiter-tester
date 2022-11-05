@@ -6,6 +6,7 @@ import com.essaid.context.spring2.IScope;
 import com.essaid.context.spring2.IScopeContext;
 import com.essaid.context.spring2.IStore;
 import com.essaid.context.spring2.IThreadContext;
+import com.essaid.context.spring2.IThreadManager;
 import com.essaid.context.spring2.Scopes;
 import com.essaid.util.asserts.Asserts;
 import lombok.Getter;
@@ -29,12 +30,13 @@ public class ApplicationDomain implements IApplicationDomain {
   private final boolean autoScopeContext;
   @Getter
   private final boolean threadInheritable;
-  private final NamedThreadLocal<IThreadContext> threadContextHolder = new NamedThreadLocal<>("Spring thread context");
+
   @Getter
   private final boolean autoContext;
   private final String name;
   private IFactory factory;
   private IStore store;
+  private IThreadManager threadManager;
   private IScopeContext applicationScopeContext;
   @Getter
   private boolean initialized;
@@ -60,6 +62,9 @@ public class ApplicationDomain implements IApplicationDomain {
       }
       if (store == null) {
         store = factory.createStore();
+      }
+      if(threadManager == null){
+       threadManager =  factory.createThreadManager();
       }
       applicationScopeContext = factory.createScopeContext(this);
       this.applicationScope = Scopes.createApplicationScope(this, null);
@@ -121,34 +126,9 @@ public class ApplicationDomain implements IApplicationDomain {
   public void close() {
     applicationScopeContext.close();
   }
-  
-  @Override
-  public IThreadContext getThreadContext(boolean create) {
-    IThreadContext context = threadContextHolder.get();
-    if (context == null && create) {
-      context = getFactory().createThreadContext();
-      threadContextHolder.set(context);
-    }
-    return context;
-  }
-  
-  @Override
-  public IThreadContext setThreadContext(IThreadContext context, boolean overwrite) {
-    IThreadContext existingContext = getThreadContext(false);
-    if (existingContext != null && !overwrite) {
-      throw new IllegalStateException(
-          "Can't overwrite thread context for application domain: " + this + ", current context: " + existingContext + ", and new context:" + context);
-    }
-    threadContextHolder.set(context);
-    return existingContext;
-  }
-  
-  @Override
-  public IThreadContext removeThreadContext() {
-    IThreadContext threadContext = getThreadContext(false);
-    threadContextHolder.remove();
-    return threadContext;
-  }
+
+
+
   
   @Override
   public int getOrder() {
@@ -165,5 +145,10 @@ public class ApplicationDomain implements IApplicationDomain {
     if (ContextClosedEvent.class.isAssignableFrom(event.getClass())) {
       getFactory().close((ConfigurableApplicationContext) event.getApplicationContext());
     }
+  }
+  
+  @Override
+  public IThreadManager getThreadManager() {
+    return threadManager;
   }
 }

@@ -115,7 +115,7 @@ public class Scope implements IScope {
   }
   
   private IScopeContext getScopeContext() {
-    IThreadContext threadContext = domain.getThreadContext(domain.isAutoThreadContext());
+    IThreadContext threadContext = domain.getThreadManager().getThreadContext(domain.isAutoThreadContext());
     if (threadContext != null) {
       IContext iContext = threadContext.peekContext(domain.isAutoContext());
       if (iContext != null) {

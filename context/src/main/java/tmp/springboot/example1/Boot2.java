@@ -50,7 +50,7 @@ public class Boot2 {
       }
     });
   
-    IThreadContext threadContext = domain1.getThreadContext(true);
+    IThreadContext threadContext = domain1.getThreadManager().getThreadContext(true);
   
     ConfigurableApplicationContext context = application.run(args);
     
