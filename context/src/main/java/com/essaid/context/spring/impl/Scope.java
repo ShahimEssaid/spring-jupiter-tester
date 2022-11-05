@@ -22,14 +22,14 @@ public class Scope implements IScope {
   private final String scopeName;
   private final ConfigurableApplicationContext applicationContext;
   private final int order;
-  private final IApplicationDomain domain;
+  private final IApplicationDomain applicationDomain;
   private final boolean threadInheritable;
   private final IScope parent;
   private final List<IScope> children = new ArrayList<>();
   private final AtomicLong sequence = new AtomicLong();
   
   public Scope(String scopeName, ConfigurableApplicationContext applicationContext, int order,
-      IApplicationDomain domain, boolean threadInheritable, IScope parent) {
+      IApplicationDomain applicationDomain, boolean threadInheritable, IScope parent) {
     if (scopeName.equals(IFactory.APPLICATION_NAME)) {
       if (parent != null) {
         throw new IllegalArgumentException(
@@ -60,7 +60,7 @@ public class Scope implements IScope {
     this.scopeName = scopeName;
     this.applicationContext = applicationContext;
     this.order = order;
-    this.domain = domain;
+    this.applicationDomain = applicationDomain;
     this.threadInheritable = threadInheritable;
     this.parent = parent;
     if (parent != null) {
@@ -79,49 +79,65 @@ public class Scope implements IScope {
   
   @Override
   public void close() {
-    domain.getStore().close(this);
+    applicationDomain.getStore().close(this);
   }
   
   @Override
   public Object get(String name, ObjectFactory<?> objectFactory) {
-    IScopeContext scopeContext = getScopeContext();
+    IScopeContext scopeContext = getScopeContext(applicationDomain.isAutoScopeContext());
     return scopeContext == null ? null : scopeContext.get(name, objectFactory);
   }
   
   @Override
   public Object remove(String name) {
-    IScopeContext scopeContext = getScopeContext();
+    IScopeContext scopeContext = getScopeContext(false);
     return scopeContext == null ? null : scopeContext.remove(name);
   }
   
   @Override
   public void registerDestructionCallback(String name, Runnable callback) {
-    IScopeContext scopeContext = getScopeContext();
+    IScopeContext scopeContext = getScopeContext(false);
     if (scopeContext != null) {
       scopeContext.registerDestructionCallback(name, callback);
+    } else {
+      throw new IllegalStateException(
+          "Attempting to register destruction callback but no scope context present for bean name: "+ name +" and scope: " + this);
     }
   }
   
   @Override
   public Object resolveContextualObject(String key) {
-    IScopeContext scopeContext = getScopeContext();
+    IScopeContext scopeContext = getScopeContext(false);
     return scopeContext == null ? null : scopeContext.resolveContextualObject(key);
   }
   
   @Override
   public String getConversationId() {
-    IScopeContext scopeContext = getScopeContext();
+    IScopeContext scopeContext = getScopeContext(false);
     return scopeContext == null ? null : scopeContext.getConversationId();
   }
   
-  private IScopeContext getScopeContext() {
-    IThreadContext threadContext = domain.getThreadManager().getThreadContext(domain.isAutoThreadContext());
+  @Override
+  public IScopeContext getScopeContext(boolean create) {
+    IThreadContext threadContext = applicationDomain.getThreadManager().getThreadContext(create);
     if (threadContext != null) {
-      IContext iContext = threadContext.peekContext(domain.isAutoContext());
+      IContext iContext = threadContext.peekContext(applicationDomain.isAutoContext());
       if (iContext != null) {
-        return iContext.getScopeContext(this, domain.isAutoScopeContext());
+        return iContext.getScopeContext(this, applicationDomain.isAutoScopeContext());
       }
     }
     return null;
+  }
+  
+  
+  @Override
+  public String generateContextId() {
+    return "_" + sequence.getAndIncrement();
+  }
+  
+  @Override
+  public Boolean isClosed() {
+    IScopeContext scopeContext = getScopeContext(false);
+    return scopeContext == null ? null : scopeContext.isClosed();
   }
 }

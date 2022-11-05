@@ -64,8 +64,9 @@ public class ApplicationDomain implements IApplicationDomain {
       if(threadManager == null){
        threadManager =  factory.createThreadManager();
       }
-      applicationScopeContext = factory.createScopeContext(this);
       this.applicationScope = Scopes.createApplicationScope(this, null);
+      
+      applicationScopeContext = factory.createScopeContext(this);
       this.initialized = true;
     } else {
       logger.warn("Application domain: {} already initialized.", this);
@@ -124,9 +125,48 @@ public class ApplicationDomain implements IApplicationDomain {
   public void close() {
     applicationScopeContext.close();
   }
-
-
-
+  
+  @Override
+  public IScopeContext getScopeContext(boolean create) {
+    return applicationScopeContext;
+  }
+  
+  @Override
+  public void setName(String name) {
+    applicationScopeContext.setName(name);
+  }
+  
+  @Override
+  public String getName() {
+    return applicationScopeContext.getName();
+  }
+  
+  
+  @Override
+  public String getScopeContextId() {
+    return applicationScopeContext.getScopeContextId();
+  }
+  
+  @Override
+  public String generateContextId() {
+    return applicationScope.generateContextId();
+  }
+  
+  @Override
+  public IScope getParent() {
+    return applicationScope.getParent();
+  }
+  
+  @Override
+  public IApplicationDomain getApplicationDomain() {
+    return this;
+  }
+  
+  @Override
+  public Boolean isClosed() {
+    return applicationScopeContext.isClosed();
+  }
+  
   
   @Override
   public int getOrder() {

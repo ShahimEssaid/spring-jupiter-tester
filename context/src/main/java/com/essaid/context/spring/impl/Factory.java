@@ -53,13 +53,14 @@ public class Factory implements IFactory {
   
   @Override
   public IThreadContext createThreadContext() {
-    
     return new ThreadContext(domain);
   }
   
   @Override
   public IContext createContext() {
-    return new Context(domain);
+    IContext  context = new Context(domain);
+    context.setScopeContext(domain, domain, false);
+    return context;
   }
   
   @Override

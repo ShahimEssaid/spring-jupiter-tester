@@ -4,6 +4,8 @@ import com.essaid.context.spring.IScope;
 import com.essaid.context.spring.IScopeContext;
 import com.essaid.util.asserts.Asserts;
 import lombok.Getter;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.ObjectFactory;
 
 import java.util.HashMap;
@@ -11,11 +13,12 @@ import java.util.Map;
 
 public class ScopeContext implements IScopeContext {
   
+  private static Logger logger = LoggerFactory.getLogger(ScopeContext.class);
+  
   @Getter
   private final IScope scope;
   private final Map<String, Object> objectMap = new HashMap<>();
   private final Map<String, Runnable> destructorMap = new HashMap<>();
-  @Getter
   private volatile boolean closed;
   
   @Getter
@@ -28,6 +31,10 @@ public class ScopeContext implements IScopeContext {
   }
   
   public void close() {
+    if (closed) {
+      logger.warn("Scope context already closed: {}", this);
+      return;
+    }
     objectMap.keySet().forEach(key -> {
       Runnable destructor = destructorMap.remove(key);
       if (destructor != null) {
@@ -35,6 +42,7 @@ public class ScopeContext implements IScopeContext {
       }
     });
     objectMap.clear();
+    closed = true;
   }
   
   @Override
@@ -75,4 +83,24 @@ public class ScopeContext implements IScopeContext {
     Asserts.notNull(name, "Can't name scope context with null name for context: ", this);
     this.name = name;
   }
+  
+  @Override
+  public String getScopeContextId() {
+    
+    if (getName() == null) {
+      setName(scope.generateContextId());
+    }
+    
+    String contextId = scope.getScopeName() + ":" + getName();
+    contextId = scope.getParent() == null ? contextId : scope.getParent().getScopeContext(true)
+        .getScopeContextId() + "|" + contextId;
+    return contextId;
+  }
+  
+  @Override
+  public Boolean isClosed() {
+    return closed;
+  }
+  
+  
 }

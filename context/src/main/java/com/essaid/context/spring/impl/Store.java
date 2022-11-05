@@ -12,7 +12,9 @@ import java.util.Map;
 
 public class Store implements IStore {
   private final IApplicationDomain domain;
-  private Map<IScope, List<IScopeContext>> contexts = new HashMap<>();
+  private Map<IScope, List<IScopeContext>> createdScopeContexts = new HashMap<>();
+  
+  private Map<String, IScopeContext> idScopeContextMap = new HashMap<>();
   
   public Store(IApplicationDomain domain) {
     this.domain = domain;
@@ -20,12 +22,45 @@ public class Store implements IStore {
   
   @Override
   public void created(IScopeContext context) {
-    contexts.computeIfAbsent(context.getScope(), s -> new ArrayList<>()).add(context);
+    
+    
+    createdScopeContexts.computeIfAbsent(context.getScope(), s -> new ArrayList<>()).add(context);
+  }
+  
+  @Override
+  public List<IScopeContext> getCreated(IScope scope) {
+    return createdScopeContexts.get(scope);
+  }
+  
+  @Override
+  public Map<IScope, List<IScopeContext>> getCreated() {
+    return createdScopeContexts;
+  }
+  
+  @Override
+  public void save(IScopeContext context) {
+    String scopeContextId = context.getScopeContextId();
+    if (idScopeContextMap.containsKey(scopeContextId)) {
+      throw new IllegalStateException(
+          "Scope context with id: " + scopeContextId + " created: " + context + " but such an id already exists in store with context:" + idScopeContextMap.get(
+              scopeContextId));
+    }
+    idScopeContextMap.put(scopeContextId, context);
+  }
+  
+  @Override
+  public IScopeContext getSaved(String scopeContextId) {
+    return idScopeContextMap.get(scopeContextId);
+  }
+  
+  @Override
+  public Map<String, IScopeContext> getSaved() {
+    return idScopeContextMap;
   }
   
   @Override
   public void close(IScope scope) {
-    List<IScopeContext> scopeContexts = contexts.remove(scope);
+    List<IScopeContext> scopeContexts = createdScopeContexts.remove(scope);
     if (scopeContexts != null) {
       scopeContexts.forEach(sc -> sc.close());
     }
