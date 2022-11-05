@@ -15,9 +15,13 @@ public interface IApplicationDomain  extends IScope, IScopeContext, ApplicationL
   
   IFactory getFactory();
   
+  IStore getStore();
+  
   boolean isAutoThreadContext();
   
   boolean isAutoContext();
   
   boolean isAutoScopeContext();
+  
+  void close();
 }

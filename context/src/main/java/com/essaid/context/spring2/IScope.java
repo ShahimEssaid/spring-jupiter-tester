@@ -6,5 +6,9 @@ public interface IScope extends Scope  {
   
   String getScopeName();
   
+  int getOrder();
+  
   void addChild(IScope scope);
+
+  void close();
 }

@@ -4,6 +4,7 @@ import com.essaid.context.spring2.IApplicationDomain;
 import com.essaid.context.spring2.IFactory;
 import com.essaid.context.spring2.IScope;
 import com.essaid.context.spring2.IScopeContext;
+import com.essaid.context.spring2.IStore;
 import com.essaid.context.spring2.IThreadContext;
 import com.essaid.context.spring2.Scopes;
 import com.essaid.util.asserts.Asserts;
@@ -11,10 +12,12 @@ import lombok.Getter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.ObjectFactory;
+import org.springframework.context.ConfigurableApplicationContext;
 import org.springframework.context.event.ApplicationContextEvent;
+import org.springframework.context.event.ContextClosedEvent;
 import org.springframework.core.NamedThreadLocal;
 
-public class ApplicationDomain implements IApplicationDomain{
+public class ApplicationDomain implements IApplicationDomain {
   
   private static final Logger logger = LoggerFactory.getLogger(ApplicationDomain.class);
   
@@ -31,6 +34,7 @@ public class ApplicationDomain implements IApplicationDomain{
   private final boolean autoContext;
   private final String name;
   private IFactory factory;
+  private IStore store;
   private IScopeContext applicationScopeContext;
   @Getter
   private boolean initialized;
@@ -44,15 +48,18 @@ public class ApplicationDomain implements IApplicationDomain{
     this.autoContext = autoContext;
     this.autoScopeContext = autoCreateScopeData;
     this.threadInheritable = inheritableApplicationScope;
-
+    
   }
   
   @Override
   public void initialize() {
-
+    
     if (!initialized) {
       if (factory == null) {
         factory = new Factory(this);
+      }
+      if (store == null) {
+        store = factory.createStore();
       }
       applicationScopeContext = factory.createScopeContext(this);
       this.applicationScope = Scopes.createApplicationScope(this, null);
@@ -73,6 +80,11 @@ public class ApplicationDomain implements IApplicationDomain{
     }
     Asserts.notNull(factory, "Can't set null factory on application domain: ", this);
     this.factory = factory;
+  }
+  
+  @Override
+  public IStore getStore() {
+    return store;
   }
   
   @Override
@@ -98,6 +110,11 @@ public class ApplicationDomain implements IApplicationDomain{
   @Override
   public String getConversationId() {
     return applicationScopeContext.getConversationId();
+  }
+  
+  @Override
+  public IScope getScope() {
+    return null;
   }
   
   @Override
@@ -134,12 +151,19 @@ public class ApplicationDomain implements IApplicationDomain{
   }
   
   @Override
+  public int getOrder() {
+    return IFactory.APPLICATION_ORDER;
+  }
+  
+  @Override
   public void addChild(IScope scope) {
     applicationScope.addChild(scope);
   }
   
   @Override
   public void onApplicationEvent(ApplicationContextEvent event) {
-  
+    if (ContextClosedEvent.class.isAssignableFrom(event.getClass())) {
+      getFactory().close((ConfigurableApplicationContext) event.getApplicationContext());
+    }
   }
 }

@@ -1,6 +1,5 @@
 package com.essaid.context.spring2;
 
-import com.essaid.context.spring2.impl.ApplicationDomain;
 import com.essaid.context.spring2.impl.Scope;
 import org.springframework.context.ConfigurableApplicationContext;
 
@@ -24,4 +23,8 @@ public interface IFactory {
   IThreadContext createThreadContext();
   
   IContext createContext();
+  
+  IStore createStore();
+  
+  void close(ConfigurableApplicationContext context);
 }

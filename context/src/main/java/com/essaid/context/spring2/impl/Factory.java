@@ -5,12 +5,17 @@ import com.essaid.context.spring2.IContext;
 import com.essaid.context.spring2.IFactory;
 import com.essaid.context.spring2.IScope;
 import com.essaid.context.spring2.IScopeContext;
+import com.essaid.context.spring2.IStore;
 import com.essaid.context.spring2.IThreadContext;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.context.ConfigurableApplicationContext;
 
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 public class Factory implements IFactory {
@@ -20,7 +25,7 @@ public class Factory implements IFactory {
   
   private Map<ConfigurableApplicationContext, Map<String, Scope>> scopes = new HashMap<>();
   
-  public Factory(IApplicationDomain domain){
+  public Factory(IApplicationDomain domain) {
     this.domain = domain;
   }
   
@@ -40,7 +45,9 @@ public class Factory implements IFactory {
   
   @Override
   public IScopeContext createScopeContext(IScope scope) {
-    return new ScopeContext(scope);
+    ScopeContext scopeContext = new ScopeContext(scope);
+    domain.getStore().created(scopeContext);
+    return scopeContext;
   }
   
   @Override
@@ -52,5 +59,28 @@ public class Factory implements IFactory {
   @Override
   public IContext createContext() {
     return new Context(domain);
+  }
+  
+  @Override
+  public IStore createStore() {
+    return new Store(domain);
+  }
+
+  
+  @Override
+  public void close(ConfigurableApplicationContext context) {
+    Map<String, Scope> remove = scopes.remove(context);
+    if(remove!=null){
+      List<IScope> contextscopes = new ArrayList<>(remove.values());
+      Collections.sort(contextscopes, new Comparator<IScope>() {
+    
+        @Override
+        public int compare(IScope o1, IScope o2) {
+          return o2.getOrder() - o1.getOrder();
+        }
+      });
+      contextscopes.forEach( cs -> cs.close());
+    }
+  
   }
 }

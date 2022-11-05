@@ -65,7 +65,7 @@ public class Boot2 {
     ApplicationBean applicationBean = context.getBean(ApplicationBean.class);
     
     context.close();
-    //domain1.close();
+    domain1.close();
     System.out.println("Done");
     //Arrays.stream(beanDefinitionNames).sorted().forEach(System.out::println);
   }

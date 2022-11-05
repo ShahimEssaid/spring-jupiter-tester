@@ -78,6 +78,11 @@ public class Scope implements IScope {
   }
   
   @Override
+  public void close() {
+    domain.getStore().close(this);
+  }
+  
+  @Override
   public Object get(String name, ObjectFactory<?> objectFactory) {
     IScopeContext scopeContext = getScopeContext();
     return scopeContext == null ? null : scopeContext.get(name, objectFactory);
