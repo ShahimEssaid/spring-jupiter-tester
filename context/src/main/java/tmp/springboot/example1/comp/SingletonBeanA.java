@@ -1,16 +1,12 @@
 package tmp.springboot.example1.comp;
 
-import com.essaid.context.spring.IFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 
 import javax.annotation.PreDestroy;
 
 @Component
-@Scope(IFactory.SESSION_NAME)
-public class SessionBeanA {
-  
+public class SingletonBeanA {
   
   @Autowired
   public ApplicationBeanA applicationBeanA;
@@ -24,11 +20,11 @@ public class SessionBeanA {
   @Autowired
   public RequestBeanA requestBeanA;
   
-  String value = "SessionBeanA";
+  public String value = "SingletonBeanA";
   
   
   @PreDestroy
   void preDestroy() {
-    System.out.println("=============== in pre destroy SessionBeanA");
+    System.out.println("============ Pre destroying SingletonBean");
   }
 }

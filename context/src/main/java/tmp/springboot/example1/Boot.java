@@ -10,7 +10,7 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.ApplicationContextInitializer;
 import org.springframework.context.ConfigurableApplicationContext;
-import tmp.springboot.example1.comp.ApplicationBean;
+import tmp.springboot.example1.comp.ApplicationBeanA;
 import tmp.springboot.example1.comp.RequestBeanA;
 import tmp.springboot.example1.comp.SessionBeanA;
 
@@ -41,11 +41,9 @@ public class Boot {
         scope = Scopes.createRequestScope(domain1, applicationContext, scope);
         applicationContext.getBeanFactory().registerScope(scope.getScopeName(), scope);
         
-        
         applicationContext.getBeanFactory().registerScope(domain1.getScopeName(), domain1);
         
         applicationContext.addApplicationListener(domain1);
-        
       }
     });
     
@@ -65,7 +63,7 @@ public class Boot {
     
     SessionBeanA sessionBeanA = context.getBean(SessionBeanA.class);
     RequestBeanA requestBeanA = context.getBean(RequestBeanA.class);
-    ApplicationBean applicationBean = context.getBean(ApplicationBean.class);
+    ApplicationBeanA applicationBeanA = context.getBean(ApplicationBeanA.class);
     
     context.close();
     domain1.close();

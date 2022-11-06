@@ -8,7 +8,7 @@ public interface IScopeContext extends Scope {
   
   void close();
   
-  void setName(String name);
+  void setScopeContextName(String scopeContextName);
   
   String getScopeContextName();
   
@@ -18,5 +18,12 @@ public interface IScopeContext extends Scope {
   
   boolean isProperNamed();
   
+  boolean isNamed();
+  
   IScopeContext save(boolean overwrite);
+  
+  boolean isSaved();
+  
+  String getSavedId();
+  void setSavedId(String savedId);
 }

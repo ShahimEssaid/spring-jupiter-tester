@@ -7,7 +7,9 @@ public interface IThreadManager {
   
   IThreadContext removeThreadContext();
   
+  void enterContext();
   void enterContext(IContext context);
+  
   
   IContext exitContext();
 }

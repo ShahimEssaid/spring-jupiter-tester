@@ -9,4 +9,6 @@ public interface IThreadContext {
   void pushContext(IContext context);
   
   boolean isEmpty();
+  
+  int size();
 }

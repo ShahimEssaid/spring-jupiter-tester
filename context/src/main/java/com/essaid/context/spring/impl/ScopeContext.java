@@ -21,7 +21,8 @@ public class ScopeContext implements IScopeContext {
   private final Map<String, Runnable> destructorMap = new HashMap<>();
   private volatile boolean closed;
   
-  private String name;
+  private String savedId;
+  private String scopeContextName;
   private long timeout;
   private long latestTimestamp;
   
@@ -75,24 +76,24 @@ public class ScopeContext implements IScopeContext {
     return null;
   }
   
-  public void setName(String name) {
-    if (this.name != null) {
-      throw new IllegalStateException("Can't rename to: " + name + " for scope context: " + this);
-    }
-    Asserts.notNull(name, "Can't name scope context with null name for context: ", this);
-    this.name = name;
-  }
-  
   @Override
   public String getScopeContextName() {
-    return name;
+    return scopeContextName;
+  }
+  
+  public void setScopeContextName(String scopeContextName) {
+    if (isProperNamed()) {
+      throw new IllegalStateException("Can't rename to: " + scopeContextName + " for scope context: " + this);
+    }
+    Asserts.notNull(scopeContextName, "Can't name scope context with null name for context: ", this);
+    this.scopeContextName = scopeContextName;
   }
   
   @Override
   public String getScopeContextId() {
     
     if (getScopeContextName() == null) {
-      setName(scope.generateContextId());
+      this.setScopeContextName(scope.generateContextId());
     }
     
     String contextId = scope.getScopeName() + ":" + getScopeContextName();
@@ -116,5 +117,31 @@ public class ScopeContext implements IScopeContext {
   @Override
   public IScopeContext save(boolean overwrite) {
     return scope.getApplicationDomain().getStore().save(this, overwrite);
+  }
+  
+  @Override
+  public boolean isSaved() {
+    return savedId != null;
+  }
+  
+  @Override
+  public String getSavedId() {
+    return savedId;
+  }
+  
+  @Override
+  public void setSavedId(String savedId) {
+    if (this.savedId != null && !this.savedId.equals(savedId)) {
+      throw new IllegalStateException(
+          "Context scope: " + this + " is being saved with a new id while already assigned one. Current ID:" + this.savedId + " and new id:" + savedId);
+    }
+    Asserts.notNull(savedId, "Null scope context save id.");
+    this.savedId = savedId;
+    
+  }
+  
+  @Override
+  public boolean isNamed() {
+    return getScopeContextName() != null;
   }
 }

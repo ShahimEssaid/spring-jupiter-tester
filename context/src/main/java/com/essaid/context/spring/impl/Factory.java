@@ -74,7 +74,6 @@ public class Factory implements IFactory {
     if (remove != null) {
       List<IScope> contextScopes = new ArrayList<>(remove.values());
       contextScopes.sort(new Comparator<IScope>() {
-        
         @Override
         public int compare(IScope o1, IScope o2) {
           return o2.getOrder() - o1.getOrder();
@@ -82,7 +81,6 @@ public class Factory implements IFactory {
       });
       contextScopes.forEach(IScope::close);
     }
-    
   }
   
   @Override

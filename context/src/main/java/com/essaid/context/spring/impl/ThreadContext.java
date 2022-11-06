@@ -25,6 +25,7 @@ public class ThreadContext implements IThreadContext {
     if (context == null && autoContext) {
       context = domain.getFactory().createContext();
       pushContext(context);
+      
     }
     return context;
   }
@@ -43,5 +44,10 @@ public class ThreadContext implements IThreadContext {
   @Override
   public boolean isEmpty() {
     return contexts.isEmpty();
+  }
+  
+  @Override
+  public int size() {
+    return contexts.size();
   }
 }

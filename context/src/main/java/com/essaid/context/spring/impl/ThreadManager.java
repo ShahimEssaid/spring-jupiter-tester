@@ -2,9 +2,12 @@ package com.essaid.context.spring.impl;
 
 import com.essaid.context.spring.IApplicationDomain;
 import com.essaid.context.spring.IContext;
+import com.essaid.context.spring.IScope;
 import com.essaid.context.spring.IThreadContext;
 import com.essaid.context.spring.IThreadManager;
 import org.springframework.core.NamedThreadLocal;
+
+import java.util.Map;
 
 public class ThreadManager implements IThreadManager {
   
@@ -47,9 +50,18 @@ public class ThreadManager implements IThreadManager {
   }
   
   @Override
+  public void enterContext() {
+    enterContext(domain.getFactory().createContext());
+  }
+  
+  @Override
   public void enterContext(IContext context) {
     IThreadContext threadContext = getThreadContext(domain.isAutoThreadContext());
     if (threadContext != null) {
+      Map<IScope, String> requestedScopeContextIds =
+          context.getRequestedScopeContextIds();
+      
+  
       threadContext.pushContext(context);
     } else {
       throw new IllegalStateException("Asked to enter context: " + context + " but thread context is not available.");

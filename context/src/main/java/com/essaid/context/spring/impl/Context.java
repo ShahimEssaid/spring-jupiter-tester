@@ -49,4 +49,9 @@ public class Context implements IContext {
   public IScopeContext removeScopeContext(IScope scope) {
     return scopeContexts.remove(scope);
   }
+  
+  @Override
+  public Map<IScope, String> getRequestedScopeContextIds() {
+    return contextIds;
+  }
 }

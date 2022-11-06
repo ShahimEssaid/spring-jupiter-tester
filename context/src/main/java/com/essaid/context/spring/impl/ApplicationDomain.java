@@ -67,7 +67,7 @@ public class ApplicationDomain implements IApplicationDomain {
       this.applicationScope = Scopes.createApplicationScope(this, null);
       
       applicationScopeContext = factory.createScopeContext(this);
-      applicationScopeContext.setName(getDomainName());
+      applicationScopeContext.setScopeContextName(getDomainName());
       this.initialized = true;
     } else {
       logger.warn("Application domain: {} already initialized.", this);
@@ -133,8 +133,8 @@ public class ApplicationDomain implements IApplicationDomain {
   }
   
   @Override
-  public void setName(String name) {
-    applicationScopeContext.setName(name);
+  public void setScopeContextName(String scopeContextName) {
+    applicationScopeContext.setScopeContextName(scopeContextName);
   }
   
   @Override
@@ -175,9 +175,13 @@ public class ApplicationDomain implements IApplicationDomain {
   
   @Override
   public IScopeContext save(boolean overwrite) {
-    return null;
+    return applicationScopeContext.save(overwrite);
   }
   
+  @Override
+  public boolean isSaved() {
+    return applicationScopeContext.isSaved();
+  }
   
   @Override
   public int getOrder() {
@@ -192,7 +196,8 @@ public class ApplicationDomain implements IApplicationDomain {
   @Override
   public void onApplicationEvent(ApplicationContextEvent event) {
     if (ContextClosedEvent.class.isAssignableFrom(event.getClass())) {
-      getFactory().close((ConfigurableApplicationContext) event.getApplicationContext());
+      ConfigurableApplicationContext context = (ConfigurableApplicationContext) event.getApplicationContext();
+      getFactory().close(context);
     }
   }
   

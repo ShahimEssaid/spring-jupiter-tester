@@ -40,6 +40,7 @@ public class Store implements IStore {
   @Override
   public IScopeContext save(IScopeContext context, boolean overwrite) {
     String scopeContextId = context.getScopeContextId();
+    String savedId = context.getSavedId();
     IScopeContext saved = getSaved(scopeContextId);
     if (saved == context) return null;
     if (saved != null && !overwrite) {
