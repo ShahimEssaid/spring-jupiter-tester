@@ -7,6 +7,7 @@ import com.essaid.context.spring.IFactory;
 import com.essaid.context.spring.IScope;
 import com.essaid.context.spring.IThreadContext;
 import com.essaid.context.spring.IThreadContextList;
+import com.essaid.context.spring.IThreadManager;
 import lombok.Getter;
 import org.springframework.context.ApplicationEvent;
 import org.springframework.context.ConfigurableApplicationContext;
@@ -32,6 +33,7 @@ public class Container implements IContainer {
   private final Map<String, IScope> containerScopes = new ConcurrentHashMap<>();
   
   private final IScope containScope;
+
   @Getter
   private volatile boolean initialized;
   private volatile IFactory factory;
@@ -51,7 +53,7 @@ public class Container implements IContainer {
     springContext.getBeanFactory().registerScope(applicationScope.getScopeName(), applicationScope);
     
     this.config = config;
-    containScope = domain.getFactory().createContainerScope(domain, domain.getApplicationScope(), config);
+    containScope = domain.getFactory().createContainerScope(this.getDomain(), this, domain.getApplicationScope(), config);
   }
   
   @Override
@@ -73,7 +75,7 @@ public class Container implements IContainer {
         throw new IllegalStateException(
             "Scope already exists: " + scope + " when trying to create new scope with name: " + scopeName + " order:" + order + " parent: " + parent + " config: " + config);
       }
-      scope = domain.getFactory().createScope(domain, scopeName, order, parent, config, relatedScopes);
+      scope = domain.getFactory().createScope(domain, this, scopeName, order, parent, config, relatedScopes);
       containerScopes.put(scope.getScopeName(), scope);
       springContext.getBeanFactory().registerScope(scope.getScopeName(), scope);
       return scope;
@@ -97,16 +99,9 @@ public class Container implements IContainer {
     
     
   }
+
   
-  @Override
-  public IThreadContext getThreadContex() {
-    return domain.getContext(config);
-  }
-  
-  @Override
-  public IThreadContextList getThreadContextList() {
-    return domain.getThreadContextList(config);
-  }
+
   
   private void checkIsInitialized() {
     if (!initialized) {

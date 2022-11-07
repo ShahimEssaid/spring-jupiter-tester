@@ -36,7 +36,7 @@ public class SpringTests {
     context.register(ApplicationBeanA.class, RequestBeanA.class, SessionBeanA.class, SingletonBeanA.class);
     context.registerShutdownHook();
     container = domain.registerSpringContext(context);
-    threadContextList = container.getThreadContextList();
+    threadContextList = domain.getThreadManager().getThreadContextList(domain, container.getConfig());
     container.createDefaultScopes();
     context.refresh();
     
@@ -45,7 +45,7 @@ public class SpringTests {
   @Test
   @Order(3)
   void getBeans() {
-    IThreadContextList threadContextList1 = container.getThreadContextList();
+    IThreadContextList threadContextList1 = domain.getThreadManager().getThreadContextList(domain, container.getConfig());
   
     ApplicationBeanA applicationBeanA = context.getBean(ApplicationBeanA.class);
     RequestBeanA requestBeanA1 = applicationBeanA.getRequestBeanA();

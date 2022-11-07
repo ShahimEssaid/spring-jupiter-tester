@@ -1,6 +1,7 @@
 package com.essaid.context.spring.impl;
 
 import com.essaid.context.spring.IConfig;
+import com.essaid.context.spring.IContainer;
 import com.essaid.context.spring.IDomain;
 import com.essaid.context.spring.IScope;
 import com.essaid.context.spring.IScopeContext;
@@ -33,6 +34,8 @@ public class Scope implements IScope {
   
   @Getter
   private final IDomain domain;
+  @Getter
+  private final IContainer container;
   @Getter
   private volatile boolean closed;
 
@@ -77,7 +80,7 @@ public class Scope implements IScope {
 //  }
 //
   
-  public Scope(IDomain domain, String scopeName, int scopeOrder, IScope parentScope, IConfig config,
+  public Scope(IDomain domain, IContainer container, String scopeName, int scopeOrder, IScope parentScope, IConfig config,
       IScope... relatedScopes) {
     //this.container = container;
     this.domain = domain;
@@ -85,6 +88,7 @@ public class Scope implements IScope {
     this.scopeOrder = scopeOrder;
     this.parentScope = parentScope;
     this.config = config;
+    this.container = container;
     
     for (IScope scope : relatedScopes) {
       addRelatedScope(scope);
@@ -136,7 +140,7 @@ public class Scope implements IScope {
   
   @Override
   public IScopeContext getScopeContext() {
-    return domain.getContext(config).getScopeContext(this, config);
+    return domain.getThreadManager().getThreadContext(domain, config).getScopeContext(this, config);
   }
   
   // ==================================   older

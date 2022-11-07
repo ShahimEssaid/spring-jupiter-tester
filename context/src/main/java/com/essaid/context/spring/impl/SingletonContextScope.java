@@ -1,6 +1,7 @@
 package com.essaid.context.spring.impl;
 
 import com.essaid.context.spring.IConfig;
+import com.essaid.context.spring.IContainer;
 import com.essaid.context.spring.IDomain;
 import com.essaid.context.spring.IFactory;
 import com.essaid.context.spring.IScope;
@@ -10,9 +11,9 @@ public class SingletonContextScope extends Scope {
   
   private final IScopeContext singletonContext;
   
-  public SingletonContextScope(IDomain domain, String scopeName, int scopeOrder, IScope parentScope, IConfig config,
+  public SingletonContextScope(IDomain domain, IContainer container,  String scopeName, int scopeOrder, IScope parentScope, IConfig config,
       IFactory factory) {
-    super(domain, scopeName, scopeOrder, parentScope, config);
+    super(domain, container, scopeName, scopeOrder, parentScope, config);
     this.singletonContext = factory.createScopeContext(this);
     this.scopeContextCreated(singletonContext);
   }

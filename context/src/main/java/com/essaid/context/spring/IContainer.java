@@ -38,8 +38,5 @@ public interface IContainer extends ApplicationListener<ApplicationEvent> {
     IScope sessionScope = createScope(IContainer.SESSION_NAME, IContainer.SESSION_ORDER, getContainerScope());
     IScope requestScope = createScope(IContainer.REQUEST_NAME, IContainer.REQUEST_ORDER, sessionScope);
   }
-  
-  IThreadContextList getThreadContextList();
-  
-  IThreadContext getThreadContex();
+
 }

@@ -11,19 +11,19 @@ public interface IFactory {
   default IDomain createContextDomain() {
     IConfig config = createConfig(null).setAutoCreateScopeContext(true).setAutoCreateThreadContext(true)
         .setAutoCreateThreadContextList(true).setScopeThreadInheritable(true);
-    return createContextDomain(IDomain.DEFAULT_DOMAIN_NAME, DEFAULT_FACTORY, config);
+    return createContextDomain(IDomain.DEFAULT_DOMAIN_NAME, DEFAULT_FACTORY, createThreadManager(), config);
   }
   
-  IDomain createContextDomain(String domainName, IFactory factory, IConfig config);
+  IDomain createContextDomain(String domainName, IFactory factory, IThreadManager threadManager, IConfig config);
   
   IContainer createApplicationContext(IDomain contextDomain, ConfigurableApplicationContext context, IConfig config);
   
-  Scope createScope(IDomain domain, String scopeName, int order, IScope parent, IConfig config,
+  Scope createScope(IDomain domain, IContainer container, String scopeName, int order, IScope parent, IConfig config,
       IScope... relatedScopes);
   
-  IScope createApplicationScope(IDomain domain, IConfig config);
+  IScope createApplicationScope(IDomain domain, IContainer container, IConfig config);
   
-  IScope createContainerScope(IDomain domain, IScope parent, IConfig config);
+  IScope createContainerScope(IDomain domain, IContainer container, IScope parent, IConfig config);
   
   IScopeContext createScopeContext(IScope scope);
   
@@ -36,5 +36,7 @@ public interface IFactory {
   IThreadContextList createThreadContextList();
   
   IThreadContext createThreadContext(IDomain domain, IConfig config);
+  
+  IThreadManager createThreadManager();
   
 }

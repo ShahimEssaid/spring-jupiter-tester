@@ -25,15 +25,8 @@ public interface IDomain {
   
   IConfig getConfig();
   
-  IThreadContextList getThreadContextList(IConfig config);
-  
-  IThreadContextList setThreadContextList(IThreadContextList context, boolean overwrite);
-  
-  IThreadContext getContext(IConfig config);
-  
-  IThreadContextList removeThreadContextList();
-  
   void registerShutdownHook();
   
+  IThreadManager getThreadManager();
   
 }
