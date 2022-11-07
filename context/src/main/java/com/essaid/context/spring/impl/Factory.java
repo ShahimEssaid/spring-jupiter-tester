@@ -8,7 +8,6 @@ import com.essaid.context.spring.IScope;
 import com.essaid.context.spring.IScopeContext;
 import com.essaid.context.spring.IThreadContext;
 import com.essaid.context.spring.IThreadContextList;
-import com.essaid.context.spring.IThreadManager;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.context.ConfigurableApplicationContext;
@@ -18,19 +17,26 @@ public class Factory implements IFactory {
   private static final Logger logger = LoggerFactory.getLogger(Factory.class);
   
   @Override
-  public IDomain createContextDomain(String domainName,
-      IScope applicationScope,IFactory factory, IConfig config) {
-    return new Domain(domainName,   applicationScope,factory, config);
+  public IDomain createContextDomain(String domainName, IFactory factory, IConfig config) {
+    return new Domain(domainName, factory, config);
   }
   
   @Override
-  public IContainer createApplicationContext(IDomain domain, ConfigurableApplicationContext context,IThreadManager threadManager, IConfig config) {
-    return new Container(domain, context, threadManager, config);
+  public IContainer createApplicationContext(IDomain domain, ConfigurableApplicationContext context,
+       IConfig config) {
+    return new Container(domain, context,  config);
   }
   
   @Override
-  public IScope createApplicationScope(IScopeContext applicationScopeContext,  IConfig config) {
-    return new ApplicationScope(applicationScopeContext, config);
+  public IScope createApplicationScope(IDomain domain, IConfig config) {
+    return new SingletonContextScope(domain, IContainer.APPLICATION_NAME, IContainer.APPLICATION_ORDER, null, config,
+        this);
+  }
+  
+  @Override
+  public IScope createContainerScope(IDomain domain, IScope parent, IConfig config) {
+    return new SingletonContextScope(domain, IContainer.CONTAINER_NAME, IContainer.CONTAINER_ORDER, parent, config,
+        this);
   }
   
   @Override
@@ -48,9 +54,9 @@ public class Factory implements IFactory {
   // =====================  old
   
   @Override
-  public Scope createScope(IContainer applicationContext, String scopeName, int order, IScope parent, IConfig config,
+  public Scope createScope(IDomain domain, String scopeName, int order, IScope parent, IConfig config,
       IScope... relatedScopes) {
-    return new Scope(applicationContext, scopeName, order, parent, config, relatedScopes);
+    return new Scope(domain, scopeName, order, parent, config, relatedScopes);
   }
   
   
@@ -60,12 +66,10 @@ public class Factory implements IFactory {
   }
   
   @Override
-  public IThreadContext createThreadContext(IContainer container) {
-    return new ThreadContext(container);
+  public IThreadContext createThreadContext(IDomain domain, IConfig config) {
+    ThreadContext threadContext = new ThreadContext(domain);
+    threadContext.addScopeContexts(false, config, domain.getApplicationScope().getScopeContext());
+    return threadContext;
   }
-  
-  @Override
-  public IThreadManager createThreadManager() {
-    return new ThreadManager();
-  }
+
 }

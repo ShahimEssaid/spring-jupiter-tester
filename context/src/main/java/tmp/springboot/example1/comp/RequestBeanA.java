@@ -3,13 +3,14 @@ package tmp.springboot.example1.comp;
 import com.essaid.context.spring.IContainer;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
+import org.springframework.context.annotation.ScopedProxyMode;
 import org.springframework.stereotype.Component;
 
 import javax.annotation.PreDestroy;
 
 @Component
-@Scope(IContainer.REQUEST_NAME)
-public class RequestBeanA {
+@Scope(scopeName = IContainer.REQUEST_NAME, proxyMode = ScopedProxyMode.TARGET_CLASS)
+public class RequestBeanA extends StringHolder {
   
   
   @Autowired
@@ -23,8 +24,6 @@ public class RequestBeanA {
   
   @Autowired
   public RequestBeanA requestBeanA;
-  
-  String value = "RequestBeanA";
   
   
   @PreDestroy

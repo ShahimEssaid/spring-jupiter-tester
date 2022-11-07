@@ -43,12 +43,11 @@ public class ScopeContext implements IScopeContext {
       return;
     }
     objectMap.keySet().forEach(key -> {
-      Runnable destructor = destructorMap.remove(key);
+      Runnable destructor = destructorMap.get(key);
       if (destructor != null) {
         destructor.run();
       }
     });
-    objectMap.clear();
     closed = true;
   }
   

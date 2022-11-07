@@ -6,7 +6,7 @@ import java.util.Collection;
 
 public interface IScope extends Scope {
   
-  IContainer getContainer();
+  IDomain getDomain();
   
   // scope related
   String getScopeName();

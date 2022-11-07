@@ -20,11 +20,11 @@ public interface IConfig {
   
   Boolean getScopeThreadInheritable();
   
-  void setAutoCreateScopeContext(Boolean autoCreateScopeContext);
+  IConfig setAutoCreateScopeContext(Boolean autoCreateScopeContext);
   
-  void setAutoCreateThreadContext(Boolean autoCreateThreadContext);
+  IConfig setAutoCreateThreadContext(Boolean autoCreateThreadContext);
   
-  void setAutoCreateThreadContextList(Boolean autoCreateThreadContextList);
+  IConfig setAutoCreateThreadContextList(Boolean autoCreateThreadContextList);
   
-  void setScopeThreadInheritable(Boolean scopeThreadInheritable);
+  IConfig setScopeThreadInheritable(Boolean scopeThreadInheritable);
 }

@@ -3,31 +3,42 @@ package tmp.springboot.example1.comp;
 import com.essaid.context.spring.IContainer;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
+import org.springframework.context.annotation.ScopedProxyMode;
 import org.springframework.stereotype.Component;
 
 import javax.annotation.PreDestroy;
 
-@Scope(IContainer.APPLICATION_NAME)
+@Scope(value = IContainer.APPLICATION_NAME, proxyMode = ScopedProxyMode.TARGET_CLASS)
 @Component
-public class ApplicationBeanA {
+public class ApplicationBeanA extends StringHolder {
+  @Autowired
+  private ApplicationBeanA applicationBeanA;
+  @Autowired
+  private SingletonBeanA singletonBeanA;
+  @Autowired
+  private SessionBeanA sessionBeanA;
+  @Autowired
+  private RequestBeanA requestBeanA;
+  
   public ApplicationBeanA() {
     System.out.println("============= ApplicationBean constructed");
   }
   
+  public RequestBeanA getRequestBeanA() {
+    return requestBeanA;
+  }
   
-  @Autowired
-  public ApplicationBeanA applicationBeanA;
+  public ApplicationBeanA getApplicationBeanA() {
+    return applicationBeanA;
+  }
   
-  @Autowired
-  public SingletonBeanA singletonBeanA;
+  public SingletonBeanA getSingletonBeanA() {
+    return singletonBeanA;
+  }
   
-  @Autowired
-  public SessionBeanA sessionBeanA;
-  
-  @Autowired
-  public RequestBeanA requestBeanA;
-  
-  String value = "ApplicationBeanA";
+  public SessionBeanA getSessionBeanA() {
+    return sessionBeanA;
+  }
   
   @PreDestroy
   void preDestroy() {

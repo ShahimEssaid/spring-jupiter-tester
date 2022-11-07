@@ -1,7 +1,7 @@
 package com.essaid.context.spring.impl;
 
 import com.essaid.context.spring.IConfig;
-import com.essaid.context.spring.IContainer;
+import com.essaid.context.spring.IDomain;
 import com.essaid.context.spring.IScope;
 import com.essaid.context.spring.IScopeContext;
 import lombok.Getter;
@@ -15,8 +15,6 @@ import java.util.concurrent.atomic.AtomicLong;
 
 public class Scope implements IScope {
   
-  @Getter
-  private final IContainer container;
   @Getter
   private final String scopeName;
   @Getter
@@ -32,6 +30,9 @@ public class Scope implements IScope {
   @Getter
   private final IConfig config;
   private final Map<String, IScopeContext> contexts = new ConcurrentHashMap<>();
+  
+  @Getter
+  private final IDomain domain;
   @Getter
   private volatile boolean closed;
 
@@ -76,9 +77,10 @@ public class Scope implements IScope {
 //  }
 //
   
-  public Scope(IContainer container, String scopeName, int scopeOrder, IScope parentScope, IConfig config,
+  public Scope(IDomain domain, String scopeName, int scopeOrder, IScope parentScope, IConfig config,
       IScope... relatedScopes) {
-    this.container = container;
+    //this.container = container;
+    this.domain = domain;
     this.scopeName = scopeName;
     this.scopeOrder = scopeOrder;
     this.parentScope = parentScope;
@@ -134,7 +136,7 @@ public class Scope implements IScope {
   
   @Override
   public IScopeContext getScopeContext() {
-    return container.getThreadManager().getContext(container, config).getScopeContext(this, config);
+    return domain.getContext(config).getScopeContext(this, config);
   }
   
   // ==================================   older
@@ -143,7 +145,8 @@ public class Scope implements IScope {
   public boolean close() {
     
     if (closed) return false;
-    // todo: implement the closing logic
+    
+    contexts.values().forEach(sc -> sc.close());
     closed = true;
     return true;
   }
@@ -184,4 +187,9 @@ public class Scope implements IScope {
     return scopeContext == null ? null : scopeContext.getConversationId();
   }
   
+  @Override
+  public String toString() {
+    return "Scope[name:" + scopeName + ", parent:" + parentScope + "]";
+    
+  }
 }

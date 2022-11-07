@@ -1,10 +1,10 @@
 package com.essaid.context.spring;
 
-import org.springframework.boot.context.event.SpringApplicationEvent;
+import org.springframework.context.ApplicationEvent;
 import org.springframework.context.ApplicationListener;
 import org.springframework.context.ConfigurableApplicationContext;
 
-public interface IContainer extends ApplicationListener<SpringApplicationEvent> {
+public interface IContainer extends ApplicationListener<ApplicationEvent> {
   
   String APPLICATION_NAME = "application";
   int APPLICATION_ORDER = 0;
@@ -21,17 +21,25 @@ public interface IContainer extends ApplicationListener<SpringApplicationEvent> 
   
   ConfigurableApplicationContext getSpringContext();
   
+  IScope getContainerScope();
+  
   IScope getScope(String scopeName);
   
-  IScope createScope(String scopeName, int order, IScope parent,
-      boolean autoCreateScopeContext, boolean threadInheritable, IScope... relatedScopes);
+  IScope createScope(String scopeName, int order, IScope parent, IScope... relatedScopes);
   
   boolean isInitialized();
-  IFactory getFactory();
+
   
   boolean isClosed();
   
   IConfig getConfig();
   
-  IThreadManager getThreadManager();
+  default void createDefaultScopes() {
+    IScope sessionScope = createScope(IContainer.SESSION_NAME, IContainer.SESSION_ORDER, getContainerScope());
+    IScope requestScope = createScope(IContainer.REQUEST_NAME, IContainer.REQUEST_ORDER, sessionScope);
+  }
+  
+  IThreadContextList getThreadContextList();
+  
+  IThreadContext getThreadContex();
 }

@@ -1,12 +1,15 @@
 package tmp.springboot.example1.comp;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Scope;
+import org.springframework.context.annotation.ScopedProxyMode;
 import org.springframework.stereotype.Component;
 
 import javax.annotation.PreDestroy;
 
 @Component
-public class SingletonBeanA {
+@Scope( proxyMode = ScopedProxyMode.TARGET_CLASS)
+public class SingletonBeanA extends StringHolder{
   
   @Autowired
   public ApplicationBeanA applicationBeanA;
@@ -19,8 +22,7 @@ public class SingletonBeanA {
   
   @Autowired
   public RequestBeanA requestBeanA;
-  
-  public String value = "SingletonBeanA";
+
   
   
   @PreDestroy
