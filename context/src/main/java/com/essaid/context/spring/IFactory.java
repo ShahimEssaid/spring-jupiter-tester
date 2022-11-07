@@ -6,7 +6,7 @@ import org.springframework.context.ConfigurableApplicationContext;
 
 public interface IFactory {
   
-  static IFactory DEFAULT_FACTORY = new Factory();
+  IFactory DEFAULT_FACTORY = new Factory();
   
   default IDomain createContextDomain() {
     IConfig config = createConfig(null).setAutoCreateScopeContext(true).setAutoCreateThreadContext(true)
@@ -16,8 +16,7 @@ public interface IFactory {
   
   IDomain createContextDomain(String domainName, IFactory factory, IConfig config);
   
-  IContainer createApplicationContext(IDomain contextDomain, ConfigurableApplicationContext context,
-       IConfig config);
+  IContainer createApplicationContext(IDomain contextDomain, ConfigurableApplicationContext context, IConfig config);
   
   Scope createScope(IDomain domain, String scopeName, int order, IScope parent, IConfig config,
       IScope... relatedScopes);

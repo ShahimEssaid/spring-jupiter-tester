@@ -1,6 +1,5 @@
 package com.essaid.context.spring.impl;
 
-import com.essaid.context.spring.IDomain;
 import com.essaid.context.spring.IThreadContext;
 import com.essaid.context.spring.IThreadContextList;
 import com.essaid.util.asserts.Asserts;

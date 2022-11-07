@@ -12,18 +12,32 @@ import javax.annotation.PreDestroy;
 public class SingletonBeanA extends StringHolder{
   
   @Autowired
-  public ApplicationBeanA applicationBeanA;
+  private ApplicationBeanA applicationBeanA;
   
   @Autowired
-  public SingletonBeanA singletonBeanA;
+  private SingletonBeanA singletonBeanA;
   
   @Autowired
-  public SessionBeanA sessionBeanA;
+  private SessionBeanA sessionBeanA;
   
   @Autowired
-  public RequestBeanA requestBeanA;
-
+  private RequestBeanA requestBeanA;
   
+  public ApplicationBeanA getApplicationBeanA() {
+    return applicationBeanA;
+  }
+  
+  public SingletonBeanA getSingletonBeanA() {
+    return singletonBeanA;
+  }
+  
+  public SessionBeanA getSessionBeanA() {
+    return sessionBeanA;
+  }
+  
+  public RequestBeanA getRequestBeanA() {
+    return requestBeanA;
+  }
   
   @PreDestroy
   void preDestroy() {

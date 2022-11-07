@@ -11,7 +11,6 @@ import lombok.Getter;
 import org.springframework.context.ApplicationEvent;
 import org.springframework.context.ConfigurableApplicationContext;
 import org.springframework.context.event.ContextClosedEvent;
-import org.springframework.context.event.ContextStoppedEvent;
 import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
@@ -93,7 +92,7 @@ public class Container implements IContainer {
         }
       });
       scopes.forEach(s -> s.close());
-      domain.unregisterSpringContext(springContext);
+      closed = true;
     }
     
     

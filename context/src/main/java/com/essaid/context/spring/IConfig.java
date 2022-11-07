@@ -14,17 +14,17 @@ public interface IConfig {
   
   Boolean getAutoCreateScopeContext();
   
-  Boolean getAutoCreateThreadContext();
-  
-  Boolean getAutoCreateThreadContextList();
-  
-  Boolean getScopeThreadInheritable();
-  
   IConfig setAutoCreateScopeContext(Boolean autoCreateScopeContext);
+  
+  Boolean getAutoCreateThreadContext();
   
   IConfig setAutoCreateThreadContext(Boolean autoCreateThreadContext);
   
+  Boolean getAutoCreateThreadContextList();
+  
   IConfig setAutoCreateThreadContextList(Boolean autoCreateThreadContextList);
+  
+  Boolean getScopeThreadInheritable();
   
   IConfig setScopeThreadInheritable(Boolean scopeThreadInheritable);
 }

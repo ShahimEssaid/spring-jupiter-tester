@@ -22,9 +22,8 @@ public class Factory implements IFactory {
   }
   
   @Override
-  public IContainer createApplicationContext(IDomain domain, ConfigurableApplicationContext context,
-       IConfig config) {
-    return new Container(domain, context,  config);
+  public IContainer createApplicationContext(IDomain domain, ConfigurableApplicationContext context, IConfig config) {
+    return new Container(domain, context, config);
   }
   
   @Override
@@ -71,5 +70,5 @@ public class Factory implements IFactory {
     threadContext.addScopeContexts(false, config, domain.getApplicationScope().getScopeContext());
     return threadContext;
   }
-
+  
 }

@@ -1,13 +1,9 @@
 package com.essaid.context.spring;
 
-import com.essaid.context.spring.impl.Domain;
-import com.essaid.context.spring.impl.Scope;
-import org.springframework.context.ConfigurableApplicationContext;
 import org.springframework.core.NamedThreadLocal;
 
 public class Scopes {
-  private static final ThreadLocal<IDomain> domainHolder = new NamedThreadLocal<>(
-      "Spring context " + "domain");
+  private static final ThreadLocal<IDomain> domainHolder = new NamedThreadLocal<>("Spring context " + "domain");
   private static final ThreadLocal<IDomain> inheritableDomainHolder = new NamedThreadLocal<>(
       "Spring " + "inheritable context " + "domain");
   
@@ -45,7 +41,7 @@ public class Scopes {
     inheritableDomainHolder.remove();
     return currentDomain;
   }
-  
+
 //  public static IDomain createDomain(String domainName, boolean autoCreateThreadContext, boolean autoContext,
 //      boolean autoCreateScopeData, boolean inheritableApplicationScope) {
 //    return new Domain(domainName, autoCreateThreadContext, autoContext, autoCreateScopeData,
@@ -58,8 +54,8 @@ public class Scopes {
 //        null);
 //    return scope;
 //  }
-  
-  
+
+
 //  public static IScope createContainerScope(IDomain domain, ConfigurableApplicationContext context) {
 //    IFactory factory = domain.getFactory();
 //    Scope scope = factory.createScope(IContainer.CONTAINER_NAME, context, IContainer.CONTAINER_ORDER, domain, true, domain);

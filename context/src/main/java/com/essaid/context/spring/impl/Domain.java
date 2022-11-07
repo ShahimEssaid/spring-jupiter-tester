@@ -25,17 +25,20 @@ public class Domain implements IDomain {
   private final String domainName;
   @Getter
   private final IFactory factory;
-
+  
   @Getter
   private final IScope applicationScope;
   @Getter
   private final IConfig config;
   
   private final Map<ConfigurableApplicationContext, IContainer> applicationContextMap = new ConcurrentHashMap<>();
-  private final Map<ConfigurableApplicationContext, IContainer> closedApplicationContextMap = new ConcurrentHashMap<>();
-  
+  //private final Map<ConfigurableApplicationContext, IContainer> closedApplicationContextMap = new ConcurrentHashMap<>();
+  private final NamedThreadLocal<IThreadContextList> threadContextListHolder = new NamedThreadLocal<>(
+      "Spring thread context");
   @Getter
   private boolean initialized;
+  private Thread shutdownHook;
+  
   
   public Domain(String domainName, IFactory factory, IConfig config) {
     Asserts.allNotNull("Null argument(s) when constructing IContextDomain", domainName, factory);
@@ -46,7 +49,6 @@ public class Domain implements IDomain {
     
     this.config = config;
   }
-  
   
   @Override
   public IContainer registerSpringContext(ConfigurableApplicationContext context) {
@@ -59,15 +61,15 @@ public class Domain implements IDomain {
       return applicationContext;
     }
   }
-  
-  @Override
-  public IContainer unregisterSpringContext(ConfigurableApplicationContext context) {
-    IContainer removed = applicationContextMap.remove(context);
-    if(removed!= null){
-      closedApplicationContextMap.put(context, removed);
-    }
-    return removed;
-  }
+//
+//  @Override
+//  public IContainer unregisterSpringContext(ConfigurableApplicationContext context) {
+//    IContainer removed = applicationContextMap.remove(context);
+//    if (removed != null) {
+//      closedApplicationContextMap.put(context, removed);
+//    }
+//    return removed;
+//  }
   
   @Override
   public void initialize() {
@@ -82,9 +84,6 @@ public class Domain implements IDomain {
   public void closeDomain() {
     getApplicationScope().close();
   }
-  
-  private final NamedThreadLocal<IThreadContextList> threadContextListHolder = new NamedThreadLocal<>(
-      "Spring thread context");
   
   @Override
   public IThreadContextList getThreadContextList(IConfig config) {
@@ -116,12 +115,44 @@ public class Domain implements IDomain {
   
   @Override
   public IThreadContext getContext(IConfig config) {
-    IThreadContextList threadContextList = getThreadContextList( config);
+    IThreadContextList threadContextList = getThreadContextList(config);
     if (threadContextList.isEmpty() && config.isCreateThreadContext()) {
       IThreadContext threadContext = getFactory().createThreadContext(this, config);
       threadContextList.pushContext(threadContext);
     }
     return threadContextList.peekContext();
+  }
+  
+  @Override
+  public void registerShutdownHook() {
+    
+    if (this.shutdownHook == null) {
+      this.shutdownHook = new Thread(new Runnable() {
+        @Override
+        public void run() {
+          active:
+          while (true) {
+            for (ConfigurableApplicationContext context : applicationContextMap.keySet()) {
+              if (context.isActive()) {
+                try {
+                  Thread.sleep(1000);
+                } catch (InterruptedException e) {
+                  throw new RuntimeException(e);
+                }
+                //System.out.println("Waiting for inactive.");
+                continue active;
+              }
+            }
+            break;
+          }
+          Domain.this.closeDomain();
+        }
+      });
+      
+      Runtime.getRuntime().addShutdownHook(shutdownHook);
+      
+    }
+    
   }
   
   private void checkIsInitialized() {

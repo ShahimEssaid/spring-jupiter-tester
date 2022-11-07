@@ -12,18 +12,33 @@ import javax.annotation.PreDestroy;
 @Scope( scopeName = IContainer.SESSION_NAME, proxyMode = ScopedProxyMode.TARGET_CLASS)
 public class SessionBeanA extends StringHolder{
   
+  public ApplicationBeanA getApplicationBeanA() {
+    return applicationBeanA;
+  }
+  
+  public SingletonBeanA getSingletonBeanA() {
+    return singletonBeanA;
+  }
+  
+  public SessionBeanA getSessionBeanA() {
+    return sessionBeanA;
+  }
+  
+  public RequestBeanA getRequestBeanA() {
+    return requestBeanA;
+  }
   
   @Autowired
-  public ApplicationBeanA applicationBeanA;
+  private ApplicationBeanA applicationBeanA;
   
   @Autowired
-  public SingletonBeanA singletonBeanA;
+  private SingletonBeanA singletonBeanA;
   
   @Autowired
-  public SessionBeanA sessionBeanA;
+  private SessionBeanA sessionBeanA;
   
   @Autowired
-  public RequestBeanA requestBeanA;
+  private RequestBeanA requestBeanA;
   
   
   @PreDestroy

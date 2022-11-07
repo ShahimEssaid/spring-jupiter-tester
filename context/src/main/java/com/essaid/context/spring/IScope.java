@@ -29,7 +29,6 @@ public interface IScope extends Scope {
   
   String generateScopeContextId();
   
-
   
   void scopeContextCreated(IScopeContext context);
   

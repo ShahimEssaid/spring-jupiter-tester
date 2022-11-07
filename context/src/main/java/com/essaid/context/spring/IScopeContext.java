@@ -5,6 +5,7 @@ import org.springframework.beans.factory.config.Scope;
 public interface IScopeContext extends Scope {
   
   String getId();
+  
   IScope getScope();
   
   String getName();
@@ -18,5 +19,5 @@ public interface IScopeContext extends Scope {
   boolean isClosed();
   
   boolean isNamed();
-
+  
 }

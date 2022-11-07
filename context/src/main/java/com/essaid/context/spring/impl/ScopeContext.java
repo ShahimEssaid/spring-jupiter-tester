@@ -22,15 +22,14 @@ public class ScopeContext implements IScopeContext {
   private final String id;
   private final Map<String, Object> objectMap = new ConcurrentHashMap<>();
   private final Map<String, Runnable> destructorMap = new ConcurrentHashMap<>();
+  private final long latestTimestamp = System.currentTimeMillis();
   @Getter
   private volatile String name;
   @Getter
   private volatile boolean closed;
-  
   @Getter
   @Setter
   private volatile long timeout = Long.MAX_VALUE;
-  private volatile long latestTimestamp = System.currentTimeMillis();
   
   public ScopeContext(IScope scope, String id) {
     this.scope = scope;
@@ -86,8 +85,7 @@ public class ScopeContext implements IScopeContext {
   public void setName(String name) {
     Asserts.notNull(name, "Can't name scope context with null name for context: ", this);
     if (this.name != null) {
-      throw new IllegalStateException(
-          "Can't rename: " + this.name + " to: " + name + " for scope context: " + this);
+      throw new IllegalStateException("Can't rename: " + this.name + " to: " + name + " for scope context: " + this);
     }
     this.name = name;
   }

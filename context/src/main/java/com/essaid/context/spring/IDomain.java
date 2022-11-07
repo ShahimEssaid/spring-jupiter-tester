@@ -1,7 +1,6 @@
 package com.essaid.context.spring;
 
 import org.springframework.context.ConfigurableApplicationContext;
-import org.springframework.context.support.GenericApplicationContext;
 
 public interface IDomain {
   
@@ -17,7 +16,7 @@ public interface IDomain {
   
   IContainer registerSpringContext(ConfigurableApplicationContext context);
   
-  IContainer unregisterSpringContext(ConfigurableApplicationContext context);
+  //IContainer unregisterSpringContext(ConfigurableApplicationContext context);
   
   
   void initialize();
@@ -30,9 +29,11 @@ public interface IDomain {
   
   IThreadContextList setThreadContextList(IThreadContextList context, boolean overwrite);
   
-  IThreadContext getContext( IConfig config);
+  IThreadContext getContext(IConfig config);
   
   IThreadContextList removeThreadContextList();
+  
+  void registerShutdownHook();
   
   
 }

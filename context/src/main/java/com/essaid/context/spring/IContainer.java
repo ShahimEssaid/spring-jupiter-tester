@@ -28,7 +28,7 @@ public interface IContainer extends ApplicationListener<ApplicationEvent> {
   IScope createScope(String scopeName, int order, IScope parent, IScope... relatedScopes);
   
   boolean isInitialized();
-
+  
   
   boolean isClosed();
   

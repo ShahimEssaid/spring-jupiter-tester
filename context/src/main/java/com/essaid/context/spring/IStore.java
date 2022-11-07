@@ -10,7 +10,7 @@ public interface IStore {
   List<IScopeContext> getCreated(IScope scope);
   
   Map<IScope, List<IScopeContext>> getCreated();
-  
+
 //  IScopeContext save(IScopeContext context, boolean overwrite);
   
   IScopeContext getSaved(String scopeContextId);

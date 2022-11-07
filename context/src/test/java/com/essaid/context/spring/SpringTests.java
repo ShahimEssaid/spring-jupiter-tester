@@ -48,16 +48,23 @@ public class SpringTests {
     IThreadContextList threadContextList1 = container.getThreadContextList();
   
     ApplicationBeanA applicationBeanA = context.getBean(ApplicationBeanA.class);
-    applicationBeanA.setString("applicationBeanA");
     RequestBeanA requestBeanA1 = applicationBeanA.getRequestBeanA();
     requestBeanA1.setString("requestBeanA");
+    applicationBeanA.setString("applicationBeanA");
+    
+  
+    SessionBeanA sessionBeanA = context.getBean(SessionBeanA.class);
+    sessionBeanA.setString("session");
+    
+    Assertions.assertThat(sessionBeanA.getRequestBeanA().getString()).isEqualTo("requestBeanA");
+    Assertions.assertThat(sessionBeanA.getApplicationBeanA().getString()).isEqualTo("applicationBeanA");
     
     RequestBeanA requestBeanA = context.getBean(RequestBeanA.class);
     Assertions.assertThat(context.getBean(RequestBeanA.class).getString()).isEqualTo("requestBeanA");
     
-    context.close();
-    domain.closeDomain();
-    
+    domain.registerShutdownHook();
+    // context.close();
+    // domain.closeDomain();
     
     System.out.println("Out");
   }
