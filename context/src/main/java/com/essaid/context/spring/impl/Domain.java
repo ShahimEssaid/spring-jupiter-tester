@@ -15,7 +15,7 @@ import org.springframework.context.ConfigurableApplicationContext;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
-public class Domain implements IDomain {
+public class Domain implements IDomain.IDomainInternal {
   
   private static final Logger logger = LoggerFactory.getLogger(Domain.class);
   
@@ -44,7 +44,7 @@ public class Domain implements IDomain {
     this.domainName = domainName;
     this.factory = factory;
 //    this.threadManager = threadManager;
-    this.applicationScope = factory.createApplicationScope(this, null, config);
+    this.applicationScope = factory.internal().createApplicationScope(this, null, config);
     
     this.config = config;
     this.threadManager = threadManager;
@@ -56,7 +56,7 @@ public class Domain implements IDomain {
       IContainer applicationContext = containersMap.get(context);
       if (applicationContext != null)
         throw new IllegalStateException("ConfigurableApplicationContext already registered:" + context);
-      applicationContext = getFactory().createApplicationContext(this, context, config != null ? config : this.config);
+      applicationContext = getFactory().internal().createApplicationContext(this, context, config != null ? config : this.config);
       containersMap.put(context, applicationContext);
       return applicationContext;
     }
@@ -79,7 +79,7 @@ public class Domain implements IDomain {
   
   @Override
   public void closeDomain() {
-    getApplicationScope().close();
+    getApplicationScope().internal().close();
   }
   
   @Override
@@ -134,6 +134,11 @@ public class Domain implements IDomain {
       
     }
     
+  }
+  
+  @Override
+  public IDomainInternal internal() {
+    return this;
   }
   
   private void checkIsInitialized() {

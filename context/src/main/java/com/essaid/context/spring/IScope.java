@@ -6,6 +6,8 @@ import java.util.Collection;
 
 public interface IScope extends Scope {
   
+  IScopeInternal internal();
+  interface IScopeInternal extends  IScope{
   IDomain getDomain();
   
   // scope related
@@ -39,4 +41,8 @@ public interface IScope extends Scope {
   IConfig getConfig();
   
   boolean close();
+  
+
+  
+  }
 }

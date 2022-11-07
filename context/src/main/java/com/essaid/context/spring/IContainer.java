@@ -19,24 +19,29 @@ public interface IContainer extends ApplicationListener<ApplicationEvent> {
   
   IDomain getDomain();
   
-  ConfigurableApplicationContext getSpringContext();
   
-  IScope getContainerScope();
+  IContainerInternal internal();
   
-  IScope getScope(String scopeName);
-  
-  IScope createScope(String scopeName, int order, IScope parent, IScope... relatedScopes);
-  
-  boolean isInitialized();
-  
-  
-  boolean isClosed();
-  
-  IConfig getConfig();
-  
-  default void createDefaultScopes() {
-    IScope sessionScope = createScope(IContainer.SESSION_NAME, IContainer.SESSION_ORDER, getContainerScope());
-    IScope requestScope = createScope(IContainer.REQUEST_NAME, IContainer.REQUEST_ORDER, sessionScope);
+  interface IContainerInternal extends IContainer {
+    
+    ConfigurableApplicationContext getSpringContext();
+    
+    IScope getContainerScope();
+    
+    IScope getScope(String scopeName);
+    
+    IScope createScope(String scopeName, int order, IScope parent, IScope... relatedScopes);
+    
+    boolean isInitialized();
+    
+    
+    boolean isClosed();
+    
+    IConfig getConfig();
+    
+    default void createDefaultScopes() {
+      IScope sessionScope = createScope(IContainer.SESSION_NAME, IContainer.SESSION_ORDER, getContainerScope());
+      IScope requestScope = createScope(IContainer.REQUEST_NAME, IContainer.REQUEST_ORDER, sessionScope);
+    }
   }
-
 }

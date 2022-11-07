@@ -14,7 +14,7 @@ import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.atomic.AtomicLong;
 
-public class Scope implements IScope {
+public class Scope implements IScope.IScopeInternal {
   
   @Getter
   private final String scopeName;
@@ -134,13 +134,13 @@ public class Scope implements IScope {
   @Override
   public void scopeContextCreated(IScopeContext context) {
     synchronized (contexts) {
-      contexts.put(context.getId(), context);
+      contexts.put(context.internal().getId(), context);
     }
   }
   
   @Override
   public IScopeContext getScopeContext() {
-    return domain.getThreadManager().getThreadContext(domain, config).getScopeContext(this, config);
+    return domain.internal().getThreadManager().internal().getThreadContext(domain, config).internal().getScopeContext(this, config);
   }
   
   // ==================================   older
@@ -150,7 +150,7 @@ public class Scope implements IScope {
     
     if (closed) return false;
     
-    contexts.values().forEach(sc -> sc.close());
+    contexts.values().forEach(sc -> sc.internal().close());
     if (config.isClearScopeContextsOnClose()) contexts.clear();
     closed = true;
     return true;
@@ -196,5 +196,10 @@ public class Scope implements IScope {
   public String toString() {
     return "Scope[name:" + scopeName + ", parent:" + parentScope + "]";
     
+  }
+  
+  @Override
+  public IScopeInternal internal() {
+    return this;
   }
 }

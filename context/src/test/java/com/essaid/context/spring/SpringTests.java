@@ -26,9 +26,9 @@ public class SpringTests {
   @Test
   @Order(1)
   void setupDomain() {
-    domain = IFactory.DEFAULT_FACTORY.createContextDomain();
+    domain = IFactory.DEFAULT_FACTORY.createContextDomain("test-domain");
     domain.getConfig().setRegisterShutdownHook(true).setCloseSpringContextDelay(5000)
-        .setCloseSpringContextIfNeeded(false);
+        .setCloseSpringContextIfNeeded(true);
     domain.registerShutdownHook();
   }
   
@@ -39,8 +39,8 @@ public class SpringTests {
     context.register(ApplicationBeanA.class, RequestBeanA.class, SessionBeanA.class, SingletonBeanA.class);
     //context.registerShutdownHook();
     container = domain.registerSpringContext(context, null);
-    threadContextList = domain.getThreadManager().getThreadContextList(domain, container.getConfig());
-    container.createDefaultScopes();
+    threadContextList = domain.internal().getThreadManager().internal().getThreadContextList(domain, container.internal().getConfig());
+    container.internal().createDefaultScopes();
     context.refresh();
     
   }
@@ -48,8 +48,8 @@ public class SpringTests {
   @Test
   @Order(3)
   void getBeans() {
-    IThreadContextList threadContextList1 = domain.getThreadManager()
-        .getThreadContextList(domain, container.getConfig());
+    IThreadContextList threadContextList1 = domain.internal().getThreadManager()
+        .internal().getThreadContextList(domain, container.internal().getConfig());
     
     ApplicationBeanA applicationBeanA = context.getBean(ApplicationBeanA.class);
     RequestBeanA requestBeanA1 = applicationBeanA.getRequestBeanA();
@@ -66,7 +66,7 @@ public class SpringTests {
     RequestBeanA requestBeanA = context.getBean(RequestBeanA.class);
     Assertions.assertThat(context.getBean(RequestBeanA.class).getString()).isEqualTo("requestBeanA");
     
-    domain.registerShutdownHook();
+    domain.internal().registerShutdownHook();
     // context.close();
     // domain.closeDomain();
     

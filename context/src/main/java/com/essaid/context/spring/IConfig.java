@@ -14,6 +14,8 @@ public interface IConfig {
   
   Boolean getAutoCreateScopeContext();
   
+  IConfig setAutoCreateScopeContext(Boolean autoCreateScopeContext);
+  
   boolean isClearScopeContextsOnClose();
   
   boolean isRegisterShutdownHook();
@@ -21,8 +23,6 @@ public interface IConfig {
   boolean isCloseSpringContextIfNeeded();
   
   boolean isClearContainersOnClose();
-  
-  IConfig setAutoCreateScopeContext(Boolean autoCreateScopeContext);
   
   Boolean getAutoCreateThreadContext();
   
@@ -36,23 +36,29 @@ public interface IConfig {
   
   IConfig setScopeThreadInheritable(Boolean scopeThreadInheritable);
   
-  IConfig setClearScopeContextsOnClose(Boolean clearScopeContextOnClose);
-  
-  IConfig setClearContainersOnClose(Boolean clearContainersOnClose);
-  
-  IConfig setCloseSpringContextIfNeeded(Boolean closeSpringContextIfNeeded);
-  
-  IConfig setRegisterShutdownHook(Boolean registerShutdownHook);
-  
-  IConfig setCloseSpringContextDelay(long delayMilliseconds);
-  
   Boolean getClearScopeContextsOnClose();
+  
+  IConfig setClearScopeContextsOnClose(Boolean clearScopeContextOnClose);
   
   Boolean getRegisterShutdownHook();
   
+  IConfig setRegisterShutdownHook(Boolean registerShutdownHook);
+  
   Boolean getCloseSpringContextIfNeeded();
+  
+  IConfig setCloseSpringContextIfNeeded(Boolean closeSpringContextIfNeeded);
   
   Boolean getClearContainersOnClose();
   
+  IConfig setClearContainersOnClose(Boolean clearContainersOnClose);
+  
   long getCloseSpringContextDelay();
+  
+  IConfig setCloseSpringContextDelay(long delayMilliseconds);
+  
+  IConfigInternal internal();
+  
+  interface IConfigInternal extends IConfig {
+  
+  }
 }

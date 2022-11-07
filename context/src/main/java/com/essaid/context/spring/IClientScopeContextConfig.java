@@ -36,4 +36,10 @@ public interface IClientScopeContextConfig {
      */
     ENTER_END
   }
+  
+  IClientScopeContextConfigInternal internal();
+  
+  interface IClientScopeContextConfigInternal extends  IClientScopeContextConfig{
+  
+  }
 }

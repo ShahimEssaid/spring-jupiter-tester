@@ -1,24 +1,12 @@
 package tmp.springboot.example1;
 
-import com.essaid.context.spring.IContainer;
-import com.essaid.context.spring.IDomain;
-import com.essaid.context.spring.IScope;
-import com.essaid.context.spring.IThreadContextList;
-import com.essaid.context.spring.Scopes;
-import org.springframework.beans.factory.config.BeanDefinition;
-import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
-import org.springframework.context.ApplicationContextInitializer;
-import org.springframework.context.ConfigurableApplicationContext;
-import tmp.springboot.example1.comp.ApplicationBeanA;
-import tmp.springboot.example1.comp.RequestBeanA;
-import tmp.springboot.example1.comp.SessionBeanA;
 
 @SpringBootApplication
 public class Boot {
   
   public static void main(String[] args) {
-    
+
 //    IDomain domain1 = Scopes.createDomain("Boot 2", true, true, true, true);
 //    domain1.initialize();
 //    Scopes.setDomain(domain1, true);
@@ -55,8 +43,8 @@ public class Boot {
 //    String scopeContextId = session.getScopeContext(domain1.isAutoThreadContext(), domain1.isAutoContext(),
 //        domain1.isAutoScopeContext()).getScopeContextId();
 //    System.out.println("======= Request context id:" + scopeContextId);
-    
-    
+
+
 //    BeanDefinition sessionBeanADefinition = context.getBeanFactory().getBeanDefinition("sessionBeanA");
 //    String scope = sessionBeanADefinition.getScope();
 //

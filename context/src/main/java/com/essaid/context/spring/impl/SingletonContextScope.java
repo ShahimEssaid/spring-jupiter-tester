@@ -14,7 +14,7 @@ public class SingletonContextScope extends Scope {
   public SingletonContextScope(IDomain domain, IContainer container,  String scopeName, int scopeOrder, IScope parentScope, IConfig config,
       IFactory factory) {
     super(domain, container, scopeName, scopeOrder, parentScope, config);
-    this.singletonContext = factory.createScopeContext(this);
+    this.singletonContext = factory.internal().createScopeContext(this);
     this.scopeContextCreated(singletonContext);
   }
   

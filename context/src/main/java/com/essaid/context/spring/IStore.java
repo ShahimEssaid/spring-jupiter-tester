@@ -5,6 +5,10 @@ import java.util.Map;
 
 public interface IStore {
   
+  IStoreInternal internal();
+  
+  interface IStoreInternal extends  IStore{
+  
   void created(IScopeContext context);
   
   List<IScopeContext> getCreated(IScope scope);
@@ -18,4 +22,8 @@ public interface IStore {
   Map<String, IScopeContext> getSaved();
   
   void close(IScope scope);
+  
+
+  
+  }
 }

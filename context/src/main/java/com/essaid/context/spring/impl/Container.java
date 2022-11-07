@@ -21,7 +21,7 @@ import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
 @Component
-public class Container implements IContainer {
+public class Container implements IContainer.IContainerInternal {
   
   @Getter
   private final IDomain domain;
@@ -49,11 +49,11 @@ public class Container implements IContainer {
     this.domain = domain;
     this.springContext = springContext;
     springContext.addApplicationListener(this);
-    IScope applicationScope = domain.getApplicationScope();
-    springContext.getBeanFactory().registerScope(applicationScope.getScopeName(), applicationScope);
+    IScope applicationScope = domain.internal().getApplicationScope();
+    springContext.getBeanFactory().registerScope(applicationScope.internal().getScopeName(), applicationScope);
     
     this.config = config;
-    containScope = domain.getFactory().createContainerScope(this.getDomain(), this, domain.getApplicationScope(), config);
+    containScope = domain.internal().getFactory().internal().createContainerScope(this.getDomain(), this, config);
   }
   
   @Override
@@ -75,9 +75,9 @@ public class Container implements IContainer {
         throw new IllegalStateException(
             "Scope already exists: " + scope + " when trying to create new scope with name: " + scopeName + " order:" + order + " parent: " + parent + " config: " + config);
       }
-      scope = domain.getFactory().createScope(domain, this, scopeName, order, parent, config, relatedScopes);
-      containerScopes.put(scope.getScopeName(), scope);
-      springContext.getBeanFactory().registerScope(scope.getScopeName(), scope);
+      scope = domain.internal().getFactory().internal().createScope(domain, this, scopeName, order, parent, config, relatedScopes);
+      containerScopes.put(scope.internal().getScopeName(), scope);
+      springContext.getBeanFactory().registerScope(scope.internal().getScopeName(), scope);
       return scope;
     }
   }
@@ -90,16 +90,18 @@ public class Container implements IContainer {
       scopes.sort(new Comparator<IScope>() {
         @Override
         public int compare(IScope o1, IScope o2) {
-          return o2.getScopeOrder() - o1.getScopeOrder();
+          return o2.internal().getScopeOrder() - o1.internal().getScopeOrder();
         }
       });
-      scopes.forEach(s -> s.close());
+      scopes.forEach(s -> s.internal().close());
       closed = true;
     }
   }
-
   
-
+  @Override
+  public IContainerInternal internal() {
+    return this;
+  }
   
   private void checkIsInitialized() {
     if (!initialized) {

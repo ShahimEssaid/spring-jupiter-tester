@@ -13,7 +13,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.context.ConfigurableApplicationContext;
 
-public class Factory implements IFactory {
+public class Factory implements IFactory.IFactoryInternal {
   
   private static final Logger logger = LoggerFactory.getLogger(Factory.class);
   
@@ -34,15 +34,15 @@ public class Factory implements IFactory {
   }
   
   @Override
-  public IScope createContainerScope(IDomain domain, IContainer container, IScope parent, IConfig config) {
-    return new SingletonContextScope(domain, container,IContainer.CONTAINER_NAME, IContainer.CONTAINER_ORDER, parent, config,
+  public IScope createContainerScope(IDomain domain, IContainer container, IConfig config) {
+    return new SingletonContextScope(domain, container,IContainer.CONTAINER_NAME, IContainer.CONTAINER_ORDER, domain.internal().getApplicationScope(), config,
         this);
   }
   
   @Override
   public IScopeContext createScopeContext(IScope scope) {
-    ScopeContext scopeContext = new ScopeContext(scope, scope.generateScopeContextId());
-    scope.scopeContextCreated(scopeContext);
+    ScopeContext scopeContext = new ScopeContext(scope, scope.internal().generateScopeContextId());
+    scope.internal().scopeContextCreated(scopeContext);
     return scopeContext;
   }
   
@@ -68,12 +68,17 @@ public class Factory implements IFactory {
   @Override
   public IThreadContext createThreadContext(IDomain domain, IConfig config) {
     ThreadContext threadContext = new ThreadContext(domain);
-    threadContext.addScopeContexts(false, config, domain.getApplicationScope().getScopeContext());
+    threadContext.addScopeContexts(false, config, domain.internal().getApplicationScope().internal().getScopeContext());
     return threadContext;
   }
   
   @Override
   public IThreadManager createThreadManager() {
     return new ThreadManager();
+  }
+  
+  @Override
+  public IFactoryInternal internal() {
+    return this;
   }
 }

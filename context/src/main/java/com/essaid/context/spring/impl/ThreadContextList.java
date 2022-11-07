@@ -10,7 +10,7 @@ import java.util.LinkedList;
 
 @Getter
 @Setter
-public class ThreadContextList implements IThreadContextList {
+public class ThreadContextList implements IThreadContextList.IThreadContextListInternal {
   private final LinkedList<IThreadContext> contexts = new LinkedList<>();
   
   @Override
@@ -37,5 +37,10 @@ public class ThreadContextList implements IThreadContextList {
   @Override
   public int size() {
     return contexts.size();
+  }
+  
+  @Override
+  public IThreadContextListInternal internal() {
+    return this;
   }
 }

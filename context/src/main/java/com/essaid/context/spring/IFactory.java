@@ -8,35 +8,38 @@ public interface IFactory {
   
   IFactory DEFAULT_FACTORY = new Factory();
   
-  default IDomain createContextDomain() {
-    IConfig config = createConfig(null).setAutoCreateScopeContext(true).setAutoCreateThreadContext(true)
+  default IDomain createContextDomain(String domainName) {
+    IConfig config = internal().createConfig(null).setAutoCreateScopeContext(true).setAutoCreateThreadContext(true)
         .setAutoCreateThreadContextList(true).setScopeThreadInheritable(true);
-    return createContextDomain(IDomain.DEFAULT_DOMAIN_NAME, DEFAULT_FACTORY, createThreadManager(), config);
+    return internal().createContextDomain(domainName, DEFAULT_FACTORY, internal().createThreadManager(), config);
   }
   
-  IDomain createContextDomain(String domainName, IFactory factory, IThreadManager threadManager, IConfig config);
+  IFactoryInternal internal();
   
-  IContainer createApplicationContext(IDomain contextDomain, ConfigurableApplicationContext context, IConfig config);
-  
-  Scope createScope(IDomain domain, IContainer container, String scopeName, int order, IScope parent, IConfig config,
-      IScope... relatedScopes);
-  
-  IScope createApplicationScope(IDomain domain, IContainer container, IConfig config);
-  
-  IScope createContainerScope(IDomain domain, IContainer container, IScope parent, IConfig config);
-  
-  IScopeContext createScopeContext(IScope scope);
-  
-  
-  IConfig createConfig(IConfig parentConfig);
-  
-  
-  /// older
-  
-  IThreadContextList createThreadContextList();
-  
-  IThreadContext createThreadContext(IDomain domain, IConfig config);
-  
-  IThreadManager createThreadManager();
+  interface IFactoryInternal extends IFactory {
+    
+    IDomain createContextDomain(String domainName, IFactory factory, IThreadManager threadManager, IConfig config);
+    
+    IContainer createApplicationContext(IDomain contextDomain, ConfigurableApplicationContext context, IConfig config);
+    
+    Scope createScope(IDomain domain, IContainer container, String scopeName, int order, IScope parent, IConfig config,
+        IScope... relatedScopes);
+    
+    IScope createApplicationScope(IDomain domain, IContainer container, IConfig config);
+    
+    IScope createContainerScope(IDomain domain, IContainer container, IConfig config);
+    
+    IScopeContext createScopeContext(IScope scope);
+    
+    
+    IConfig createConfig(IConfig parentConfig);
+    
+    IThreadContextList createThreadContextList();
+    
+    IThreadContext createThreadContext(IDomain domain, IConfig config);
+    
+    IThreadManager createThreadManager();
+    
+  }
   
 }

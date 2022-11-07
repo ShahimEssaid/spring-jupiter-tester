@@ -12,7 +12,7 @@ import org.springframework.beans.factory.ObjectFactory;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
-public class ScopeContext implements IScopeContext {
+public class ScopeContext implements IScopeContext.IScopeContextInternal {
   
   private static final Logger logger = LoggerFactory.getLogger(ScopeContext.class);
   
@@ -93,5 +93,10 @@ public class ScopeContext implements IScopeContext {
   @Override
   public boolean isNamed() {
     return getName() != null;
+  }
+  
+  @Override
+  public IScopeContextInternal internal() {
+    return this;
   }
 }

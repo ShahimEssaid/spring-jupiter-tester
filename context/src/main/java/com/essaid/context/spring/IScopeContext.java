@@ -4,20 +4,27 @@ import org.springframework.beans.factory.config.Scope;
 
 public interface IScopeContext extends Scope {
   
-  String getId();
+  IScopeContextInternal internal();
   
-  IScope getScope();
-  
-  String getName();
-  
-  void setName(String name);
-  
-  // older
-  
-  void close();
-  
-  boolean isClosed();
-  
-  boolean isNamed();
-  
+  interface IScopeContextInternal extends IScopeContext {
+    String getId();
+    
+    IScope getScope();
+    
+    String getName();
+    
+    void setName(String name);
+    
+    // older
+    
+    void close();
+    
+    boolean isClosed();
+    
+    boolean isNamed();
+    
+    IScopeContextInternal internal();
+    
+    
+  }
 }

@@ -7,7 +7,7 @@ import com.essaid.context.spring.IThreadContextList;
 import com.essaid.context.spring.IThreadManager;
 import org.springframework.core.NamedThreadLocal;
 
-public class ThreadManager implements IThreadManager {
+public class ThreadManager implements IThreadManager.IThreadManagerInternal {
   
   private final NamedThreadLocal<IThreadContextList> threadContextListHolder = new NamedThreadLocal<>(
       "Spring thread context");
@@ -16,7 +16,7 @@ public class ThreadManager implements IThreadManager {
   public IThreadContextList getThreadContextList(IDomain domain, IConfig config) {
     IThreadContextList contextList = threadContextListHolder.get();
     if (contextList == null && config.isCreateThreadContextList()) {
-      contextList = domain.getFactory().createThreadContextList();
+      contextList = domain.internal().getFactory().internal().createThreadContextList();
       threadContextListHolder.set(contextList);
     }
     return contextList;
@@ -36,11 +36,11 @@ public class ThreadManager implements IThreadManager {
   @Override
   public IThreadContext getThreadContext(IDomain domain, IConfig config) {
     IThreadContextList threadContextList = getThreadContextList(domain, config);
-    if (threadContextList.isEmpty() && config.isCreateThreadContext()) {
-      IThreadContext threadContext = domain.getFactory().createThreadContext(domain, config);
-      threadContextList.pushContext(threadContext);
+    if (threadContextList.internal().isEmpty() && config.isCreateThreadContext()) {
+      IThreadContext threadContext = domain.internal().getFactory().internal().createThreadContext(domain, config);
+      threadContextList.internal().pushContext(threadContext);
     }
-    return threadContextList.peekContext();
+    return threadContextList.internal().peekContext();
   }
   
   
@@ -50,5 +50,9 @@ public class ThreadManager implements IThreadManager {
     threadContextListHolder.remove();
     return threadContextList;
   }
-
+  
+  @Override
+  public IThreadManagerInternal internal() {
+    return this;
+  }
 }

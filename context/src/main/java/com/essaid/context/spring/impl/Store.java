@@ -10,7 +10,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class Store implements IStore {
+public class Store implements IStore.IStoreInternal {
   private final IDomain domain;
   private final Map<IScope, List<IScopeContext>> createdScopeContexts = new HashMap<>();
   
@@ -24,7 +24,7 @@ public class Store implements IStore {
   public void created(IScopeContext context) {
     
     
-    createdScopeContexts.computeIfAbsent(context.getScope(), s -> new ArrayList<>()).add(context);
+    createdScopeContexts.computeIfAbsent(context.internal().getScope(), s -> new ArrayList<>()).add(context);
   }
   
   @Override
@@ -64,7 +64,12 @@ public class Store implements IStore {
   public void close(IScope scope) {
     List<IScopeContext> scopeContexts = createdScopeContexts.remove(scope);
     if (scopeContexts != null) {
-      scopeContexts.forEach(sc -> sc.close());
+      scopeContexts.forEach(sc -> sc.internal().close());
     }
+  }
+  
+  @Override
+  public IStoreInternal internal() {
+    return this;
   }
 }

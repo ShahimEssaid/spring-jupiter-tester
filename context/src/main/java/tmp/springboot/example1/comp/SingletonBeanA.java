@@ -43,10 +43,10 @@ public class SingletonBeanA extends StringHolder{
   void preDestroy() {
     System.out.println("============ Pre destroying SingletonBean and sleeping long time");
   
-    try {
-      Thread.sleep(15000);
-    } catch (InterruptedException e) {
-      throw new RuntimeException(e);
-    }
+//    try {
+//      Thread.sleep(15000);
+//    } catch (InterruptedException e) {
+//      throw new RuntimeException(e);
+//    }
   }
 }

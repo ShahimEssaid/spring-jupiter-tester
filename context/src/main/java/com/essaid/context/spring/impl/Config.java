@@ -3,7 +3,7 @@ package com.essaid.context.spring.impl;
 import com.essaid.context.spring.IConfig;
 import lombok.Getter;
 
-public class Config implements IConfig {
+public class Config implements IConfig.IConfigInternal {
   
   @Getter
   private final IConfig parentConfig;
@@ -172,6 +172,11 @@ public class Config implements IConfig {
   @Override
   public IConfig setCloseSpringContextDelay(long closeSpringContextDelay) {
     this.closeSpringContextDelay = closeSpringContextDelay;
+    return this;
+  }
+  
+  @Override
+  public IConfigInternal internal() {
     return this;
   }
 }
