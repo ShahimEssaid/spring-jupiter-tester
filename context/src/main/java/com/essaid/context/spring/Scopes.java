@@ -1,21 +1,21 @@
 package com.essaid.context.spring;
 
-import com.essaid.context.spring.impl.ApplicationDomain;
+import com.essaid.context.spring.impl.Domain;
 import com.essaid.context.spring.impl.Scope;
 import org.springframework.context.ConfigurableApplicationContext;
 import org.springframework.core.NamedThreadLocal;
 
 public class Scopes {
-  private static final ThreadLocal<IApplicationDomain> domainHolder = new NamedThreadLocal<>(
+  private static final ThreadLocal<IDomain> domainHolder = new NamedThreadLocal<>(
       "Spring context " + "domain");
-  private static final ThreadLocal<IApplicationDomain> inheritableDomainHolder = new NamedThreadLocal<>(
+  private static final ThreadLocal<IDomain> inheritableDomainHolder = new NamedThreadLocal<>(
       "Spring " + "inheritable context " + "domain");
   
   private Scopes() {
   }
   
-  public static IApplicationDomain getDomain() {
-    IApplicationDomain domain = domainHolder.get();
+  public static IDomain getDomain() {
+    IDomain domain = domainHolder.get();
     if (domain == null) {
       domain = inheritableDomainHolder.get();
     }
@@ -23,8 +23,8 @@ public class Scopes {
   }
   
   
-  public static IApplicationDomain setDomain(IApplicationDomain domain, boolean isThreadInheritable) {
-    IApplicationDomain currentDomain = getDomain();
+  public static IDomain setDomain(IDomain domain, boolean isThreadInheritable) {
+    IDomain currentDomain = getDomain();
     if (domain == null) {
       resetDomain();
     } else {
@@ -39,47 +39,47 @@ public class Scopes {
     return currentDomain;
   }
   
-  public static IApplicationDomain resetDomain() {
-    IApplicationDomain currentDomain = getDomain();
+  public static IDomain resetDomain() {
+    IDomain currentDomain = getDomain();
     domainHolder.remove();
     inheritableDomainHolder.remove();
     return currentDomain;
   }
   
-  public static IApplicationDomain createDomain(String domainName, boolean autoCreateThreadContext, boolean autoContext,
-      boolean autoCreateScopeData, boolean inheritableApplicationScope) {
-    return new ApplicationDomain(domainName, autoCreateThreadContext, autoContext, autoCreateScopeData,
-        inheritableApplicationScope);
-  }
-  
-  public static IScope createApplicationScope(IApplicationDomain domain, ConfigurableApplicationContext context) {
-    IFactory factory = domain.getFactory();
-    Scope scope = factory.createScope(IFactory.APPLICATION_NAME, context, IFactory.APPLICATION_ORDER, domain, true,
-        null);
-    return scope;
-  }
-  
-  
-  public static IScope createContainerScope(IApplicationDomain domain, ConfigurableApplicationContext context) {
-    IFactory factory = domain.getFactory();
-    Scope scope = factory.createScope(IFactory.CONTAINER_NAME, context, IFactory.CONTAINER_ORDER, domain, true, domain);
-    return scope;
-  }
+//  public static IDomain createDomain(String domainName, boolean autoCreateThreadContext, boolean autoContext,
+//      boolean autoCreateScopeData, boolean inheritableApplicationScope) {
+//    return new Domain(domainName, autoCreateThreadContext, autoContext, autoCreateScopeData,
+//        inheritableApplicationScope);
+//  }
+//
+//  public static IScope createApplicationScope(IDomain domain, ConfigurableApplicationContext context) {
+//    IFactory factory = domain.getFactory();
+//    Scope scope = factory.createScope(IContainer.APPLICATION_NAME, context, IContainer.APPLICATION_ORDER, domain, true,
+//        null);
+//    return scope;
+//  }
   
   
-  public static IScope createSessionScope(IApplicationDomain domain, ConfigurableApplicationContext context,
-      IScope parentContainerScope) {
-    IFactory factory = domain.getFactory();
-    Scope scope = factory.createScope(IFactory.SESSION_NAME, context, IFactory.SESSION_ORDER, domain, true,
-        parentContainerScope);
-    return scope;
-  }
-  
-  public static IScope createRequestScope(IApplicationDomain domain, ConfigurableApplicationContext context,
-      IScope parentSessionScope) {
-    IFactory factory = domain.getFactory();
-    Scope scope = factory.createScope(IFactory.REQUEST_NAME, context, IFactory.REQUEST_ORDER, domain, true,
-        parentSessionScope);
-    return scope;
-  }
+//  public static IScope createContainerScope(IDomain domain, ConfigurableApplicationContext context) {
+//    IFactory factory = domain.getFactory();
+//    Scope scope = factory.createScope(IContainer.CONTAINER_NAME, context, IContainer.CONTAINER_ORDER, domain, true, domain);
+//    return scope;
+//  }
+//
+//
+//  public static IScope createSessionScope(IDomain domain, ConfigurableApplicationContext context,
+//      IScope parentContainerScope) {
+//    IFactory factory = domain.getFactory();
+//    Scope scope = factory.createScope(IContainer.SESSION_NAME, context, IContainer.SESSION_ORDER, domain, true,
+//        parentContainerScope);
+//    return scope;
+//  }
+//
+//  public static IScope createRequestScope(IDomain domain, ConfigurableApplicationContext context,
+//      IScope parentSessionScope) {
+//    IFactory factory = domain.getFactory();
+//    Scope scope = factory.createScope(IContainer.REQUEST_NAME, context, IContainer.REQUEST_ORDER, domain, true,
+//        parentSessionScope);
+//    return scope;
+//  }
 }

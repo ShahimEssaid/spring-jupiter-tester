@@ -4,12 +4,13 @@ import com.essaid.context.spring.IScope;
 import com.essaid.context.spring.IScopeContext;
 import com.essaid.util.asserts.Asserts;
 import lombok.Getter;
+import lombok.Setter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.ObjectFactory;
 
-import java.util.HashMap;
 import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 
 public class ScopeContext implements IScopeContext {
   
@@ -17,17 +18,23 @@ public class ScopeContext implements IScopeContext {
   
   @Getter
   private final IScope scope;
-  private final Map<String, Object> objectMap = new HashMap<>();
-  private final Map<String, Runnable> destructorMap = new HashMap<>();
+  @Getter
+  private final String id;
+  private final Map<String, Object> objectMap = new ConcurrentHashMap<>();
+  private final Map<String, Runnable> destructorMap = new ConcurrentHashMap<>();
+  @Getter
+  private volatile String name;
+  @Getter
   private volatile boolean closed;
   
-  private String savedId;
-  private String scopeContextName;
-  private long timeout;
-  private long latestTimestamp;
+  @Getter
+  @Setter
+  private volatile long timeout = Long.MAX_VALUE;
+  private volatile long latestTimestamp = System.currentTimeMillis();
   
-  public ScopeContext(IScope scope) {
+  public ScopeContext(IScope scope, String id) {
     this.scope = scope;
+    this.id = id;
   }
   
   public void close() {
@@ -76,72 +83,18 @@ public class ScopeContext implements IScopeContext {
     return null;
   }
   
-  @Override
-  public String getScopeContextName() {
-    return scopeContextName;
-  }
   
-  public void setScopeContextName(String scopeContextName) {
-    if (isProperNamed()) {
-      throw new IllegalStateException("Can't rename to: " + scopeContextName + " for scope context: " + this);
-    }
-    Asserts.notNull(scopeContextName, "Can't name scope context with null name for context: ", this);
-    this.scopeContextName = scopeContextName;
-  }
-  
-  @Override
-  public String getScopeContextId() {
-    
-    if (getScopeContextName() == null) {
-      this.setScopeContextName(scope.generateContextId());
-    }
-    
-    String contextId = scope.getScopeName() + ":" + getScopeContextName();
-    contextId = scope.getParent() == null ? contextId : scope.getParent()
-        .getScopeContext(scope.getApplicationDomain().isAutoThreadContext(),
-            scope.getApplicationDomain().isAutoContext(), scope.getApplicationDomain().isAutoScopeContext())
-        .getScopeContextId() + "|" + contextId;
-    return contextId;
-  }
-  
-  @Override
-  public Boolean isClosed() {
-    return closed;
-  }
-  
-  @Override
-  public boolean isProperNamed() {
-    return getScopeContextName() != null && !getScopeContextName().startsWith("_");
-  }
-  
-  @Override
-  public IScopeContext save(boolean overwrite) {
-    return scope.getApplicationDomain().getStore().save(this, overwrite);
-  }
-  
-  @Override
-  public boolean isSaved() {
-    return savedId != null;
-  }
-  
-  @Override
-  public String getSavedId() {
-    return savedId;
-  }
-  
-  @Override
-  public void setSavedId(String savedId) {
-    if (this.savedId != null && !this.savedId.equals(savedId)) {
+  public void setName(String name) {
+    Asserts.notNull(name, "Can't name scope context with null name for context: ", this);
+    if (this.name != null) {
       throw new IllegalStateException(
-          "Context scope: " + this + " is being saved with a new id while already assigned one. Current ID:" + this.savedId + " and new id:" + savedId);
+          "Can't rename: " + this.name + " to: " + name + " for scope context: " + this);
     }
-    Asserts.notNull(savedId, "Null scope context save id.");
-    this.savedId = savedId;
-    
+    this.name = name;
   }
   
   @Override
   public boolean isNamed() {
-    return getScopeContextName() != null;
+    return getName() != null;
   }
 }

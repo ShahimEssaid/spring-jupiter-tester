@@ -1,6 +1,6 @@
 package tmp.springboot.example1.comp;
 
-import com.essaid.context.spring.IFactory;
+import com.essaid.context.spring.IContainer;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
@@ -8,7 +8,7 @@ import org.springframework.stereotype.Component;
 import javax.annotation.PreDestroy;
 
 @Component
-@Scope(IFactory.REQUEST_NAME)
+@Scope(IContainer.REQUEST_NAME)
 public class RequestBeanA {
   
   

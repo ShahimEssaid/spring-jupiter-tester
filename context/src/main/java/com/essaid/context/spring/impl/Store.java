@@ -1,6 +1,6 @@
 package com.essaid.context.spring.impl;
 
-import com.essaid.context.spring.IApplicationDomain;
+import com.essaid.context.spring.IDomain;
 import com.essaid.context.spring.IScope;
 import com.essaid.context.spring.IScopeContext;
 import com.essaid.context.spring.IStore;
@@ -11,12 +11,12 @@ import java.util.List;
 import java.util.Map;
 
 public class Store implements IStore {
-  private final IApplicationDomain domain;
+  private final IDomain domain;
   private final Map<IScope, List<IScopeContext>> createdScopeContexts = new HashMap<>();
   
   private final Map<String, IScopeContext> idScopeContextMap = new HashMap<>();
   
-  public Store(IApplicationDomain domain) {
+  public Store(IDomain domain) {
     this.domain = domain;
   }
   
@@ -37,18 +37,18 @@ public class Store implements IStore {
     return createdScopeContexts;
   }
   
-  @Override
-  public IScopeContext save(IScopeContext context, boolean overwrite) {
-    String scopeContextId = context.getScopeContextId();
-    String savedId = context.getSavedId();
-    IScopeContext saved = getSaved(scopeContextId);
-    if (saved == context) return null;
-    if (saved != null && !overwrite) {
-      throw new IllegalStateException(
-          "Scope context id: " + scopeContextId + " being saved as context: " + context + " but different context exists and no overwrite:" + saved);
-    }
-    return idScopeContextMap.put(scopeContextId, context);
-  }
+//  @Override
+//  public IScopeContext save(IScopeContext context, boolean overwrite) {
+//    String scopeContextId = context.getScopeContextId();
+//    String savedId = context.getSavedId();
+//    IScopeContext saved = getSaved(scopeContextId);
+//    if (saved == context) return null;
+//    if (saved != null && !overwrite) {
+//      throw new IllegalStateException(
+//          "Scope context id: " + scopeContextId + " being saved as context: " + context + " but different context exists and no overwrite:" + saved);
+//    }
+//    return idScopeContextMap.put(scopeContextId, context);
+//  }
   
   @Override
   public IScopeContext getSaved(String scopeContextId) {

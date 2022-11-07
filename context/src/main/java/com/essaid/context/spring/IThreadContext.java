@@ -1,14 +1,14 @@
 package com.essaid.context.spring;
 
+import java.util.Map;
+
 public interface IThreadContext {
+  IScopeContext getScopeContext(IScope scope, IConfig config);
   
-  IContext peekContext(boolean autoContext);
   
-  IContext popContext();
+  void addScopeContexts(boolean overwrite, IConfig config, IScopeContext... scopeContexts);
   
-  void pushContext(IContext context);
+  IScopeContext removeScopeContext(IScope scope);
   
-  boolean isEmpty();
-  
-  int size();
+  Map<IScope, String> getRequestedScopeContextIds();
 }

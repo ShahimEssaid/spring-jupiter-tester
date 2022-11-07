@@ -1,15 +1,18 @@
 package com.essaid.context.spring;
 
 public interface IThreadManager {
-  IThreadContext getThreadContext(boolean create);
-  
-  IThreadContext setThreadContext(IThreadContext context, boolean overwrite);
-  
-  IThreadContext removeThreadContext();
-  
-  void enterContext();
-  void enterContext(IContext context);
   
   
-  IContext exitContext();
+  IThreadContextList getThreadContextList(IContainer container,IConfig config);
+  
+  IThreadContextList setThreadContextList(IThreadContextList context, boolean overwrite);
+  
+  IThreadContext getContext(IContainer container, IConfig config);
+  
+  
+  // ================ older
+  
+  
+  IThreadContextList removeThreadContextList();
+  
 }

@@ -1,103 +1,169 @@
 package com.essaid.context.spring.impl;
 
-import com.essaid.context.spring.IApplicationDomain;
-import com.essaid.context.spring.IContext;
-import com.essaid.context.spring.IFactory;
+import com.essaid.context.spring.IConfig;
+import com.essaid.context.spring.IContainer;
 import com.essaid.context.spring.IScope;
 import com.essaid.context.spring.IScopeContext;
-import com.essaid.context.spring.IThreadContext;
 import lombok.Getter;
-import lombok.Setter;
 import org.springframework.beans.factory.ObjectFactory;
-import org.springframework.context.ConfigurableApplicationContext;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.atomic.AtomicLong;
 
-@Getter
-@Setter
 public class Scope implements IScope {
   
+  @Getter
+  private final IContainer container;
+  @Getter
   private final String scopeName;
-  private final ConfigurableApplicationContext applicationContext;
-  private final int order;
-  private final IApplicationDomain applicationDomain;
-  private final boolean threadInheritable;
-  private final IScope parent;
-  private final List<IScope> children = new ArrayList<>();
+  @Getter
+  private final int scopeOrder;
+  @Getter
+  private final IScope parentScope;
+  @Getter
+  private final List<IScope> childScopes = new ArrayList<>();
+  @Getter
+  private final List<IScope> relatedScopes = new ArrayList<>();
+  
   private final AtomicLong sequence = new AtomicLong();
+  @Getter
+  private final IConfig config;
+  private final Map<String, IScopeContext> contexts = new ConcurrentHashMap<>();
+  @Getter
+  private volatile boolean closed;
+
+//  public Scope(String scopeName, ConfigurableApplicationContext applicationContext, int order,
+//      IContextDomain applicationDomain, boolean threadInheritable, IScope parent) {
+//    if (scopeName.equals(IApplicationContext.APPLICATION_NAME)) {
+//      if (parent != null) {
+//        throw new IllegalArgumentException(
+//            "Can't create scope: " + IApplicationContext.APPLICATION_NAME + " with a non null parent: " + parent);
+//      }
+//    } else if (scopeName.equals(IApplicationContext.CONTAINER_NAME)) {
+//      if (!parent.getScopeName().equals(IApplicationContext.APPLICATION_NAME)) {
+//        throw new IllegalArgumentException(
+//            "Parent scope: " + parent + " has to be of name: " + IApplicationContext.APPLICATION_NAME + " when creating scope: " + scopeName);
+//      }
+//    } else if (scopeName.equals(IApplicationContext.SESSION_NAME)) {
+//      if (!parent.getScopeName().equals(IApplicationContext.CONTAINER_NAME)) {
+//        throw new IllegalArgumentException(
+//            "Parent scope: " + parent + " has to be of name: " + IApplicationContext.CONTAINER_NAME + " when creating scope: " + scopeName);
+//      }
+//    } else if (scopeName.equals(IApplicationContext.CONVERSATION_NAME)) {
+//      if (!parent.getScopeName().equals(IApplicationContext.SESSION_NAME)) {
+//        throw new IllegalArgumentException(
+//            "Parent scope: " + parent + " has to be of name: " + IApplicationContext.SESSION_NAME + " when creating scope: " + scopeName);
+//      }
+//    } else if (scopeName.equals(IApplicationContext.REQUEST_NAME)) {
+//      if (!parent.getScopeName().equals(IApplicationContext.SESSION_NAME)) {
+//        throw new IllegalArgumentException(
+//            "Parent scope: " + parent + " has to be of name: " + IApplicationContext.SESSION_NAME + " when creating scope: " + scopeName);
+//      }
+//    }
+//
+//    this.scopeName = scopeName;
+//    this.applicationContext = applicationContext;
+//    this.order = order;
+//    this.applicationDomain = applicationDomain;
+//    this.threadInheritable = threadInheritable;
+//    this.parent = parent;
+//    if (parent != null) {
+//      parent.addChildScope(this);
+//    }
+//  }
+//
   
-  public Scope(String scopeName, ConfigurableApplicationContext applicationContext, int order,
-      IApplicationDomain applicationDomain, boolean threadInheritable, IScope parent) {
-    if (scopeName.equals(IFactory.APPLICATION_NAME)) {
-      if (parent != null) {
-        throw new IllegalArgumentException(
-            "Can't create scope: " + IFactory.APPLICATION_NAME + " with a non null parent: " + parent);
-      }
-    } else if (scopeName.equals(IFactory.CONTAINER_NAME)) {
-      if (!parent.getScopeName().equals(IFactory.APPLICATION_NAME)) {
-        throw new IllegalArgumentException(
-            "Parent scope: " + parent + " has to be of name: " + IFactory.APPLICATION_NAME + " when creating scope: " + scopeName);
-      }
-    } else if (scopeName.equals(IFactory.SESSION_NAME)) {
-      if (!parent.getScopeName().equals(IFactory.CONTAINER_NAME)) {
-        throw new IllegalArgumentException(
-            "Parent scope: " + parent + " has to be of name: " + IFactory.CONTAINER_NAME + " when creating scope: " + scopeName);
-      }
-    } else if (scopeName.equals(IFactory.CONVERSATION_NAME)) {
-      if (!parent.getScopeName().equals(IFactory.SESSION_NAME)) {
-        throw new IllegalArgumentException(
-            "Parent scope: " + parent + " has to be of name: " + IFactory.SESSION_NAME + " when creating scope: " + scopeName);
-      }
-    } else if (scopeName.equals(IFactory.REQUEST_NAME)) {
-      if (!parent.getScopeName().equals(IFactory.SESSION_NAME)) {
-        throw new IllegalArgumentException(
-            "Parent scope: " + parent + " has to be of name: " + IFactory.SESSION_NAME + " when creating scope: " + scopeName);
-      }
-    }
-    
+  public Scope(IContainer container, String scopeName, int scopeOrder, IScope parentScope, IConfig config,
+      IScope... relatedScopes) {
+    this.container = container;
     this.scopeName = scopeName;
-    this.applicationContext = applicationContext;
-    this.order = order;
-    this.applicationDomain = applicationDomain;
-    this.threadInheritable = threadInheritable;
-    this.parent = parent;
-    if (parent != null) {
-      parent.addChild(this);
+    this.scopeOrder = scopeOrder;
+    this.parentScope = parentScope;
+    this.config = config;
+    
+    for (IScope scope : relatedScopes) {
+      addRelatedScope(scope);
     }
   }
   
   @Override
-  public void addChild(IScope scope) {
-    if (scopeName.equals(IFactory.APPLICATION_NAME) && !scope.getScopeName().equals(IFactory.CONTAINER_NAME)) {
-      throw new IllegalArgumentException(
-          scope.getScopeName() + " can't be added as a child scope of scope: " + scopeName);
+  public boolean addChildScope(IScope scope) {
+    synchronized (childScopes) {
+      if (childScopes.contains(scope)) return false;
+      return childScopes.add(scope);
     }
-    children.add(scope);
   }
   
   @Override
-  public void close() {
-    applicationDomain.getStore().close(this);
+  public boolean removeChildScope(IScope scope) {
+    synchronized (childScopes) {
+      return childScopes.remove(scope);
+    }
   }
+  
+  @Override
+  public boolean addRelatedScope(IScope related) {
+    synchronized (relatedScopes) {
+      if (relatedScopes.contains(related)) return false;
+      return relatedScopes.add(related);
+    }
+  }
+  
+  @Override
+  
+  public boolean removeRelatedScope(IScope related) {
+    synchronized (relatedScopes) {
+      return relatedScopes.remove(related);
+    }
+  }
+  
+  @Override
+  public String generateScopeContextId() {
+    return Long.toString(sequence.getAndIncrement());
+  }
+  
+  @Override
+  public void scopeContextCreated(IScopeContext context) {
+    synchronized (contexts) {
+      contexts.put(context.getId(), context);
+    }
+  }
+  
+  @Override
+  public IScopeContext getScopeContext() {
+    return container.getThreadManager().getContext(container, config).getScopeContext(this, config);
+  }
+  
+  // ==================================   older
+  
+  @Override
+  public boolean close() {
+    
+    if (closed) return false;
+    // todo: implement the closing logic
+    closed = true;
+    return true;
+  }
+  
   
   @Override
   public Object get(String name, ObjectFactory<?> objectFactory) {
-    IScopeContext scopeContext = getScopeContext(applicationDomain.isAutoThreadContext(),
-        applicationDomain.isAutoContext(), applicationDomain.isAutoScopeContext());
+    IScopeContext scopeContext = getScopeContext();
     return scopeContext == null ? null : scopeContext.get(name, objectFactory);
   }
   
   @Override
   public Object remove(String name) {
-    IScopeContext scopeContext = getScopeContext(false, false, false);
+    IScopeContext scopeContext = getScopeContext();
     return scopeContext == null ? null : scopeContext.remove(name);
   }
   
   @Override
   public void registerDestructionCallback(String name, Runnable callback) {
-    IScopeContext scopeContext = getScopeContext(false, false, false);
+    IScopeContext scopeContext = getScopeContext();
     if (scopeContext != null) {
       scopeContext.registerDestructionCallback(name, callback);
     } else {
@@ -108,37 +174,14 @@ public class Scope implements IScope {
   
   @Override
   public Object resolveContextualObject(String key) {
-    IScopeContext scopeContext = getScopeContext(false, false, false);
+    IScopeContext scopeContext = getScopeContext();
     return scopeContext == null ? null : scopeContext.resolveContextualObject(key);
   }
   
   @Override
   public String getConversationId() {
-    IScopeContext scopeContext = getScopeContext(false, false, false);
+    IScopeContext scopeContext = getScopeContext();
     return scopeContext == null ? null : scopeContext.getConversationId();
   }
   
-  @Override
-  public IScopeContext getScopeContext(boolean createThreadContext, boolean createContext, boolean createScopeContext) {
-    IThreadContext threadContext = applicationDomain.getThreadManager().getThreadContext(createContext);
-    if (threadContext != null) {
-      IContext iContext = threadContext.peekContext(createContext);
-      if (iContext != null) {
-        return iContext.getScopeContext(this, createScopeContext);
-      }
-    }
-    return null;
-  }
-  
-  
-  @Override
-  public String generateContextId() {
-    return "_" + sequence.getAndIncrement();
-  }
-  
-  @Override
-  public Boolean isClosed() {
-    IScopeContext scopeContext = getScopeContext(false, false, false);
-    return scopeContext == null ? null : scopeContext.isClosed();
-  }
 }

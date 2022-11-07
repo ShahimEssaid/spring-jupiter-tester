@@ -1,84 +1,54 @@
 package com.essaid.context.spring.impl;
 
-import com.essaid.context.spring.IApplicationDomain;
-import com.essaid.context.spring.IContext;
-import com.essaid.context.spring.IScope;
+import com.essaid.context.spring.IConfig;
+import com.essaid.context.spring.IContainer;
 import com.essaid.context.spring.IThreadContext;
+import com.essaid.context.spring.IThreadContextList;
 import com.essaid.context.spring.IThreadManager;
 import org.springframework.core.NamedThreadLocal;
 
-import java.util.Map;
-
 public class ThreadManager implements IThreadManager {
   
-  private final NamedThreadLocal<IThreadContext> threadContextHolder = new NamedThreadLocal<>("Spring thread context");
-  
-  private final IApplicationDomain domain;
-  
-  public ThreadManager(IApplicationDomain domain) {
-    this.domain = domain;
-  }
-  
+  private final NamedThreadLocal<IThreadContextList> threadContextListHolder = new NamedThreadLocal<>(
+      "Spring thread context");
   
   @Override
-  public IThreadContext getThreadContext(boolean create) {
-    IThreadContext context = threadContextHolder.get();
-    if (context == null && create) {
-      context = domain.getFactory().createThreadContext();
-      threadContextHolder.set(context);
+  public IThreadContextList getThreadContextList(IContainer container,IConfig config) {
+    IThreadContextList contextList = threadContextListHolder.get();
+    if (contextList == null && config.isCreateThreadContextList()) {
+      contextList = container.getFactory().createThreadContextList();
+      threadContextListHolder.set(contextList);
     }
-    return context;
+    return contextList;
   }
   
   @Override
-  public IThreadContext setThreadContext(IThreadContext context, boolean overwrite) {
-    IThreadContext existingContext = getThreadContext(false);
-    if (existingContext != null && !overwrite) {
+  public IThreadContextList setThreadContextList(IThreadContextList contextList, boolean overwrite) {
+    IThreadContextList existingContextList = threadContextListHolder.get();
+    if (existingContextList != null && !overwrite) {
       throw new IllegalStateException(
-          "Can't overwrite thread context for application domain: " + this + ", current context: " + existingContext + ", and new context:" + context);
+          "Can't overwrite thread context list for thread manager: " + this + ", current context: " + existingContextList + ", and new context:" + contextList);
     }
-    threadContextHolder.set(context);
-    return existingContext;
+    threadContextListHolder.set(contextList);
+    return existingContextList;
   }
   
+  @Override
+  public IThreadContextList removeThreadContextList() {
+    IThreadContextList threadContextList = threadContextListHolder.get();
+    threadContextListHolder.remove();
+    return threadContextList;
+  }
   
   @Override
-  public IThreadContext removeThreadContext() {
-    IThreadContext threadContext = getThreadContext(false);
-    threadContextHolder.remove();
+  public IThreadContext getContext(IContainer container, IConfig config) {
+    IThreadContextList threadContextList = getThreadContextList(container, config);
+    IThreadContext threadContext = null;
+    if (threadContextList.isEmpty() && config.isCreateThreadContext()) {
+      threadContext = container.getFactory().createThreadContext(container);
+      threadContextList.pushContext(threadContext);
+    }
     return threadContext;
-  }
-  
-  @Override
-  public void enterContext() {
-    enterContext(domain.getFactory().createContext());
-  }
-  
-  @Override
-  public void enterContext(IContext context) {
-    IThreadContext threadContext = getThreadContext(domain.isAutoThreadContext());
-    if (threadContext != null) {
-      Map<IScope, String> requestedScopeContextIds =
-          context.getRequestedScopeContextIds();
-      
-  
-      threadContext.pushContext(context);
-    } else {
-      throw new IllegalStateException("Asked to enter context: " + context + " but thread context is not available.");
-    }
-  }
-  
-  @Override
-  public IContext exitContext() {
-    IThreadContext threadContext = getThreadContext(domain.isAutoThreadContext());
-    if (threadContext != null) {
-      if (threadContext.isEmpty()) {
-        throw new IllegalStateException("Asked to exit context but thread context is empty:" + threadContext);
-      }
-      return threadContext.popContext();
-    } else {
-      throw new IllegalStateException("Asked to exit context but thread context is not available.");
-    }
   }
   
 }

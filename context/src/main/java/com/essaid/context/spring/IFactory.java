@@ -1,32 +1,35 @@
 package com.essaid.context.spring;
 
+import com.essaid.context.spring.impl.Factory;
 import com.essaid.context.spring.impl.Scope;
 import org.springframework.context.ConfigurableApplicationContext;
 
 public interface IFactory {
-  String APPLICATION_NAME = "application";
-  int APPLICATION_ORDER = 0;
-  String CONTAINER_NAME = "container";
-  int CONTAINER_ORDER = 1000;
-  String SESSION_NAME = "session";
-  int SESSION_ORDER = 2000;
-  String CONVERSATION_NAME = "conversation";
-  int CONVERSATION_ORDER = 3000;
-  String REQUEST_NAME = "request";
-  int REQUEST_ORDER = 4000;
   
-  Scope createScope(String scopeName, ConfigurableApplicationContext applicationContext, int order,
-      IApplicationDomain domain, boolean threadInheritable, IScope parent);
+  static IFactory DEFAULT_FACTORY = new Factory();
+  
+  IDomain createContextDomain(String domainName,
+      IScope applicationScope, IFactory factory, IConfig config);
+  
+  IContainer createApplicationContext(IDomain contextDomain, ConfigurableApplicationContext context, IThreadManager threadManager,  IConfig config);
+  
+  Scope createScope(IContainer applicationContext, String scopeName, int order, IScope parent, IConfig config,
+      IScope... relatedScopes);
+  
+  IScope createApplicationScope(IScopeContext applicationScopeContext,  IConfig config);
   
   IScopeContext createScopeContext(IScope scope);
   
-  IThreadContext createThreadContext();
   
-  IContext createContext();
+  IConfig createConfig(IConfig parentConfig);
   
-  IStore createStore();
   
-  void close(ConfigurableApplicationContext context);
+  /// older
+  
+  IThreadContextList createThreadContextList();
+  
+  IThreadContext createThreadContext(IContainer container);
+  
   
   IThreadManager createThreadManager();
 }

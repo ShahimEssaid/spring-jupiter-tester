@@ -2,24 +2,42 @@ package com.essaid.context.spring;
 
 import org.springframework.beans.factory.config.Scope;
 
+import java.util.Collection;
+
 public interface IScope extends Scope {
   
+  IContainer getContainer();
+  
+  // scope related
   String getScopeName();
   
-  int getOrder();
+  int getScopeOrder();
   
-  void addChild(IScope scope);
+  IScope getParentScope();
   
-  void close();
+  boolean addChildScope(IScope scope);
   
-  IScopeContext getScopeContext(boolean createThreadContext, boolean createContext, boolean createScopeContext);
+  boolean removeChildScope(IScope scope);
   
+  Collection<IScope> getChildScopes();
   
-  String generateContextId();
+  boolean addRelatedScope(IScope related);
   
-  IScope getParent();
+  boolean removeRelatedScope(IScope related);
   
-  IApplicationDomain getApplicationDomain();
+  Collection<IScope> getRelatedScopes();
   
-  Boolean isClosed();
+  String generateScopeContextId();
+  
+
+  
+  void scopeContextCreated(IScopeContext context);
+  
+  IScopeContext getScopeContext();
+  
+  boolean isClosed();
+  
+  IConfig getConfig();
+  
+  boolean close();
 }

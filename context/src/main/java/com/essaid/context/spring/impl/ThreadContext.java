@@ -1,53 +1,67 @@
 package com.essaid.context.spring.impl;
 
-import com.essaid.context.spring.IApplicationDomain;
-import com.essaid.context.spring.IContext;
+import com.essaid.context.spring.IConfig;
+import com.essaid.context.spring.IContainer;
 import com.essaid.context.spring.IThreadContext;
-import com.essaid.util.asserts.Asserts;
+import com.essaid.context.spring.IScope;
+import com.essaid.context.spring.IScopeContext;
 import lombok.Getter;
 import lombok.Setter;
 
-import java.util.LinkedList;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 
 @Getter
 @Setter
 public class ThreadContext implements IThreadContext {
-  private final LinkedList<IContext> contexts = new LinkedList<>();
-  private final IApplicationDomain domain;
   
-  public ThreadContext(IApplicationDomain domain) {
-    this.domain = domain;
+  private final IContainer applicationContext;
+  private final Map<IScope, String> contextIdOrNames = new HashMap<>();
+  private final Map<IScope, IScopeContext> scopeContexts = new ConcurrentHashMap<>();
+  //private final IContextDomain domain;
+  
+  public ThreadContext(IContainer applicationContext) {
+    this.applicationContext = applicationContext;
+    //this.domain = domain;
   }
   
   @Override
-  public IContext peekContext(boolean autoContext) {
-    IContext context = contexts.peek();
-    if (context == null && autoContext) {
-      context = domain.getFactory().createContext();
-      pushContext(context);
-      
+  public IScopeContext getScopeContext(IScope scope, IConfig config) {
+    IScopeContext scopeContext = scopeContexts.get(scope);
+    if(scopeContext != null) return scopeContext;
+    
+    synchronized (scopeContexts){
+      scopeContext = scopeContexts.get(scope);
+      if(scopeContext != null) return scopeContext;
+      if(config.isCreateScopeContext()){
+        scopeContext = applicationContext.getFactory().createScopeContext(scope);
+        scopeContexts.put(scope, scopeContext);
+        scope.scopeContextCreated(scopeContext);
+      }
+      return scopeContext;
     }
-    return context;
   }
   
   @Override
-  public IContext popContext() {
-    return contexts.pop();
+  public void addScopeContexts(boolean overwrite,IConfig config, IScopeContext... addedScopeContexts) {
+    for (IScopeContext scopeContext : addedScopeContexts) {
+      IScopeContext existingContext = getScopeContext(scopeContext.getScope(), config);
+      if (existingContext != null && !overwrite) {
+        throw new IllegalStateException(
+            "Can't overwrite IScopeContext. Exising context: " + existingContext + ", new context: " + scopeContext);
+      }
+      scopeContexts.put(scopeContext.getScope(), scopeContext);
+    }
   }
   
   @Override
-  public void pushContext(IContext context) {
-    Asserts.notNull("Can't push a null IContext onto IThreadContext: ", this);
-    contexts.push(context);
+  public IScopeContext removeScopeContext(IScope scope) {
+    return scopeContexts.remove(scope);
   }
   
   @Override
-  public boolean isEmpty() {
-    return contexts.isEmpty();
-  }
-  
-  @Override
-  public int size() {
-    return contexts.size();
+  public Map<IScope, String> getRequestedScopeContextIds() {
+    return contextIdOrNames;
   }
 }
