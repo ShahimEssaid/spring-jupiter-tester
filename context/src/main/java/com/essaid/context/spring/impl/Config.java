@@ -15,13 +15,19 @@ public class Config implements IConfig {
   private volatile Boolean autoCreateThreadContextList;
   @Getter
   private volatile Boolean scopeThreadInheritable;
+  @Getter
+  private Boolean clearScopeContextsOnClose;
+  @Getter
+  private Boolean registerShutdownHook;
+  @Getter
+  private Boolean closeSpringContextIfNeeded;
+  @Getter
+  private Boolean clearContainersOnClose;
+  @Getter
+  private long closeSpringContextDelay;
   
   public Config(IConfig parentConfig) {
     this.parentConfig = parentConfig;
-  }
-  
-  public Config() {
-    this.parentConfig = null;
   }
   
   @Override
@@ -69,6 +75,51 @@ public class Config implements IConfig {
   }
   
   @Override
+  public boolean isClearScopeContextsOnClose() {
+    if (clearScopeContextsOnClose != null) {
+      return clearScopeContextsOnClose;
+    }
+    if (parentConfig != null) {
+      return parentConfig.isClearScopeContextsOnClose();
+    }
+    return false;
+  }
+  
+  @Override
+  public boolean isRegisterShutdownHook() {
+    if (registerShutdownHook != null) {
+      return registerShutdownHook;
+    }
+    if (parentConfig != null) {
+      return parentConfig.isRegisterShutdownHook();
+    }
+    return false;
+  }
+  
+  @Override
+  public boolean isCloseSpringContextIfNeeded() {
+    if (closeSpringContextIfNeeded != null) {
+      return closeSpringContextIfNeeded;
+    }
+    if (parentConfig != null) {
+      return parentConfig.isCloseSpringContextIfNeeded();
+    }
+    return false;
+  }
+  
+  @Override
+  public boolean isClearContainersOnClose() {
+    if (clearContainersOnClose != null) {
+      return clearContainersOnClose;
+    }
+    if (parentConfig != null) {
+      return parentConfig.isClearContainersOnClose();
+    }
+    return false;
+  }
+  
+  // =============================
+  @Override
   public IConfig setAutoCreateScopeContext(Boolean autoCreateScopeContext) {
     this.autoCreateScopeContext = autoCreateScopeContext;
     return this;
@@ -89,6 +140,38 @@ public class Config implements IConfig {
   @Override
   public IConfig setScopeThreadInheritable(Boolean scopeThreadInheritable) {
     this.scopeThreadInheritable = scopeThreadInheritable;
+    return this;
+  }
+  
+  @Override
+  public IConfig setClearScopeContextsOnClose(Boolean clearScopeContextsOnClose) {
+    this.clearScopeContextsOnClose = clearScopeContextsOnClose;
+    return this;
+  }
+  
+  @Override
+  public IConfig setClearContainersOnClose(Boolean clearContainersOnClose) {
+    this.clearContainersOnClose = clearContainersOnClose;
+    return this;
+  }
+  
+  
+  @Override
+  public IConfig setCloseSpringContextIfNeeded(Boolean closeSpringContextIfNeeded) {
+    this.closeSpringContextIfNeeded = closeSpringContextIfNeeded;
+    return this;
+  }
+  
+  @Override
+  public IConfig setRegisterShutdownHook(Boolean registerShutdownHook) {
+    this.registerShutdownHook = registerShutdownHook;
+    return this;
+  }
+  
+  
+  @Override
+  public IConfig setCloseSpringContextDelay(long closeSpringContextDelay) {
+    this.closeSpringContextDelay = closeSpringContextDelay;
     return this;
   }
 }

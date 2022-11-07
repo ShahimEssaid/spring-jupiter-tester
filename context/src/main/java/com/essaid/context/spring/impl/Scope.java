@@ -80,8 +80,8 @@ public class Scope implements IScope {
 //  }
 //
   
-  public Scope(IDomain domain, IContainer container, String scopeName, int scopeOrder, IScope parentScope, IConfig config,
-      IScope... relatedScopes) {
+  public Scope(IDomain domain, IContainer container, String scopeName, int scopeOrder, IScope parentScope,
+      IConfig config, IScope... relatedScopes) {
     //this.container = container;
     this.domain = domain;
     this.scopeName = scopeName;
@@ -151,6 +151,7 @@ public class Scope implements IScope {
     if (closed) return false;
     
     contexts.values().forEach(sc -> sc.close());
+    if (config.isClearScopeContextsOnClose()) contexts.clear();
     closed = true;
     return true;
   }

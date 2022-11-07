@@ -14,6 +14,14 @@ public interface IConfig {
   
   Boolean getAutoCreateScopeContext();
   
+  boolean isClearScopeContextsOnClose();
+  
+  boolean isRegisterShutdownHook();
+  
+  boolean isCloseSpringContextIfNeeded();
+  
+  boolean isClearContainersOnClose();
+  
   IConfig setAutoCreateScopeContext(Boolean autoCreateScopeContext);
   
   Boolean getAutoCreateThreadContext();
@@ -27,4 +35,24 @@ public interface IConfig {
   Boolean getScopeThreadInheritable();
   
   IConfig setScopeThreadInheritable(Boolean scopeThreadInheritable);
+  
+  IConfig setClearScopeContextsOnClose(Boolean clearScopeContextOnClose);
+  
+  IConfig setClearContainersOnClose(Boolean clearContainersOnClose);
+  
+  IConfig setCloseSpringContextIfNeeded(Boolean closeSpringContextIfNeeded);
+  
+  IConfig setRegisterShutdownHook(Boolean registerShutdownHook);
+  
+  IConfig setCloseSpringContextDelay(long delayMilliseconds);
+  
+  Boolean getClearScopeContextsOnClose();
+  
+  Boolean getRegisterShutdownHook();
+  
+  Boolean getCloseSpringContextIfNeeded();
+  
+  Boolean getClearContainersOnClose();
+  
+  long getCloseSpringContextDelay();
 }

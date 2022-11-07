@@ -29,7 +29,7 @@ public class Domain implements IDomain {
   @Getter
   private final IConfig config;
   
-  private final Map<ConfigurableApplicationContext, IContainer> applicationContextMap = new ConcurrentHashMap<>();
+  private final Map<ConfigurableApplicationContext, IContainer> containersMap = new ConcurrentHashMap<>();
   @Getter
   private final IThreadManager threadManager;
   //private final Map<ConfigurableApplicationContext, IContainer> closedApplicationContextMap = new ConcurrentHashMap<>();
@@ -51,25 +51,22 @@ public class Domain implements IDomain {
   }
   
   @Override
-  public IContainer registerSpringContext(ConfigurableApplicationContext context) {
-    synchronized (applicationContextMap) {
-      IContainer applicationContext = applicationContextMap.get(context);
+  public IContainer registerSpringContext(ConfigurableApplicationContext context, IConfig config) {
+    synchronized (containersMap) {
+      IContainer applicationContext = containersMap.get(context);
       if (applicationContext != null)
         throw new IllegalStateException("ConfigurableApplicationContext already registered:" + context);
-      applicationContext = getFactory().createApplicationContext(this, context, config);
-      applicationContextMap.put(context, applicationContext);
+      applicationContext = getFactory().createApplicationContext(this, context, config != null ? config : this.config);
+      containersMap.put(context, applicationContext);
       return applicationContext;
     }
   }
-//
-//  @Override
-//  public IContainer unregisterSpringContext(ConfigurableApplicationContext context) {
-//    IContainer removed = applicationContextMap.remove(context);
-//    if (removed != null) {
-//      closedApplicationContextMap.put(context, removed);
-//    }
-//    return removed;
-//  }
+  
+  @Override
+  public IContainer unregisterSpringContext(ConfigurableApplicationContext context) {
+    IContainer removed = containersMap.remove(context);
+    return removed;
+  }
   
   @Override
   public void initialize() {
@@ -92,21 +89,43 @@ public class Domain implements IDomain {
       this.shutdownHook = new Thread(new Runnable() {
         @Override
         public void run() {
-          active:
+          
+          // close just in case. it doesn't hurt to do this right away based on the spring implementation.
+          if (config.isCloseSpringContextIfNeeded()) {
+            containersMap.keySet().forEach(applicationContext -> applicationContext.close());
+          }
+          
+          // now wait until the contexts are not active, up to the timeout
+          // this waiting is needed in case the contexts are shutting down with their own
+          // shutdown hooks and we need to give them some reasonable time to finish.
+          long timeout = System.currentTimeMillis() + config.getCloseSpringContextDelay();
+          
+          stillActive:
           while (true) {
-            for (ConfigurableApplicationContext context : applicationContextMap.keySet()) {
-              if (context.isActive()) {
+            if (System.currentTimeMillis() > timeout) {
+              logger.warn(
+                  "Waiting for containers to be inactive in shutdown hook timed out after: {} milliseconds with containers: {}",
+                  config.getCloseSpringContextDelay(), containersMap);
+              break;
+            }
+            
+            for (Map.Entry<ConfigurableApplicationContext, IContainer> containerEntry : containersMap.entrySet()) {
+              if (containerEntry.getKey().isActive()) {
                 try {
-                  Thread.sleep(1000);
+                  Thread.sleep(100);
                 } catch (InterruptedException e) {
                   throw new RuntimeException(e);
                 }
-                //System.out.println("Waiting for inactive.");
-                continue active;
+                logger.debug("Waiting on active spring context: {}", containerEntry.getValue());
+                continue stillActive;
               }
             }
+            // they are all not active at this point.
             break;
           }
+          
+          // they are all inactive, or not much more to do about it.
+          
           Domain.this.closeDomain();
         }
       });

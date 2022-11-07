@@ -14,9 +14,9 @@ public interface IDomain {
   
   IScope getApplicationScope();
   
-  IContainer registerSpringContext(ConfigurableApplicationContext context);
+  IContainer registerSpringContext(ConfigurableApplicationContext context, IConfig config);
   
-  //IContainer unregisterSpringContext(ConfigurableApplicationContext context);
+  IContainer unregisterSpringContext(ConfigurableApplicationContext context);
   
   
   void initialize();

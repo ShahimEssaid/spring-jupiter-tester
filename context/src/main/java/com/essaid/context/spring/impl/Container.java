@@ -96,8 +96,6 @@ public class Container implements IContainer {
       scopes.forEach(s -> s.close());
       closed = true;
     }
-    
-    
   }
 
   

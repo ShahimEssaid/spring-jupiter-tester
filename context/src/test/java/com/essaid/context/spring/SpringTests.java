@@ -27,6 +27,9 @@ public class SpringTests {
   @Order(1)
   void setupDomain() {
     domain = IFactory.DEFAULT_FACTORY.createContextDomain();
+    domain.getConfig().setRegisterShutdownHook(true).setCloseSpringContextDelay(5000)
+        .setCloseSpringContextIfNeeded(false);
+    domain.registerShutdownHook();
   }
   
   @Test
@@ -34,8 +37,8 @@ public class SpringTests {
   void createContext() {
     context = new AnnotationConfigApplicationContext();
     context.register(ApplicationBeanA.class, RequestBeanA.class, SessionBeanA.class, SingletonBeanA.class);
-    context.registerShutdownHook();
-    container = domain.registerSpringContext(context);
+    //context.registerShutdownHook();
+    container = domain.registerSpringContext(context, null);
     threadContextList = domain.getThreadManager().getThreadContextList(domain, container.getConfig());
     container.createDefaultScopes();
     context.refresh();
@@ -45,14 +48,15 @@ public class SpringTests {
   @Test
   @Order(3)
   void getBeans() {
-    IThreadContextList threadContextList1 = domain.getThreadManager().getThreadContextList(domain, container.getConfig());
-  
+    IThreadContextList threadContextList1 = domain.getThreadManager()
+        .getThreadContextList(domain, container.getConfig());
+    
     ApplicationBeanA applicationBeanA = context.getBean(ApplicationBeanA.class);
     RequestBeanA requestBeanA1 = applicationBeanA.getRequestBeanA();
     requestBeanA1.setString("requestBeanA");
     applicationBeanA.setString("applicationBeanA");
     
-  
+    
     SessionBeanA sessionBeanA = context.getBean(SessionBeanA.class);
     sessionBeanA.setString("session");
     
